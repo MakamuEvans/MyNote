@@ -18,6 +18,19 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@drawable/default_button"
+            android:text="Demo"
+            android:onClick="homeActivity"/>
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/login_form"

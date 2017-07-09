@@ -26,10 +26,14 @@
         </activity>
         <activity
             android:name=".PasswordReset"
-            android:label="MyNote:Password Reset"/>
+            android:label="MyNote:Password Reset" />
         <activity
             android:name=".RegisterActivity"
-            android:label="MyNote:Create Account"/>
+            android:label="MyNote:Create Account" />
+        <activity
+            android:name=".Navigation"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
