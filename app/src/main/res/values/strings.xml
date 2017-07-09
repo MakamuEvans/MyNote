@@ -24,10 +24,17 @@
     <string name="password_confirm">Confirm sPassword</string>
     <string name="title_activity_navigation">Navigation</string>
 
+    <string name="sample_note">
+        Am supposed to re-design this card-view so that it matches the general design of the whole app. background gradient color is what i mean
+    </string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_tab">TabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
