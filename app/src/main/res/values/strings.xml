@@ -27,6 +27,9 @@
     <string name="sample_note">
         Am supposed to re-design this card-view so that it matches the general design of the whole app. background gradient color is what i mean
     </string>
+    <string name="blank_note">
+        It seems you haven\'t added any item here yet! \n Add Items and let me Organize your days for you.
+    </string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
