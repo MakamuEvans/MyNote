@@ -21,7 +21,7 @@
     <string name="email_address">Email Address</string>
     <string name="occupation">Occupation</string>
     <string name="password">Password</string>
-    <string name="password_confirm">Confirm sPassword</string>
+    <string name="password_confirm">Confirm Password</string>
     <string name="title_activity_navigation">Navigation</string>
 
     <string name="sample_note">
