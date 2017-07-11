@@ -1,5 +1,7 @@
 package com.example.elm.login;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import com.example.elm.login.network.NetworkUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,25 +70,35 @@ public class RegisterActivity extends AppCompatActivity {
                 //check if there is internet access
                 String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
                 if (status.equals("Not connected to Internet")){
-                    Snackbar.make(view, "Check your Inernet Connection and retry!", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Check your Internet Connection and retry!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }else {
                     //all clear to call server api
+                    final ProgressDialog progressDialog= new ProgressDialog(this);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Creating your Account...");
+                    progressDialog.show();
 
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                    Call<User> call = apiInterface.getData(first_name.getText().toString());
+                    Call<User> call = apiInterface.getData(first_name.getText().toString(),
+                            last_name.getText().toString(), email.getText().toString(), password.getText().toString());
                     call.enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
-                            User user = response.body();
-                            System.out.println(user.getEmail());
-                            Snackbar.make(view,user.getFirstname() , Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            if (progressDialog.isShowing()){
+                                progressDialog.dismiss();
+                            }
+
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent);
                         }
 
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
-                            Snackbar.make(view, "wtf", Snackbar.LENGTH_LONG)
+                            if (progressDialog.isShowing()){
+                                progressDialog.dismiss();
+                            }
+                            Snackbar.make(view, "Something went wrong.", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         }
                     });
