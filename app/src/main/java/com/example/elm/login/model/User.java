@@ -11,18 +11,18 @@ public class User extends SugarRecord {
     private String firstname;
     private String lastname;
     private String email;
-    private String password;
+    private String pass;
+    private String status;
 
-    public User() {
+    public User() {}
 
-    }
-
-    public User(int userid, String firstname, String lastname, String email, String password) {
+    public User(int userid, String firstname, String lastname, String email, String pass, String status) {
         this.userid = userid;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.password = password;
+        this.pass = pass;
+        this.status = status;
     }
 
     public int getUserid() {
@@ -57,11 +57,19 @@ public class User extends SugarRecord {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPass() {
+        return pass;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

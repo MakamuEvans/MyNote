@@ -22,10 +22,6 @@ public class ApiClient {
             .addInterceptor(interceptor)
             .build();
 
-    static OkHttpClient client = new OkHttpClient.Builder()
-            .addInterceptor(new BasicAuth("mk@g.c", "juja1994"))
-            .build();
-
     public static Retrofit getClient(){
         if (retrofit==null){
             retrofit = new Retrofit.Builder()

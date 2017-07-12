@@ -1,6 +1,7 @@
 package com.example.elm.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.elm.login.model.User;
+import com.example.elm.login.preferences.BasicAuth;
+import com.orm.query.Select;
+
+import java.util.List;
 
 import layout.EventsFragment;
 import layout.HomeFragment;
@@ -40,36 +48,54 @@ public class Navigation extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        SharedPreferences preferences = getSharedPreferences("myPref",0);
+        Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
+        //preferences.getBoolean();
 
-        mSectionsPagerAdapter = new Navigation.SectionsPagerAdapter(getSupportFragmentManager());
+        if (!fk){
+            Intent intent = new Intent(Navigation.this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("loggedIn", true);
+            editor.commit();
+            setContentView(R.layout.activity_navigation);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+            mSectionsPagerAdapter = new Navigation.SectionsPagerAdapter(getSupportFragmentManager());
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+            // Set up the ViewPager with the sections adapter.
+            mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(mViewPager);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            User user = Select.from(User.class)
+                    .first();
+            View v =navigationView.getHeaderView(0);
+            TextView usernname = (TextView) v.findViewById(R.id.nav_username);
+            usernname.setText(user.getLastname()+" , "+user.getFirstname());
+        }
     }
 
     @Override
@@ -99,6 +125,9 @@ public class Navigation extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.logout_settings){
+            logOut();
         }
 
         return super.onOptionsItemSelected(item);
@@ -203,5 +232,19 @@ public class Navigation extends AppCompatActivity
             }
             return null;
         }
+    }
+
+    public void logOut(){
+        //reset basic auth
+        Toast.makeText(getBaseContext(), "Logging you out...", Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = getSharedPreferences("myPref", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("loggedIn", false);
+        editor.commit();
+        User.deleteAll(User.class);
+
+        BasicAuth.email = "0";
+        Intent intent =new Intent(Navigation.this, LoginActivity.class);
+        startActivity(intent);
     }
 }

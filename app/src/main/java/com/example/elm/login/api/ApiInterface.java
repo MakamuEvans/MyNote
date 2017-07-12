@@ -22,4 +22,9 @@ public interface ApiInterface {
                        @Field("last_name") String lastname,
                        @Field("email") String email,
                        @Field("password") String password);
+
+    @POST("login")
+    @FormUrlEncoded
+    Call<User> getData (@Field("email") String email,
+                        @Field("password") String password);
 }

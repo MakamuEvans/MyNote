@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.elm.login.api.ApiClient;
 import com.example.elm.login.api.ApiInterface;
@@ -88,9 +89,17 @@ public class RegisterActivity extends AppCompatActivity {
                             if (progressDialog.isShowing()){
                                 progressDialog.dismiss();
                             }
+                            if (response.isSuccessful()) {
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(getBaseContext(), "Success! You can Log In using your credentials", Toast.LENGTH_SHORT).show();
+                            } else if (response.code() == 401) {
+                                Snackbar.make(view, "Something went wrong.WTF!", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            } else {
+                                // Handle other responses
+                            }
 
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intent);
                         }
 
                         @Override
