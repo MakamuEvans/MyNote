@@ -20,7 +20,10 @@ import com.example.elm.login.R;
 import com.example.elm.login.adapter.NotesAdapter;
 import com.example.elm.login.model.Note;
 import com.example.elm.login.services.note.UploadNote;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +83,7 @@ public class NotesFragment extends Fragment {
     }
 
     private UploadReceiver receiver;
+    private SyncReceiver syncReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,6 +97,10 @@ public class NotesFragment extends Fragment {
         receiver = new UploadReceiver();
         getActivity().registerReceiver(receiver, filter);
 
+        IntentFilter intentFilter = new IntentFilter(SyncReceiver.SYNC_ACTION);
+        syncReceiver = new SyncReceiver();
+        getActivity().registerReceiver(syncReceiver, filter);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler);
         notes = Note.find(Note.class, null,null,null,"noteid DESC", null);
 
@@ -100,14 +108,7 @@ public class NotesFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(notesAdapter);
-        Button button = (Button) view.findViewById(R.id.lodi);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reCreate();
-            }
-        });
 
         return  view;
         //return inflater.inflate(R.layout.fragment_notes2, container, false);
@@ -155,16 +156,11 @@ public class NotesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("huh", "wtf");
 
         IntentFilter filter = new IntentFilter();
-
         filter.addAction(UploadNote.ACTION_RESP);
         getActivity().registerReceiver(receiver, filter);
 
-        Toast.makeText(getContext(), "huhu", Toast.LENGTH_SHORT).show();
-
-        reCreate();
     }
 
     /**
@@ -179,13 +175,42 @@ public class NotesFragment extends Fragment {
 
     }
 
+    public void addNew(Note note){
+        if (notesAdapter!=null){
+            notesAdapter.newData(note);
+            recyclerView.smoothScrollToPosition(0);
+
+        }
+    }
+
     /**
      * receive broadcasts
      */
     public class UploadReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-            reCreate();
+            Bundle bundle = intent.getExtras();
+            String newNote = bundle.getString("note");
+            Gson gson = new Gson();
+            Type type = new TypeToken<Note>(){
+            }.getType();
+            Note note = gson.fromJson(newNote, type);
+            addNew(note);
+
+        }
+    }
+    public class SyncReceiver extends BroadcastReceiver{
+        public static final String SYNC_ACTION = "sync_action";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            String newNote = bundle.getString("note");
+            Gson gson = new Gson();
+            Type type = new TypeToken<Note>(){
+            }.getType();
+            Note note = gson.fromJson(newNote, type);
+            addNew(note);
+
         }
     }
 }

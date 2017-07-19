@@ -8,17 +8,22 @@
     tools:context="com.example.elm.login.AddNote">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:src="@mipmap/ic_close"
+                android:clickable="true"
+                android:id="@+id/close_page"
                 android:textSize="20dp"/>
 
             <TextView
@@ -45,6 +50,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
+                    android:textIsSelectable="true"
+                    android:inputType="textCapSentences"
                     android:id="@+id/note_title"
                     android:layout_marginTop="5dp"
                     android:hint="Title"/>
@@ -53,7 +60,9 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:id="@+id/note_data"
-                    android:fontFamily="casual"
+                    android:inputType="textMultiLine"
+                    android:background="@null"
+                    android:fontFamily="serif-monospace"
                     android:layout_height="wrap_content"
                     android:hint="Touch to add Note"/>
             </LinearLayout>

@@ -4,11 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@android:drawable/ic_popup_reminder"
+            android:icon="@mipmap/ic_home"
             android:title="Home" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@mipmap/ic_assignment"
             android:title="Notes" />
         <item
             android:id="@+id/nav_slideshow"
@@ -28,7 +28,7 @@
                 android:title="Share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_menu_view"
+                android:icon="@mipmap/ic_computer"
                 android:title="Web View" />
         </menu>
     </item>

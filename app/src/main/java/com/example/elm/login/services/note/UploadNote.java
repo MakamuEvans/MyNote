@@ -9,6 +9,9 @@ import com.example.elm.login.AddNote;
 import com.example.elm.login.api.ApiClient;
 import com.example.elm.login.api.ApiInterface;
 import com.example.elm.login.model.Note;
+import com.google.gson.Gson;
+
+import java.io.Serializable;
 
 import layout.NotesFragment;
 import retrofit2.Call;
@@ -35,9 +38,25 @@ public class UploadNote extends IntentService{
         String title = intent.getStringExtra("title");
         String note = intent.getStringExtra("note");
         String credentials = intent.getStringExtra("credentials");
+        Boolean internet = intent.getExtras().getBoolean("internet");
 
-        System.out.println(title);
+        if (internet){
+            upload(title, note, credentials);
+        }else {
+            Note newNote = new Note(null,title,note,null,null,true,null,null);
+            newNote.save();
 
+            String dt = new Gson().toJson(newNote);
+            Intent intent1 = new Intent();
+            intent1.setAction(ACTION_RESP);
+            intent1.putExtra("note", dt);
+            //intent1.addCategory(Intent.ACTION_DEFAULT);
+            sendBroadcast(intent1);
+        }
+
+    }
+
+    public void upload(String title, String note, String credentials){
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Note> call = apiInterface.getData(
                 title,
@@ -63,8 +82,10 @@ public class UploadNote extends IntentService{
                     note.save();
 
                     //broadcast
+                    String dt = new Gson().toJson(note);
                     Intent intent1 = new Intent();
                     intent1.setAction(ACTION_RESP);
+                    intent1.putExtra("note", dt);
                     //intent1.addCategory(Intent.ACTION_DEFAULT);
                     sendBroadcast(intent1);
 

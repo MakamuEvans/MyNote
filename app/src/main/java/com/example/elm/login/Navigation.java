@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elm.login.model.Note;
 import com.example.elm.login.model.User;
 import com.example.elm.login.preferences.BasicAuth;
 import com.orm.query.Select;
@@ -243,6 +244,7 @@ public class Navigation extends AppCompatActivity
         editor.putBoolean("loggedIn", false);
         editor.commit();
         User.deleteAll(User.class);
+        Note.deleteAll(Note.class);
 
         Intent intent =new Intent(Navigation.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
