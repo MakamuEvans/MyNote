@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -61,7 +62,10 @@ public class RegisterActivity extends AppCompatActivity {
                 password.getText().toString().isEmpty() || confirm_password.getText().toString().isEmpty()){
             Snackbar.make(view, "No field(s) should be left BLANK.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-        }else {
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+            Snackbar.make(view, "Please input a valid Email Address", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
             //check password
             if (!password.getText().toString().equals(confirm_password.getText().toString())){
                 Snackbar.make(view, "Passwords DO NOT MATCH, please retry", Snackbar.LENGTH_LONG)
@@ -78,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                     final ProgressDialog progressDialog= new ProgressDialog(this);
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Creating your Account...");
+                    progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
 
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);

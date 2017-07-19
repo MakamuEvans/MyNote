@@ -1,10 +1,12 @@
 package com.example.elm.login.api;
 
+import com.example.elm.login.model.Note;
 import com.example.elm.login.model.User;
 
 import org.json.JSONObject;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
@@ -27,4 +29,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<User> getData (@Field("email") String email,
                         @Field("password") String password);
+
+    @POST("notes/new")
+    @FormUrlEncoded
+    Call<Note> getData (@Field("title") String title,
+                        @Field("note") String note,
+                        @Header("Authorization") String auth);
 }

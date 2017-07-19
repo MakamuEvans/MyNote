@@ -1,14 +1,28 @@
 package layout;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.elm.login.R;
+import com.example.elm.login.adapter.NotesAdapter;
+import com.example.elm.login.model.Note;
+import com.example.elm.login.services.note.UploadNote;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +43,10 @@ public class NotesFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    public List<Note> notes = new ArrayList<>();
+    private RecyclerView recyclerView;
+    public NotesAdapter notesAdapter;
 
     public NotesFragment() {
         // Required empty public constructor
@@ -61,11 +79,38 @@ public class NotesFragment extends Fragment {
         }
     }
 
+    private UploadReceiver receiver;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes2, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes2, container, false);
+
+        //register broadcast receiver
+        IntentFilter filter = new IntentFilter(UploadNote.ACTION_RESP);
+        //filter.addCategory(Intent.CATEGORY_DEFAULT);
+        receiver = new UploadReceiver();
+        getActivity().registerReceiver(receiver, filter);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler);
+        notes = Note.find(Note.class, null,null,null,"noteid DESC", null);
+
+        notesAdapter = new NotesAdapter(notes);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(notesAdapter);
+        Button button = (Button) view.findViewById(R.id.lodi);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reCreate();
+            }
+        });
+
+        return  view;
+        //return inflater.inflate(R.layout.fragment_notes2, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,5 +150,42 @@ public class NotesFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("huh", "wtf");
+
+        IntentFilter filter = new IntentFilter();
+
+        filter.addAction(UploadNote.ACTION_RESP);
+        getActivity().registerReceiver(receiver, filter);
+
+        Toast.makeText(getContext(), "huhu", Toast.LENGTH_SHORT).show();
+
+        reCreate();
+    }
+
+    /**
+     * redraw the recycler -view --all of it
+     */
+    public void reCreate(){
+        notes = Note.find(Note.class, null,null,null,"noteid DESC", null);
+
+        if (notesAdapter!=null){
+            notesAdapter.swapAll(notes);
+        }
+
+    }
+
+    /**
+     * receive broadcasts
+     */
+    public class UploadReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            reCreate();
+        }
     }
 }

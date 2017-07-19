@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,6 +46,7 @@ import com.example.elm.login.preferences.BasicAuth;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,7 +74,13 @@ public class LoginActivity extends AppCompatActivity {
 
         //api call
         String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
-        if (status.equals("Not connected to Internet")){
+        if(email.getText().toString().isEmpty() || password.getText().toString().isEmpty()){
+            Snackbar.make(view, "Email and/or Password required.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+            Snackbar.make(view, "Please input a valid Email Address", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }else if (status.equals("Not connected to Internet")){
             Snackbar.make(view, "Check your Internet Connection and retry!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }else {
@@ -94,10 +102,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.body().getStatus().equals("Success")){
                             //save credentials for auth.basic api calls
                             System.out.println(response.body().getFirstname());
-                            BasicAuth.email = response.body().getEmail();
-                            BasicAuth.password = response.body().getPass();
-                            BasicAuth.first_name = response.body().getFirstname();
-                            BasicAuth.last_name = response.body().getLastname();
                             User user = new User(
                                     usr.getUserid(),
                                     usr.getFirstname(),
@@ -116,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intent);
                             Toast.makeText(getBaseContext(), "Success!", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(getBaseContext(), "Invalid Credentials. Retry", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), "Invalid Credentials. Please Retry", Toast.LENGTH_SHORT).show();
                         }
 
                     } else if (response.code() == 401) {
@@ -130,8 +134,12 @@ public class LoginActivity extends AppCompatActivity {
                 public void onFailure(Call<User> call, Throwable t) {
                     progressDialog.dismiss();
                     if (t instanceof SocketTimeoutException){
-                        Snackbar.make(view, "Serever TimeOut.Please retry", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();                    }
+                        Snackbar.make(view, "Server TimeOut.Please retry in a moment", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }else {
+                        Snackbar.make(view, "There was an unexpected error contacting the server. Please retry after a moment.", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                 }
             });
         }

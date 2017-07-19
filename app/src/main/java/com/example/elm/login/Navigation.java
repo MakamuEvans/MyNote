@@ -54,6 +54,7 @@ public class Navigation extends AppCompatActivity
 
         if (!fk){
             Intent intent = new Intent(Navigation.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
         else {
@@ -77,8 +78,8 @@ public class Navigation extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Intent intent = new Intent(Navigation.this, AddNote.class);
+                    startActivity(intent);
                 }
             });
 
@@ -243,8 +244,8 @@ public class Navigation extends AppCompatActivity
         editor.commit();
         User.deleteAll(User.class);
 
-        BasicAuth.email = "0";
         Intent intent =new Intent(Navigation.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }

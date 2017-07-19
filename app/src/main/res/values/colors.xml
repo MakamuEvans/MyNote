@@ -5,4 +5,6 @@
     <color name="colorAccent">#ed4272</color>
 
     <color name="colorJumbotron">#684e55</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
