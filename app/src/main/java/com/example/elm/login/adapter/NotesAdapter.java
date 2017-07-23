@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Note;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder> {
     Context context;
-    public List<Note> allnotes;
+    public HashMap<Integer, Note> allnotes;
 
     public NotesAdapter(List<Note> allnotes) {
         this.allnotes = allnotes;
@@ -82,5 +83,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
     public void newData(Note note){
         this.allnotes.add(0, note);
         notifyItemInserted(0);
+    }
+
+    public void updateItem(Note note){
+        this.allnotes.equals(note);
     }
 }
