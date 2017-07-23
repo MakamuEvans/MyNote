@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -99,7 +100,7 @@ public class NotesFragment extends Fragment {
 
         IntentFilter intentFilter = new IntentFilter(SyncReceiver.SYNC_ACTION);
         syncReceiver = new SyncReceiver();
-        getActivity().registerReceiver(syncReceiver, filter);
+        getActivity().registerReceiver(syncReceiver, intentFilter);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler);
         notes = Note.find(Note.class, null,null,null,"noteid DESC", null);
@@ -157,23 +158,11 @@ public class NotesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(UploadNote.ACTION_RESP);
-        getActivity().registerReceiver(receiver, filter);
-
     }
 
     /**
      * redraw the recycler -view --all of it
      */
-    public void reCreate(){
-        notes = Note.find(Note.class, null,null,null,"noteid DESC", null);
-
-        if (notesAdapter!=null){
-            notesAdapter.swapAll(notes);
-        }
-
-    }
 
     public void addNew(Note note){
         if (notesAdapter!=null){
@@ -183,12 +172,19 @@ public class NotesFragment extends Fragment {
         }
     }
 
+    public void update(Note note){
+        if (notesAdapter!=null){
+            notesAdapter.updateItem(note);
+        }
+    }
+
     /**
      * receive broadcasts
      */
     public class UploadReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("vane", "vane");
             Bundle bundle = intent.getExtras();
             String newNote = bundle.getString("note");
             Gson gson = new Gson();
@@ -203,13 +199,14 @@ public class NotesFragment extends Fragment {
         public static final String SYNC_ACTION = "sync_action";
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("received_sync", "yes");
             Bundle bundle = intent.getExtras();
             String newNote = bundle.getString("note");
             Gson gson = new Gson();
             Type type = new TypeToken<Note>(){
             }.getType();
             Note note = gson.fromJson(newNote, type);
-            addNew(note);
+            update(note);
 
         }
     }

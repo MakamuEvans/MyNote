@@ -60,6 +60,10 @@
             android:name=".services.note.UploadNote"
             android:exported="false" />
 
+        <service
+            android:name=".services.note.SyncUpload"
+            android:exported="false" />
+
         <receiver
             android:name=".network.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">

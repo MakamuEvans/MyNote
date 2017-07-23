@@ -3,6 +3,7 @@ package com.example.elm.login.network;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.elm.login.services.note.SyncUpload;
 
@@ -15,9 +16,12 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String status = NetworkUtil.getConnectivityStatusString(context);
 
-        if (status!="Not connected to Internet"){
+        if (!status.equals("Not connected to Internet")){
+            Log.e("internet", "Intaneti");
             Intent uploadintent = new Intent(context, SyncUpload.class);
             context.startService(uploadintent);
+        }else {
+            Log.e("internet", "Intaneti imelosti");
         }
     }
 }

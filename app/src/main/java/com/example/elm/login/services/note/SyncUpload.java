@@ -45,17 +45,20 @@ public class SyncUpload extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.e("huh", "service started");
         notes = Select.from(Note.class)
-                .where(Condition.prop("uploadflag").eq(true))
+                .where(Condition.prop("uploadflag").eq(1))
                 .list();
+
+        Log.e("ai", notes.toString());
         count = notes.size();
-        while (count > 0) {
+        if (count >0){
             upload();
         }
     }
 
     public Integer upload(){
+        Log.e("started", "yes");
         final Note note = Select.from(Note.class)
-                .where(Condition.prop("uploadflag").eq(true))
+                .where(Condition.prop("uploadflag").eq(1))
                 .first();
         User user = Select.from(User.class)
                 .first();
@@ -71,6 +74,7 @@ public class SyncUpload extends IntentService {
             @Override
             public void onResponse(Call<Note> call, Response<Note> response) {
 
+                Log.e("er", "returned");
                 Note data = response.body();
                 if (response.isSuccessful()) {
                     note.setNoteid(data.getNoteid());
@@ -83,13 +87,13 @@ public class SyncUpload extends IntentService {
                     Intent intent1 = new Intent();
                     intent1.setAction(NotesFragment.SyncReceiver.SYNC_ACTION);
                     intent1.putExtra("note", dt);
-                    //intent1.addCategory(Intent.ACTION_DEFAULT);
                     sendBroadcast(intent1);
 
                     notes = Select.from(Note.class)
                             .where(Condition.prop("uploadflag").eq(true))
                             .list();
                     count = notes.size();
+                    checkOther();
 
                 } else if (response.code() == 401) {
                     count = 0;
@@ -106,6 +110,20 @@ public class SyncUpload extends IntentService {
         });
 
         return count;
+    }
+
+    /**
+     * check if their is another record to upload
+     */
+    public void checkOther(){
+        notes = Select.from(Note.class)
+                .where(Condition.prop("uploadflag").eq(1))
+                .list();
+
+        count = notes.size();
+        if (count >0){
+            upload();
+        }
     }
 
 }
