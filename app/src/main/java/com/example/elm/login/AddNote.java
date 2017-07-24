@@ -3,6 +3,10 @@ package com.example.elm.login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +32,7 @@ import retrofit2.Response;
 
 public class AddNote extends AppCompatActivity {
     EditText title, note;
-    ImageView imageView;
+    ImageView imageView, imagePlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,5 +91,32 @@ public class AddNote extends AppCompatActivity {
                 .first();
 
         return user.getUserid();
+    }
+
+    private static int LOAD_IMAGE_RESULTS = 1;
+
+    public void insertImage(View view){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        imagePlace = (ImageView) findViewById(R.id.image_place);
+
+        if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null){
+            Uri pickedImage= data.getData();
+
+            String[] filepath = { MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(pickedImage, filepath, null,null,null);
+            cursor.moveToFirst();
+            String imagePath = cursor.getString(cursor.getColumnIndex(filepath[0]));
+
+            imagePlace.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+
+            cursor.close();
+        }
     }
 }

@@ -25,6 +25,15 @@
                 android:clickable="true"
                 android:id="@+id/close_page"
                 android:textSize="20dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/close_page"
+                android:src="@mipmap/ic_add_a_photo"
+                android:clickable="true"
+                android:id="@+id/insert_image"
+                android:onClick="insertImage"
+                android:textSize="20dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,6 +74,11 @@
                     android:fontFamily="serif-monospace"
                     android:layout_height="wrap_content"
                     android:hint="Touch to add Note"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/image_place"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
