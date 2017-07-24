@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -120,18 +121,21 @@ public class AddNote extends AppCompatActivity {
     private static int LOAD_IMAGE_RESULTS = 1;
 
     public void insertImage(View view) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.READ_EXTERNAL_STORAGE) +
-                    ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        READ_EXTERNAL_STORAGE);
-                return;
-            }
-        } else {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+        Log.e("ati", "what");
+        if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    READ_EXTERNAL_STORAGE);
+            return;
         }
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+        } else {
+
+        }*/
     }
 
     @Override
@@ -156,18 +160,19 @@ public class AddNote extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         imagePlace = (ImageView) findViewById(R.id.image_place);
+        Log.e("back", "back");
 
         if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
             Uri pickedImage = data.getData();
+            Log.e("back", "back");
+
 
             String[] filepath = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(pickedImage, filepath, null, null, null);
             cursor.moveToFirst();
             imagePath = cursor.getString(cursor.getColumnIndex(filepath[0]));
 
-/*
             imagePlace.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-*/
 
             cursor.close();
         }

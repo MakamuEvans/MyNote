@@ -2,6 +2,8 @@ package com.example.elm.login.services.note;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -11,12 +13,18 @@ import com.example.elm.login.api.ApiInterface;
 import com.example.elm.login.model.Note;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 import layout.NotesFragment;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
 
 /**
  * Created by elm on 7/19/17.
@@ -39,7 +47,7 @@ public class UploadNote extends IntentService{
         String note = intent.getStringExtra("note");
         String credentials = intent.getStringExtra("credentials");
         Boolean internet = intent.getExtras().getBoolean("internet");
-        String image = intent.getStringExtra("image");
+        final String image = intent.getStringExtra("image");
 
         if (internet){
             upload(title, note, credentials, image);
@@ -57,12 +65,20 @@ public class UploadNote extends IntentService{
 
     }
 
-    public void upload(String title, String note, String credentials, String image){
+    public void upload(final String title, String note, String credentials, final String image){
+        File file = new File(image);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Note> call = apiInterface.getData(
                 title,
                 note,
-                credentials
+                credentials,
+                fileToUpload,
+                filename
         );
         call.enqueue(new Callback<Note>() {
             @Override
@@ -70,6 +86,19 @@ public class UploadNote extends IntentService{
 
                 Note data = response.body();
                 if (response.isSuccessful()) {
+                    System.out.println(data);
+                    String savedImage = null;
+                    try {
+                        savedImage = MediaStore.Images.Media.insertImage(
+                                getContentResolver(),
+                                image,
+                                title,
+                                title
+                        );
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     Note note = new Note(
                             data.getNoteid(),
                             data.getTitle(),
@@ -79,7 +108,8 @@ public class UploadNote extends IntentService{
                             false,
                             false,
                             false,
-                            null
+                            savedImage
+
                     );
                     note.save();
 
@@ -107,5 +137,20 @@ public class UploadNote extends IntentService{
 
             }
         });
+    }
+
+    public void huh(){
+        /*try {
+            String savedImage = MediaStore.Images.Media.insertImage(
+                    getContentResolver(),
+                    imagePath,
+                    "Image",
+                    "Same"
+            );
+            Uri imageUri = Uri.parse(savedImage);
+            imagePlace.setImageURI(imageUri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
     }
 }

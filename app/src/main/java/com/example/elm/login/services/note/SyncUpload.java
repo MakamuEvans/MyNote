@@ -16,11 +16,15 @@ import com.google.gson.Gson;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import layout.NotesFragment;
 import okhttp3.Credentials;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,11 +68,19 @@ public class SyncUpload extends IntentService {
                 .first();
         String credentials = Credentials.basic(user.getEmail(), user.getPass());
 
+        File file = new File(note.getImage());
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Note> call = apiInterface.getData(
                 note.getTitle(),
                 note.getNote(),
-                credentials
+                credentials,
+                fileToUpload,
+                filename
         );
         call.enqueue(new Callback<Note>() {
             @Override
