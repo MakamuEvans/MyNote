@@ -39,11 +39,12 @@ public class UploadNote extends IntentService{
         String note = intent.getStringExtra("note");
         String credentials = intent.getStringExtra("credentials");
         Boolean internet = intent.getExtras().getBoolean("internet");
+        String image = intent.getStringExtra("image");
 
         if (internet){
-            upload(title, note, credentials);
+            upload(title, note, credentials, image);
         }else {
-            Note newNote = new Note(null,title,note,null,null,true,null,null);
+            Note newNote = new Note(null,title,note,null,null,true,null,null,image.equals("null")? null: image);
             newNote.save();
 
             String dt = new Gson().toJson(newNote);
@@ -56,7 +57,7 @@ public class UploadNote extends IntentService{
 
     }
 
-    public void upload(String title, String note, String credentials){
+    public void upload(String title, String note, String credentials, String image){
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Note> call = apiInterface.getData(
                 title,
@@ -77,7 +78,8 @@ public class UploadNote extends IntentService{
                             "10-10-July",
                             false,
                             false,
-                            false
+                            false,
+                            null
                     );
                     note.save();
 
