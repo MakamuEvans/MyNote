@@ -25,14 +25,25 @@
                 android:clickable="true"
                 android:id="@+id/close_page"
                 android:textSize="20dp"/>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/close_page"
-                android:src="@mipmap/ic_add_a_photo"
+                android:src="@mipmap/ic_image"
                 android:clickable="true"
                 android:id="@+id/insert_image"
                 android:onClick="insertImage"
+                android:textSize="20dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/insert_image"
+                android:src="@mipmap/ic_add_a_photo"
+                android:clickable="true"
+                android:id="@+id/take_image"
+                android:onClick="takeImage"
                 android:textSize="20dp"/>
 
             <TextView

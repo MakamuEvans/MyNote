@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -47,7 +48,7 @@ public class AddNote extends AppCompatActivity {
     ImageView imageView, imagePlace;
     Context context;
     public static final int READ_EXTERNAL_STORAGE = 123;
-    public static final int WRITE_EXTERNAL_STORAGE = 123;
+    public static final int CAMERA = 124;
     String imagePath = null;
 
 
@@ -119,6 +120,17 @@ public class AddNote extends AppCompatActivity {
     }
 
     private static int LOAD_IMAGE_RESULTS = 1;
+    private static int TAKE_PICTURE_RESULTS =2;
+
+    public void takeImage(View view){
+        Log.e("taking photo", "yes");
+        if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.CAMERA},CAMERA);
+            return;
+        }
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, TAKE_PICTURE_RESULTS);
+    }
 
     public void insertImage(View view) {
         Log.e("ati", "what");
@@ -152,6 +164,12 @@ public class AddNote extends AppCompatActivity {
                 }
                 return;
             }
+            case CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, TAKE_PICTURE_RESULTS);
+                }
+            }
         }
     }
 
@@ -175,6 +193,22 @@ public class AddNote extends AppCompatActivity {
             imagePlace.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
             cursor.close();
+        }
+
+        if (requestCode == TAKE_PICTURE_RESULTS && resultCode == RESULT_OK && data != null){
+            Uri pickedImage = data.getData();
+            Log.e("back", "back");
+
+
+            String[] filepath = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(pickedImage, filepath, null, null, null);
+            cursor.moveToFirst();
+            imagePath = cursor.getString(cursor.getColumnIndex(filepath[0]));
+            cursor.close();
+
+            int nh = (int) (BitmapFactory.decodeFile(imagePath).getHeight() * (512.0 / BitmapFactory.decodeFile(imagePath).getWidth()));
+            imagePlace.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile(imagePath), 512, nh, true));
+
         }
     }
 }
