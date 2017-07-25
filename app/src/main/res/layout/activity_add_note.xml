@@ -26,33 +26,51 @@
                 android:id="@+id/close_page"
                 android:textSize="20dp"/>
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/close_page"
-                android:src="@mipmap/ic_image"
-                android:clickable="true"
-                android:id="@+id/insert_image"
-                android:onClick="insertImage"
-                android:textSize="20dp"/>
+                android:orientation="horizontal"
+                android:background="@drawable/layout_border">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/insert_image"
-                android:src="@mipmap/ic_add_a_photo"
-                android:clickable="true"
-                android:id="@+id/take_image"
-                android:onClick="takeImage"
-                android:textSize="20dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_image"
+                    android:clickable="true"
+                    android:id="@+id/insert_image"
+                    android:onClick="insertImage"
+                    android:textSize="20dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_add_a_photo"
+                    android:clickable="true"
+                    android:id="@+id/take_image"
+                    android:onClick="takeImage"
+                    android:textSize="20dp"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="Save"
+                android:id="@+id/save_note"
                 android:textStyle="bold"
                 android:onClick="saveNote"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Update"
+                android:id="@+id/update_note"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"/>
         </RelativeLayout>
@@ -73,6 +91,7 @@
                     android:textIsSelectable="true"
                     android:inputType="textCapSentences"
                     android:id="@+id/note_title"
+                    android:textStyle="bold"
                     android:layout_marginTop="5dp"
                     android:hint="Title"/>
 
@@ -82,14 +101,31 @@
                     android:id="@+id/note_data"
                     android:inputType="textMultiLine"
                     android:background="@null"
-                    android:fontFamily="serif-monospace"
                     android:layout_height="wrap_content"
                     android:hint="Touch to add Note"/>
 
-                <ImageView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/image_place"/>
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/layout_border"
+                        android:id="@+id/image_place"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_close"
+                        android:clickable="true"
+                        android:onClick="deleteImage"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"
+                        android:id="@+id/delete_image"
+                        android:textSize="20dp"/>
+                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

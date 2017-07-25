@@ -39,8 +39,8 @@ public interface ApiInterface {
 
     @POST("notes/new")
     @Multipart
-    Call<Note> getData (@Part ("title") String title,
-                        @Part("note") String note,
+    Call<Note> getData (@Part MultipartBody.Part title,
+                        @Part MultipartBody.Part note,
                         @Header("Authorization") String auth,
                         @Part MultipartBody.Part file,
                         @Part("file")RequestBody image);

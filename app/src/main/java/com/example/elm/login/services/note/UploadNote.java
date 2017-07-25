@@ -66,16 +66,23 @@ public class UploadNote extends IntentService{
     }
 
     public void upload(final String title, String note, String credentials, final String image){
+        if (image.equals("null")){
+
+        }else {
+
+        }
         File file = new File(image);
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+        MultipartBody.Part titlePart = MultipartBody.Part.createFormData("title", title);
+        MultipartBody.Part notePart = MultipartBody.Part.createFormData("note", note);
         RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Note> call = apiInterface.getData(
-                title,
-                note,
+                titlePart,
+                notePart,
                 credentials,
                 fileToUpload,
                 filename
@@ -88,7 +95,7 @@ public class UploadNote extends IntentService{
                 if (response.isSuccessful()) {
                     System.out.println(data);
                     String savedImage = null;
-                    try {
+                    /*try {
                         savedImage = MediaStore.Images.Media.insertImage(
                                 getContentResolver(),
                                 image,
@@ -98,7 +105,7 @@ public class UploadNote extends IntentService{
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                     Note note = new Note(
                             data.getNoteid(),
                             data.getTitle(),
@@ -108,7 +115,7 @@ public class UploadNote extends IntentService{
                             false,
                             false,
                             false,
-                            savedImage
+                            image
 
                     );
                     note.save();

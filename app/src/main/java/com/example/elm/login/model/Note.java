@@ -104,4 +104,19 @@ public class Note extends SugarRecord {
     public void setImage(String image) {
         this.image = image;
     }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "noteid='" + noteid + '\'' +
+                ", title='" + title + '\'' +
+                ", note='" + note + '\'' +
+                ", status='" + status + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", uploadflag=" + uploadflag +
+                ", updateflag=" + updateflag +
+                ", deleteflag=" + deleteflag +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

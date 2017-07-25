@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.elm.login.FullNote">
+    <item
+        android:id="@+id/action_favourite"
+        android:orderInCategory="100"
+        android:title="Favourite"
+
+        app:showAsAction="always" />
+</menu>

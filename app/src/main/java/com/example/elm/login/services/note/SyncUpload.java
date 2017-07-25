@@ -68,58 +68,109 @@ public class SyncUpload extends IntentService {
                 .first();
         String credentials = Credentials.basic(user.getEmail(), user.getPass());
 
-        File file = new File(note.getImage());
+        if (note.getImage() != null){
+            File file = new File(note.getImage());
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            MultipartBody.Part titlePart = MultipartBody.Part.createFormData("title", note.getTitle());
+            MultipartBody.Part notePart = MultipartBody.Part.createFormData("note", note.getNote());
+            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Note> call = apiInterface.getData(
-                note.getTitle(),
-                note.getNote(),
-                credentials,
-                fileToUpload,
-                filename
-        );
-        call.enqueue(new Callback<Note>() {
-            @Override
-            public void onResponse(Call<Note> call, Response<Note> response) {
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            Call<Note> call = apiInterface.getData(
+                    titlePart,
+                    notePart,
+                    credentials,
+                    fileToUpload,
+                    filename
+            );
+            call.enqueue(new Callback<Note>() {
+                @Override
+                public void onResponse(Call<Note> call, Response<Note> response) {
 
-                Log.e("er", "returned");
-                Note data = response.body();
-                if (response.isSuccessful()) {
-                    note.setNoteid(data.getNoteid());
-                    note.setStatus("Success");
-                    note.setUploadflag(false);
-                    note.save();
+                    Log.e("er", "returned");
+                    Note data = response.body();
+                    if (response.isSuccessful()) {
+                        note.setNoteid(data.getNoteid());
+                        note.setStatus("Success");
+                        note.setUploadflag(false);
+                        note.save();
 
-                    //broadcast
-                    String dt = new Gson().toJson(note);
-                    Intent intent1 = new Intent();
-                    intent1.setAction(NotesFragment.SyncReceiver.SYNC_ACTION);
-                    intent1.putExtra("note", dt);
-                    sendBroadcast(intent1);
+                        //broadcast
+                        String dt = new Gson().toJson(note);
+                        Intent intent1 = new Intent();
+                        intent1.setAction(NotesFragment.SyncReceiver.SYNC_ACTION);
+                        intent1.putExtra("note", dt);
+                        sendBroadcast(intent1);
 
-                    notes = Select.from(Note.class)
-                            .where(Condition.prop("uploadflag").eq(true))
-                            .list();
-                    count = notes.size();
-                    checkOther();
+                        notes = Select.from(Note.class)
+                                .where(Condition.prop("uploadflag").eq(true))
+                                .list();
+                        count = notes.size();
+                        checkOther();
 
-                } else if (response.code() == 401) {
-                    count = 0;
-                } else {
-                    // Handle other responses
+                    } else if (response.code() == 401) {
+                        count = 0;
+                    } else {
+                        // Handle other responses
+                        count = 0;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Note> call, Throwable t) {
                     count = 0;
                 }
-            }
+            });
+        }else {
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            Call<Note> call = apiInterface.getData(
+                    note.getTitle(),
+                    note.getNote(),
+                    credentials
+            );
+            call.enqueue(new Callback<Note>() {
+                @Override
+                public void onResponse(Call<Note> call, Response<Note> response) {
 
-            @Override
-            public void onFailure(Call<Note> call, Throwable t) {
-                count = 0;
-            }
-        });
+                    Log.e("er", "returned");
+                    Note data = response.body();
+                    if (response.isSuccessful()) {
+                        note.setNoteid(data.getNoteid());
+                        note.setStatus("Success");
+                        note.setUploadflag(false);
+                        note.save();
+
+                        //broadcast
+                        String dt = new Gson().toJson(note);
+                        Intent intent1 = new Intent();
+                        intent1.setAction(NotesFragment.SyncReceiver.SYNC_ACTION);
+                        intent1.putExtra("note", dt);
+                        sendBroadcast(intent1);
+
+                        notes = Select.from(Note.class)
+                                .where(Condition.prop("uploadflag").eq(true))
+                                .list();
+                        count = notes.size();
+                        checkOther();
+
+                    } else if (response.code() == 401) {
+                        count = 0;
+                    } else {
+                        // Handle other responses
+                        count = 0;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Note> call, Throwable t) {
+                    count = 0;
+                }
+            });
+        }
+
+
 
         return count;
     }

@@ -2,6 +2,7 @@ package com.example.elm.login.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.elm.login.FullNote;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Note;
 
@@ -65,15 +67,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
             title = (TextView) itemView.findViewById(R.id.card_title);
             note = (TextView) itemView.findViewById(R.id.card_note);
             imageView = (ImageView) itemView.findViewById(R.id.uploadstatus);
+            CardView cardView = (CardView) itemView.findViewById(R.id.note_card);
 
-            title.setOnClickListener(new View.OnClickListener() {
+            cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = getLayoutPosition();
-
-                    /*allnotes.remove(pos);
-                    notifyItemRemoved(pos);
-                    notifyItemRangeChanged(pos, allnotes.size());*/
+                    Note note = allnotes.get(pos);
+                    Intent intent = new Intent(v.getContext(), FullNote.class);
+                    intent.putExtra("noteId", note.getId());
+                    v.getContext().startActivity(intent);
                 }
             });
         }
