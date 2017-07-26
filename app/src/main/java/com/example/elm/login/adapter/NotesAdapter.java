@@ -67,9 +67,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
             title = (TextView) itemView.findViewById(R.id.card_title);
             note = (TextView) itemView.findViewById(R.id.card_note);
             imageView = (ImageView) itemView.findViewById(R.id.uploadstatus);
-            CardView cardView = (CardView) itemView.findViewById(R.id.note_card);
 
-            cardView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = getLayoutPosition();
@@ -77,6 +76,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
                     Intent intent = new Intent(v.getContext(), FullNote.class);
                     intent.putExtra("noteId", note.getId());
                     v.getContext().startActivity(intent);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
                 }
             });
         }
