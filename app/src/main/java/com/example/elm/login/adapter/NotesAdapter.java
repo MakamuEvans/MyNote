@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elm.login.FullNote;
 import com.example.elm.login.R;
@@ -45,7 +48,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
         //context = holder
         Note notes = allnotes.get(position);
         holder.title.setText(notes.getTitle());
-        holder.note.setText(notes.getNote());
+        String htmlText = notes.getNote();
+        if (htmlText != null){
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                holder.note.setText(Html.fromHtml(htmlText,Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                holder.note.setText(Html.fromHtml(htmlText));
+            }
+        }
         if (notes.getUploadflag()){
             holder.imageView.setImageResource(R.mipmap.ic_cloud);
         }else {
@@ -60,13 +70,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
 
     public class myViewHolder extends RecyclerView.ViewHolder{
         public TextView title, note;
-        public ImageView imageView;
+        public ImageView imageView,fav, del;
 
         public myViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.card_title);
-            note = (TextView) itemView.findViewById(R.id.card_note);
+            note = (TextView) itemView.findViewById(R.id.card_notes);
             imageView = (ImageView) itemView.findViewById(R.id.uploadstatus);
+            fav = (ImageView) itemView.findViewById(R.id.card_fav);
+            del = (ImageView) itemView.findViewById(R.id.card_del);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,6 +97,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
                     return false;
                 }
             });
+
+            fav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Favourited", Toast.LENGTH_SHORT).show();
+                    fav.setImageResource(R.mipmap.ic_action_pink);
+                }
+            });
+
+            del.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
     }
 

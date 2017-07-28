@@ -7,7 +7,7 @@
     android:layout_margin="10dp"
     tools:context="com.example.elm.login.AddNote">
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="348dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:layout_editor_absoluteY="8dp"
@@ -30,10 +30,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/close_page"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:background="@drawable/layout_border">
 
-                <ImageView
+                <!--<ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_image"
@@ -49,6 +50,51 @@
                     android:clickable="true"
                     android:id="@+id/take_image"
                     android:onClick="takeImage"
+                    android:textSize="20dp"/>-->
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_action_format_bold"
+                    android:clickable="true"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/editor_bold"
+                    android:textSize="20dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_action_format_quote"
+                    android:clickable="true"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/editor_quote"
+                    android:textSize="20dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_action_format_list_bulleted"
+                    android:clickable="true"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/editor_bullets"
+                    android:textSize="20dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_action_format_list_numbered"
+                    android:clickable="true"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/editor_numbers"
+                    android:textSize="20dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_action_check_box"
+                    android:clickable="true"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/editor_todo"
                     android:textSize="20dp"/>
 
             </LinearLayout>
@@ -95,14 +141,21 @@
                     android:layout_marginTop="5dp"
                     android:hint="Title"/>
 
-                <EditText
+                <!--<EditText
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:id="@+id/note_data"
                     android:inputType="textMultiLine"
                     android:background="@null"
                     android:layout_height="wrap_content"
-                    android:hint="Touch to add Note"/>
+                    android:hint="Touch to add Note"/>-->
+
+                <jp.wasabeef.richeditor.RichEditor
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/notes_editor">
+
+                </jp.wasabeef.richeditor.RichEditor>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

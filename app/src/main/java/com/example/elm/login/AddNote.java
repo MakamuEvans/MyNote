@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -39,6 +40,7 @@ import com.orm.query.Select;
 
 import java.io.FileNotFoundException;
 
+import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
 import okhttp3.Credentials;
 import retrofit2.Call;
@@ -49,6 +51,7 @@ public class AddNote extends AppCompatActivity {
     EditText title, note;
     ImageView imageView, imagePlace;
     TextView save, update;
+    RichEditor richEditor;
     Context context;
     public static final int READ_EXTERNAL_STORAGE = 123;
     public static final int CAMERA = 124;
@@ -60,8 +63,16 @@ public class AddNote extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
+        richEditor= (RichEditor) findViewById(R.id.notes_editor);
+        richEditor.setEditorHeight(200);
+        //richEditor.setEditorFontSize(22);
+        richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
+        richEditor.setPadding(10,10,10,10);
+        richEditor.setPlaceholder("Touch to add notes");
+
+
         title = (EditText) findViewById(R.id.note_title);
-        note = (EditText) findViewById(R.id.note_data);
+        //note = (EditText) findViewById(R.id.note_data);
         imagePlace = (ImageView) findViewById(R.id.image_place);
         save = (TextView) findViewById(R.id.save_note);
         update = (TextView) findViewById(R.id.update_note);
@@ -80,7 +91,7 @@ public class AddNote extends AppCompatActivity {
                 Long note_id = intent.getExtras().getLong("noteId");
                 Note note1 = Note.findById(Note.class, note_id);
                 title.setText(note1.getTitle());
-                note.setText(note1.getNote());
+                richEditor.setHtml(note1.getNote());
                 imagePath = note1.getImage();
 
                 if (imagePath != null){
@@ -99,6 +110,41 @@ public class AddNote extends AppCompatActivity {
                 AddNote.super.onBackPressed();
             }
         });
+
+        findViewById(R.id.editor_bold).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.setBold();
+            }
+        });
+        findViewById(R.id.editor_quote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.setBlockquote();
+            }
+        });
+
+        findViewById(R.id.editor_bullets).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.setBullets();
+            }
+        });
+
+        findViewById(R.id.editor_numbers).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.setNumbers();
+            }
+        });
+
+        findViewById(R.id.editor_todo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.insertTodo();
+            }
+        });
+
     }
 
     @Override
@@ -116,13 +162,14 @@ public class AddNote extends AppCompatActivity {
 
     public void saveNote(View view) {
         title = (EditText) findViewById(R.id.note_title);
-        note = (EditText) findViewById(R.id.note_data);
+        //note = (EditText) findViewById(R.id.note_data);
+        richEditor= (RichEditor) findViewById(R.id.notes_editor);
 
         String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
         //save locally
         Note note2 = new Note(null,
                 title.getText().toString(),
-                note.getText().toString(),
+                richEditor.getHtml(),
                 null,
                 null,
                 true,
@@ -209,6 +256,7 @@ public class AddNote extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         imagePlace = (ImageView) findViewById(R.id.image_place);
+        richEditor= (RichEditor) findViewById(R.id.notes_editor);
         Log.e("back", "back");
 
         if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
@@ -221,8 +269,8 @@ public class AddNote extends AppCompatActivity {
             cursor.moveToFirst();
             imagePath = cursor.getString(cursor.getColumnIndex(filepath[0]));
 
-            imagePlace.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-
+            //imagePlace.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+            richEditor.insertImage(imagePath, "Image");
             cursor.close();
         }
 

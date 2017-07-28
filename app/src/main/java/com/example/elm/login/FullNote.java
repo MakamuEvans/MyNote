@@ -3,6 +3,7 @@ package com.example.elm.login;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elm.login.model.Note;
+
+import jp.wasabeef.richeditor.RichEditor;
 
 public class FullNote extends AppCompatActivity {
 
@@ -35,8 +38,11 @@ public class FullNote extends AppCompatActivity {
         //set data
         setTitle(note1.getTitle());
 
-        TextView noteDetails = (TextView) findViewById(R.id.note_details);
-        noteDetails.setText(note1.getNote());
+       // TextView noteDetails = (TextView) findViewById(R.id.note_details);
+        RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
+        richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
+        richEditor.setHtml(note1.getNote());
+        //noteDetails.setText(note1.getNote());
         ImageView imageView = (ImageView) findViewById(R.id.details_image);
         String imagePath = note1.getImage();
         if (imagePath != null){
