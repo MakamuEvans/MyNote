@@ -6,6 +6,12 @@
         android:id="@+id/action_favourite"
         android:orderInCategory="100"
         android:title="Favourite"
-
+        android:icon="@mipmap/ic_action_favorite_border"
         app:showAsAction="always" />
+
+    <item
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="100"
+        android:title="delete"
+        app:showAsAction="always"/>
 </menu>
