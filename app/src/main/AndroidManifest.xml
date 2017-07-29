@@ -46,7 +46,7 @@
             android:value="mynote.db" />
         <meta-data
             android:name="VERSION"
-            android:value="" />
+            android:value="7" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -60,10 +60,15 @@
         <activity android:name=".NoteCard" />
 
         <service
-            android:name=".services.note.UploadNote"
-            android:exported="false" />
-        <service
             android:name=".services.note.SyncUpload"
+            android:exported="false" />
+
+        <service
+            android:name=".services.note.SyncFavourite"
+            android:exported="false" />
+
+        <service
+            android:name=".services.note.SyncDelete"
             android:exported="false" />
 
         <receiver
@@ -71,7 +76,9 @@
             android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="atherere" />
+                <action android:name="newUpload" />
+                <action android:name="favourite"/>
+                <action android:name="delete"/>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>

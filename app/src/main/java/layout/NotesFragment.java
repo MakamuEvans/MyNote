@@ -13,19 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
+import com.example.elm.login.AddNote;
 import com.example.elm.login.R;
 import com.example.elm.login.adapter.NotesAdapter;
 import com.example.elm.login.model.Note;
-import com.example.elm.login.services.note.UploadNote;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -85,6 +82,7 @@ public class NotesFragment extends Fragment {
 
     private UploadReceiver receiver;
     private SyncReceiver syncReceiver;
+    private  DeleteReceiver deleteReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,7 +91,7 @@ public class NotesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notes2, container, false);
 
         //register broadcast receiver
-        IntentFilter filter = new IntentFilter(UploadNote.ACTION_RESP);
+        IntentFilter filter = new IntentFilter(AddNote.ACTION_RESP);
         //filter.addCategory(Intent.CATEGORY_DEFAULT);
         receiver = new UploadReceiver();
         getActivity().registerReceiver(receiver, filter);
@@ -102,8 +100,12 @@ public class NotesFragment extends Fragment {
         syncReceiver = new SyncReceiver();
         getActivity().registerReceiver(syncReceiver, intentFilter);
 
+        IntentFilter intentFilter1 = new IntentFilter(DeleteReceiver.SYNC_ACTION);
+        deleteReceiver = new DeleteReceiver();
+        getActivity().registerReceiver(deleteReceiver, intentFilter1);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler);
-        notes = Note.find(Note.class, null,null,null,"noteid DESC", null);
+        notes = Note.find(Note.class, "deleteflag != 'true'",null,null,"noteid DESC", null);
 
         notesAdapter = new NotesAdapter(notes);
 
@@ -178,6 +180,12 @@ public class NotesFragment extends Fragment {
         }
     }
 
+    public void deleteNote(Note note){
+        if (notesAdapter!=null){
+            notesAdapter.deleteNote(note);
+        }
+    }
+
     /**
      * receive broadcasts
      */
@@ -208,6 +216,21 @@ public class NotesFragment extends Fragment {
             Note note = gson.fromJson(newNote, type);
             update(note);
 
+        }
+    }
+
+    public class DeleteReceiver extends  BroadcastReceiver{
+        public static final  String SYNC_ACTION = "delete_action";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            String newNote = bundle.getString("note");
+            Gson gson = new Gson();
+            Type type = new TypeToken<Note>(){
+            }.getType();
+            Note note = gson.fromJson(newNote, type);
+            deleteNote(note);
         }
     }
 }

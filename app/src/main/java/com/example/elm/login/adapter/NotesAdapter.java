@@ -18,6 +18,8 @@ import com.example.elm.login.FullNote;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Note;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -48,6 +50,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
         //context = holder
         Note notes = allnotes.get(position);
         holder.title.setText(notes.getTitle());
+        holder.dated.setText(notes.getCreated_at());
         String htmlText = notes.getNote();
         if (htmlText != null){
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -61,6 +64,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
         }else {
             holder.imageView.setImageResource(R.mipmap.ic_cloud_done);
         }
+        if (notes.getFavourite()){
+            holder.fav.setImageResource(R.mipmap.ic_action_pink);
+        }else {
+            holder.fav.setImageResource(R.mipmap.ic_action_favorite_pink);
+        }
     }
 
     @Override
@@ -69,13 +77,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder{
-        public TextView title, note;
+        public TextView title, note, dated;
         public ImageView imageView,fav, del;
 
         public myViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.card_title);
             note = (TextView) itemView.findViewById(R.id.card_notes);
+            dated = (TextView) itemView.findViewById(R.id.card_dated);
             imageView = (ImageView) itemView.findViewById(R.id.uploadstatus);
             fav = (ImageView) itemView.findViewById(R.id.card_fav);
             del = (ImageView) itemView.findViewById(R.id.card_del);
@@ -101,15 +110,43 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
             fav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int pos = getLayoutPosition();
+                    Note note = allnotes.get(pos);
+                    Note note1 = Note.findById(Note.class, note.getId());
+                    note1.setFavaouriteflag(true);
+                    Boolean status = note1.getFavourite() == false ? true:false;
+                    note1.setFavourite(status);
+                    note1.save();
+
                     Toast.makeText(v.getContext(), "Favourited", Toast.LENGTH_SHORT).show();
-                    fav.setImageResource(R.mipmap.ic_action_pink);
+                    if (note1.getFavourite()){
+                        fav.setImageResource(R.mipmap.ic_action_pink);
+                    }else {
+                        fav.setImageResource(R.mipmap.ic_action_favorite_pink);
+                    }
+
+                    Intent intent = new Intent();
+                    intent.setAction("favourite");
+                    v.getContext().sendBroadcast(intent);
                 }
             });
 
             del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                    int pos = getLayoutPosition();
+                    Note note = allnotes.get(pos);
+                    Note note1 = Note.findById(Note.class, note.getId());
+                    note1.setDeleteflag(true);
+                    note1.save();
+
+                    removeItem(pos);
+
+
+
+                    Intent intent = new Intent();
+                    intent.setAction("delete");
+                    v.getContext().sendBroadcast(intent);
                 }
             });
 
@@ -136,16 +173,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
             if (n.getId().equals(note.getId())){
                 Log.e("found", String.valueOf(allnotes.indexOf(n)));
                 int position = allnotes.indexOf(n);
-
-                allnotes.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, allnotes.size());
+                removeItem(position);
 
                 allnotes.add(position, note);
                 notifyItemInserted(position);
                 notifyItemRangeChanged(position, allnotes.size());
-
-
                 break;
             }
         }
@@ -155,6 +187,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
         allnotes.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, allnotes.size());
+    }
+
+    public void deleteNote(Note note){
+        Note data = null;
+        for (Note n: allnotes){
+            Log.e("id", String.valueOf(n.getId()));
+            if (n.getId().equals(note.getId())){
+                Log.e("found", String.valueOf(allnotes.indexOf(n)));
+                int position = allnotes.indexOf(n);
+                removeItem(position);
+                break;
+            }
+        }
     }
 
 

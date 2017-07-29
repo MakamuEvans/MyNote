@@ -89,8 +89,10 @@ public class SyncUpload extends IntentService {
                 @Override
                 public void onResponse(Call<Note> call, Response<Note> response) {
 
-                    Log.e("er", "returned");
+                    Log.e("er", "returnedd");
                     Note data = response.body();
+                    //System.out.println(data);
+                    Log.e("tuone", data.getNoteid());
                     if (response.isSuccessful()) {
                         note.setNoteid(data.getNoteid());
                         note.setStatus("Success");
@@ -134,12 +136,14 @@ public class SyncUpload extends IntentService {
                 @Override
                 public void onResponse(Call<Note> call, Response<Note> response) {
 
-                    Log.e("er", "returned");
+                    Log.e("er", "returnedd");
                     Note data = response.body();
+                    System.out.println(data.toString());
                     if (response.isSuccessful()) {
                         note.setNoteid(data.getNoteid());
                         note.setStatus("Success");
                         note.setUploadflag(false);
+                        note.setCreated_at(data.getCreated_at());
                         note.save();
 
                         //broadcast

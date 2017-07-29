@@ -12,25 +12,31 @@ public class Note extends SugarRecord {
     private String note;
     private String status;
     private String created_at;
+    private Boolean favourite;
+    private Boolean favaouriteflag;
     private Boolean uploadflag;
     private Boolean updateflag;
     private Boolean deleteflag;
     private String image;
+    private String imageurl;
 
 
     public Note() {
     }
 
-    public Note(String noteid, String title, String note, String status, String created_at, Boolean uploadflag, Boolean updateflag, Boolean deleteflag, String image) {
+    public Note(String noteid, String title, String note, String status, String created_at, Boolean favourite, Boolean favaouriteflag, Boolean uploadflag, Boolean updateflag, Boolean deleteflag, String image, String imageurl) {
         this.noteid = noteid;
         this.title = title;
         this.note = note;
         this.status = status;
         this.created_at = created_at;
+        this.favourite = favourite;
+        this.favaouriteflag = favaouriteflag;
         this.uploadflag = uploadflag;
         this.updateflag = updateflag;
         this.deleteflag = deleteflag;
         this.image = image;
+        this.imageurl = imageurl;
     }
 
     public String getNoteid() {
@@ -73,6 +79,22 @@ public class Note extends SugarRecord {
         this.created_at = created_at;
     }
 
+    public Boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public Boolean getFavaouriteflag() {
+        return favaouriteflag;
+    }
+
+    public void setFavaouriteflag(Boolean favaouriteflag) {
+        this.favaouriteflag = favaouriteflag;
+    }
+
     public Boolean getUploadflag() {
         return uploadflag;
     }
@@ -105,6 +127,14 @@ public class Note extends SugarRecord {
         this.image = image;
     }
 
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
+
     @Override
     public String toString() {
         return "Note{" +
@@ -113,10 +143,13 @@ public class Note extends SugarRecord {
                 ", note='" + note + '\'' +
                 ", status='" + status + '\'' +
                 ", created_at='" + created_at + '\'' +
+                ", favourite=" + favourite +
+                ", favaouriteflag=" + favaouriteflag +
                 ", uploadflag=" + uploadflag +
                 ", updateflag=" + updateflag +
                 ", deleteflag=" + deleteflag +
                 ", image='" + image + '\'' +
+                ", imageurl='" + imageurl + '\'' +
                 '}';
     }
 }

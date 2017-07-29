@@ -1,53 +1,37 @@
 package com.example.elm.login;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.elm.login.api.ApiClient;
-import com.example.elm.login.api.ApiInterface;
 import com.example.elm.login.model.Note;
 import com.example.elm.login.model.User;
 import com.example.elm.login.network.NetworkUtil;
-import com.example.elm.login.services.note.UploadNote;
 import com.google.gson.Gson;
 import com.orm.query.Select;
 
-import java.io.FileNotFoundException;
-
 import jp.wasabeef.richeditor.RichEditor;
-import layout.NotesFragment;
-import okhttp3.Credentials;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AddNote extends AppCompatActivity {
+    public static final String ACTION_RESP = "com.example.elm.login.services.note.Upload";
     EditText title, note;
     ImageView imageView, imagePlace;
     TextView save, update;
@@ -167,23 +151,27 @@ public class AddNote extends AppCompatActivity {
 
         String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
         //save locally
-        Note note2 = new Note(null,
+        Note note2 = new Note(
+                null,
                 title.getText().toString(),
                 richEditor.getHtml(),
                 null,
                 null,
+                false,
+                false,
                 true,
                 false,
                 false,
-                imagePath);
+                imagePath,
+                null);
         note2.save();
 
-        Intent intent = new Intent("atherere");
+        Intent intent = new Intent("newUpload");
         sendBroadcast(intent);
 
         String dt = new Gson().toJson(note2);
         Intent intent1 = new Intent();
-        intent1.setAction(UploadNote.ACTION_RESP);
+        intent1.setAction(AddNote.ACTION_RESP);
         intent1.putExtra("note", dt);
         sendBroadcast(intent1);
 

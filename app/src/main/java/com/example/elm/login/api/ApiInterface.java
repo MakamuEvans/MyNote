@@ -77,7 +77,8 @@ public interface ApiInterface {
 
     //delete note endpoint
     @GET("notes/delete/{id}")
-    Call<Note> deleteNote (@Path("id") int serverId);
+    Call<Note> deleteNote (@Path("id") int serverId,
+                           @Header("Authorization") String auth);
 
     //fetch all notes
     @GET("notes/all")
@@ -86,4 +87,10 @@ public interface ApiInterface {
     //fetch updates
     @GET("notes/updates")
     Call<Note> getUpdates();
+
+    //favourite
+    @GET("notes/favourite/{id}")
+    Call<Note> favourite(@Path("id") int serverId,
+                         @Query("status") Boolean status,
+                         @Header("Authorization") String auth);
 }
