@@ -18,6 +18,7 @@ import com.orm.query.Select;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import layout.NotesFragment;
@@ -82,8 +83,7 @@ public class SyncUpload extends IntentService {
                     titlePart,
                     notePart,
                     credentials,
-                    fileToUpload,
-                    filename
+                    fileToUpload
             );
             call.enqueue(new Callback<Note>() {
                 @Override
@@ -91,12 +91,13 @@ public class SyncUpload extends IntentService {
 
                     Log.e("er", "returnedd");
                     Note data = response.body();
-                    //System.out.println(data);
-                    Log.e("tuone", data.getNoteid());
                     if (response.isSuccessful()) {
+                        Log.e("note", data.getNote());
                         note.setNoteid(data.getNoteid());
+                        note.setNote(data.getNote());
                         note.setStatus("Success");
                         note.setUploadflag(false);
+                        note.setCreated_at(data.getCreated_at());
                         note.save();
 
                         //broadcast

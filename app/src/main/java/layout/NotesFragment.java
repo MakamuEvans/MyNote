@@ -105,7 +105,7 @@ public class NotesFragment extends Fragment {
         getActivity().registerReceiver(deleteReceiver, intentFilter1);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler);
-        notes = Note.find(Note.class, "deleteflag != 'true'",null,null,"noteid DESC", null);
+        notes = Note.find(Note.class, "deleteflag != 'true'",null,null,"noteid ASC", null);
 
         notesAdapter = new NotesAdapter(notes);
 

@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    tools:context="com.example.elm.login.AddNote">
-    <LinearLayout
-        android:layout_width="348dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteY="7dp"
         tools:layout_editor_absoluteX="8dp">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,16 +28,17 @@
                 android:orientation="horizontal"
                 android:background="@drawable/layout_border">
 
-                <!--<ImageView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_image"
+                    android:src="@mipmap/ic_action_photo"
                     android:clickable="true"
+                    android:layout_marginLeft="5dp"
                     android:id="@+id/insert_image"
                     android:onClick="insertImage"
                     android:textSize="20dp"/>
 
-                <ImageView
+                <!--<ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_add_a_photo"
@@ -183,4 +178,3 @@
         </ScrollView>
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>

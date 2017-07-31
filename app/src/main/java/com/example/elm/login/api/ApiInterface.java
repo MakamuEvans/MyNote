@@ -5,6 +5,7 @@ import com.example.elm.login.model.User;
 
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -47,8 +48,7 @@ public interface ApiInterface {
     Call<Note> getData (@Part MultipartBody.Part title,
                         @Part MultipartBody.Part note,
                         @Header("Authorization") String auth,
-                        @Part MultipartBody.Part file,
-                        @Part("file")RequestBody image);
+                        @Part MultipartBody.Part file);
 
     //new note endpoint -->without pic
     @POST("notes/new")
@@ -64,8 +64,7 @@ public interface ApiInterface {
                            @Part MultipartBody.Part title,
                            @Part MultipartBody.Part note,
                            @Header("Authorization") String auth,
-                           @Part MultipartBody.Part file,
-                           @Part("file")RequestBody image);
+                           @Part MultipartBody.Part file);
 
     //update endpoint -->without pic
     @POST("notes/update")

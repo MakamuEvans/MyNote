@@ -9,12 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -28,6 +28,10 @@ import com.example.elm.login.network.NetworkUtil;
 import com.google.gson.Gson;
 import com.orm.query.Select;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import jp.wasabeef.richeditor.RichEditor;
 
 public class AddNote extends AppCompatActivity {
@@ -40,6 +44,8 @@ public class AddNote extends AppCompatActivity {
     public static final int READ_EXTERNAL_STORAGE = 123;
     public static final int CAMERA = 124;
     String imagePath = null;
+    String merged = null;
+    List<String> array = new ArrayList<>();
 
 
     @Override
@@ -53,7 +59,6 @@ public class AddNote extends AppCompatActivity {
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setPadding(10,10,10,10);
         richEditor.setPlaceholder("Touch to add notes");
-
 
         title = (EditText) findViewById(R.id.note_title);
         //note = (EditText) findViewById(R.id.note_data);
@@ -76,13 +81,6 @@ public class AddNote extends AppCompatActivity {
                 Note note1 = Note.findById(Note.class, note_id);
                 title.setText(note1.getTitle());
                 richEditor.setHtml(note1.getNote());
-                imagePath = note1.getImage();
-
-                if (imagePath != null){
-                    int nh = (int) (BitmapFactory.decodeFile(note1.getImage()).getHeight() * (512.0 / BitmapFactory.decodeFile(note1.getImage()).getWidth()));
-                    imagePlace.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile(note1.getImage()), 512, nh, true));
-                    delete_btn.setVisibility(View.VISIBLE);
-                }
             }
 
         }
@@ -145,16 +143,26 @@ public class AddNote extends AppCompatActivity {
     }
 
     public void saveNote(View view) {
+        String noteData;
         title = (EditText) findViewById(R.id.note_title);
         //note = (EditText) findViewById(R.id.note_data);
         richEditor= (RichEditor) findViewById(R.id.notes_editor);
+        if (richEditor.getHtml() == null){
+            noteData = null;
+        }else {
+            noteData = richEditor.getHtml();
+        }
+        //Log.e("hee", richEditor.getHtml());
 
         String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
+        if (imagePath != null){
+            merged = android.text.TextUtils.join(",", array);
+        }
         //save locally
         Note note2 = new Note(
                 null,
                 title.getText().toString(),
-                richEditor.getHtml(),
+                noteData,
                 null,
                 null,
                 false,
@@ -162,9 +170,11 @@ public class AddNote extends AppCompatActivity {
                 true,
                 false,
                 false,
-                imagePath,
+                merged,
                 null);
         note2.save();
+
+        Log.e("dt", note2.toString());
 
         Intent intent = new Intent("newUpload");
         sendBroadcast(intent);
@@ -175,7 +185,7 @@ public class AddNote extends AppCompatActivity {
         intent1.putExtra("note", dt);
         sendBroadcast(intent1);
 
-        super.onBackPressed();
+        this.finish();
     }
 
     public int getUserId(View view) {
@@ -256,9 +266,10 @@ public class AddNote extends AppCompatActivity {
             Cursor cursor = getContentResolver().query(pickedImage, filepath, null, null, null);
             cursor.moveToFirst();
             imagePath = cursor.getString(cursor.getColumnIndex(filepath[0]));
+            array.add(imagePath);
 
             //imagePlace.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-            richEditor.insertImage(imagePath, "Image");
+            richEditor.insertImage(imagePath + "\" style=\"width:100%;", "Image");
             cursor.close();
         }
 
