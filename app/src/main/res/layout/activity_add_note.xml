@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/close_page"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="8dp"
                 android:orientation="horizontal"
                 android:background="@drawable/layout_border">
 
@@ -110,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="Update"
+                android:onClick="updateNote"
                 android:id="@+id/update_note"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"

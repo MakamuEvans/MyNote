@@ -79,8 +79,7 @@ public class Navigation extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(Navigation.this, AddNote.class);
-                    startActivity(intent);
+                    newNote();
                 }
             });
 
@@ -98,6 +97,11 @@ public class Navigation extends AppCompatActivity
             TextView usernname = (TextView) v.findViewById(R.id.nav_username);
             usernname.setText(user.getLastname()+" , "+user.getFirstname());
         }
+    }
+
+    public void newNote(){
+        Intent intent = new Intent(Navigation.this, AddNote.class);
+        startActivity(intent);
     }
 
     @Override

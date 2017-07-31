@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import jp.wasabeef.richeditor.RichEditor;
+import layout.NotesFragment;
 
 public class AddNote extends AppCompatActivity {
     public static final String ACTION_RESP = "com.example.elm.login.services.note.Upload";
@@ -40,12 +42,14 @@ public class AddNote extends AppCompatActivity {
     ImageView imageView, imagePlace;
     TextView save, update;
     RichEditor richEditor;
+    Long note_id;
     Context context;
     public static final int READ_EXTERNAL_STORAGE = 123;
     public static final int CAMERA = 124;
     String imagePath = null;
     String merged = null;
     List<String> array = new ArrayList<>();
+    Boolean imageStatus = true;
 
 
     @Override
@@ -77,10 +81,13 @@ public class AddNote extends AppCompatActivity {
             if (bundle.containsKey("noteId")){
                 update.setVisibility(View.VISIBLE);
                 save.setVisibility(View.INVISIBLE);
-                Long note_id = intent.getExtras().getLong("noteId");
+                note_id = intent.getExtras().getLong("noteId");
                 Note note1 = Note.findById(Note.class, note_id);
                 title.setText(note1.getTitle());
                 richEditor.setHtml(note1.getNote());
+                if (note1.getNote().contains("<img src=")){
+                    imageStatus = false;
+                }
             }
 
         }
@@ -124,6 +131,16 @@ public class AddNote extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 richEditor.insertTodo();
+            }
+        });
+
+        richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+            @Override public void onTextChange(String text) {
+                if (text.contains("<img src=")){
+                    imageStatus = false;
+                }else {
+                    imageStatus = true;
+                }
             }
         });
 
@@ -188,6 +205,41 @@ public class AddNote extends AppCompatActivity {
         this.finish();
     }
 
+    public void updateNote(View view){
+        String noteData;
+        title = (EditText) findViewById(R.id.note_title);
+        //note = (EditText) findViewById(R.id.note_data);
+        richEditor= (RichEditor) findViewById(R.id.notes_editor);
+        if (richEditor.getHtml() == null){
+            noteData = null;
+        }else {
+            noteData = richEditor.getHtml();
+        }
+        //Log.e("hee", richEditor.getHtml());
+
+        String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
+        if (imagePath != null){
+            merged = android.text.TextUtils.join(",", array);
+        }
+        //save locally
+        Note note1 = Note.findById(Note.class, note_id);
+        note1.setTitle(title.getText().toString());
+        note1.setNote(noteData);
+        note1.setUpdateflag(true);
+        note1.save();
+
+        Intent intent = new Intent("Update");
+        sendBroadcast(intent);
+
+        String dt = new Gson().toJson(note1);
+        Intent intent1 = new Intent();
+        intent1.setAction(NotesFragment.SyncReceiver.SYNC_ACTION);
+        intent1.putExtra("note", dt);
+        sendBroadcast(intent1);
+
+        this.finish();
+    }
+
     public int getUserId(View view) {
         User user = Select.from(User.class)
                 .first();
@@ -210,14 +262,19 @@ public class AddNote extends AppCompatActivity {
 
     public void insertImage(View view) {
         Log.e("ati", "what");
-        if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    READ_EXTERNAL_STORAGE);
-            return;
+        if (imageStatus){
+            if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        READ_EXTERNAL_STORAGE);
+                return;
+            }
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+        }else {
+            Toast.makeText(view.getContext(), "Only one Image Supported! Delete current image and try again.", Toast.LENGTH_LONG).show();
         }
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+
 
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 

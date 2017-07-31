@@ -4,10 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.elm.login.AddNote;
+import com.example.elm.login.Navigation;
 import com.example.elm.login.R;
 
 /**
@@ -61,11 +64,21 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    CardView addNote, addEvent;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home2, container, false);
+        View view = inflater.inflate(R.layout.fragment_home2, container, false);
+        addNote = (CardView) view.findViewById(R.id.home_add_note);
+        addNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((Navigation) getActivity()).newNote();
+            }
+        });
+        return  view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

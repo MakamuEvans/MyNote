@@ -39,12 +39,6 @@ public class FullNote extends AppCompatActivity {
         note_id = intent.getExtras().getLong("noteId");
         Note note1 = Note.findById(Note.class, note_id);
 
-        if (note1.getFavourite()){
-            menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_white);
-        }else {
-            menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_border);
-        }
-
         //set data
         if (note1.getTitle() == null){
             setTitle("Empty Title");
@@ -58,6 +52,24 @@ public class FullNote extends AppCompatActivity {
         richEditor.setHtml(note1.getNote());
         //noteDetails.setText(note1.getNote());
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Note note1 = Note.findById(Note.class, note_id);
+
+        //set data
+        if (note1.getTitle() == null){
+            setTitle("Empty Title");
+        }else {
+            setTitle(note1.getTitle());
+        }
+        // TextView noteDetails = (TextView) findViewById(R.id.note_details);
+        RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
+        richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
+        richEditor.setInputEnabled(false);
+        richEditor.setHtml(note1.getNote());
     }
 
     @Override
@@ -108,6 +120,8 @@ public class FullNote extends AppCompatActivity {
                 intent3.setAction("delete");
                 getBaseContext().sendBroadcast(intent3);
 
+                finish();
+
                 return  true;
             case R.id.action_edit:
                 Intent intent1 = new Intent(FullNote.this, AddNote.class);
@@ -122,6 +136,13 @@ public class FullNote extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_full_note, menu);
+        Note note1 = Note.findById(Note.class, note_id);
+
+        if (note1.getFavourite()){
+            menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_white);
+        }else {
+            menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_border);
+        }
         return true;
     }
 }

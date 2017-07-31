@@ -71,6 +71,10 @@
             android:name=".services.note.SyncDelete"
             android:exported="false" />
 
+        <service
+            android:name=".services.note.SyncUpdate"
+            android:exported="false" />
+
         <receiver
             android:name=".network.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">
@@ -79,6 +83,7 @@
                 <action android:name="newUpload" />
                 <action android:name="favourite"/>
                 <action android:name="delete"/>
+                <action android:name="Update"/>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>

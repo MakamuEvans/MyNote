@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.elm.login.services.note.SyncDelete;
 import com.example.elm.login.services.note.SyncFavourite;
+import com.example.elm.login.services.note.SyncUpdate;
 import com.example.elm.login.services.note.SyncUpload;
 
 /**
@@ -21,6 +22,19 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         if (!status.equals("Not connected to Internet")){
             Log.e("internet", "Intaneti");
             Log.e("action", intent.getAction());
+            if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE") || intent.getAction().equals("android.net.wifi.WIFI_STATE_CHANGED")){
+                Intent uploadintent = new Intent(context, SyncUpload.class);
+                context.startService(uploadintent);
+
+                Intent fav = new Intent(context, SyncFavourite.class);
+                context.startService(fav);
+
+                Intent delete = new Intent(context, SyncDelete.class);
+                context.startService(delete);
+
+                Intent update = new Intent(context, SyncUpdate.class);
+                context.startService(update);
+            }
             if (intent.getAction().equals("newUpload")){
                 Intent uploadintent = new Intent(context, SyncUpload.class);
                 context.startService(uploadintent);
@@ -31,6 +45,10 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             }
             if (intent.getAction().equals("delete")){
                 Intent fav = new Intent(context, SyncDelete.class);
+                context.startService(fav);
+            }
+            if (intent.getAction().equals("Update")){
+                Intent fav = new Intent(context, SyncUpdate.class);
                 context.startService(fav);
             }
         }else {
