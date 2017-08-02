@@ -34,12 +34,14 @@ import java.util.List;
 import layout.EventsFragment;
 import layout.HomeFragment;
 import layout.NotesFragment;
+import layout.ReminderFragment;
 import layout.SummaryFragment;
 
 public class Navigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Navigation.SectionsPagerAdapter mSectionsPagerAdapter;
+    com.github.clans.fab.FloatingActionButton note_btn,reminder_btn;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -75,13 +77,38 @@ public class Navigation extends AppCompatActivity
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
             tabLayout.setupWithViewPager(mViewPager);
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            if (bundle != null){
+                if (bundle.containsKey("page")){
+                    int page = intent.getExtras().getInt("page");
+                    mViewPager.setCurrentItem(page);
+
+                }
+
+            }
+
+            note_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.note_fab);
+            reminder_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.reminder_fab);
+
+            note_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View v) {
                     newNote();
+                    note_btn.setVisibility(View.INVISIBLE);
+                    reminder_btn.setVisibility(View.INVISIBLE);
                 }
             });
+
+            reminder_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    newReminder();
+                    note_btn.setVisibility(View.INVISIBLE);
+                    reminder_btn.setVisibility(View.INVISIBLE);
+                }
+            });
+
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -101,6 +128,11 @@ public class Navigation extends AppCompatActivity
 
     public void newNote(){
         Intent intent = new Intent(Navigation.this, AddNote.class);
+        startActivity(intent);
+    }
+
+    public void newReminder(){
+        Intent intent = new Intent(Navigation.this, NewReminder.class);
         startActivity(intent);
     }
 
@@ -208,7 +240,7 @@ public class Navigation extends AppCompatActivity
                 case 1:
                     return NotesFragment.newInstance("pram", "param");
                 case 2:
-                    return EventsFragment.newInstance("pram", "param");
+                    return ReminderFragment.newInstance("pram", "param");
                 case 3:
                     return SummaryFragment.newInstance("pram", "param");
                 default:

@@ -56,21 +56,20 @@
 
         <activity
             android:name=".AddNote"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.Nothing" />
         <activity android:name=".NoteCard" />
 
         <service
             android:name=".services.note.SyncUpload"
             android:exported="false" />
-
         <service
             android:name=".services.note.SyncFavourite"
             android:exported="false" />
-
         <service
             android:name=".services.note.SyncDelete"
             android:exported="false" />
-
         <service
             android:name=".services.note.SyncUpdate"
             android:exported="false" />
@@ -81,9 +80,9 @@
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="newUpload" />
-                <action android:name="favourite"/>
-                <action android:name="delete"/>
-                <action android:name="Update"/>
+                <action android:name="favourite" />
+                <action android:name="delete" />
+                <action android:name="Update" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
@@ -91,7 +90,8 @@
         <activity
             android:name=".FullNote"
             android:label="@string/title_activity_full_note"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".NewReminder"></activity>
     </application>
 
 </manifest>

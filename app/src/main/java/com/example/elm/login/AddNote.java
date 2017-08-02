@@ -14,10 +14,12 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +37,7 @@ import java.util.List;
 
 import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
+import layout.ReminderFragment;
 
 public class AddNote extends AppCompatActivity {
     public static final String ACTION_RESP = "com.example.elm.login.services.note.Upload";
@@ -57,8 +60,10 @@ public class AddNote extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         richEditor= (RichEditor) findViewById(R.id.notes_editor);
-        richEditor.setEditorHeight(200);
+        richEditor.setEditorHeight(1000);
         //richEditor.setEditorFontSize(22);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setPadding(10,10,10,10);
@@ -66,13 +71,9 @@ public class AddNote extends AppCompatActivity {
 
         title = (EditText) findViewById(R.id.note_title);
         //note = (EditText) findViewById(R.id.note_data);
-        imagePlace = (ImageView) findViewById(R.id.image_place);
         save = (TextView) findViewById(R.id.save_note);
         update = (TextView) findViewById(R.id.update_note);
 
-
-        ImageView delete_btn = (ImageView) findViewById(R.id.delete_image);
-        delete_btn.setVisibility(View.INVISIBLE);
         update.setVisibility(View.INVISIBLE);
 
         Intent intent = getIntent();
@@ -85,8 +86,10 @@ public class AddNote extends AppCompatActivity {
                 Note note1 = Note.findById(Note.class, note_id);
                 title.setText(note1.getTitle());
                 richEditor.setHtml(note1.getNote());
-                if (note1.getNote().contains("<img src=")){
-                    imageStatus = false;
+                if (note1.getNote() != null){
+                    if (note1.getNote().contains("<img src=")){
+                        imageStatus = false;
+                    }
                 }
             }
 
@@ -152,13 +155,6 @@ public class AddNote extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_out_down, R.anim.slide_in_up);
     }
 
-    public void deleteImage(View view){
-        imagePath = null;
-        imagePlace.setImageBitmap(null);
-        ImageView delete_btn = (ImageView) findViewById(R.id.delete_image);
-        delete_btn.setVisibility(View.INVISIBLE);
-    }
-
     public void saveNote(View view) {
         String noteData;
         title = (EditText) findViewById(R.id.note_title);
@@ -201,8 +197,11 @@ public class AddNote extends AppCompatActivity {
         intent1.setAction(AddNote.ACTION_RESP);
         intent1.putExtra("note", dt);
         sendBroadcast(intent1);
+        int page = 1;
 
-        this.finish();
+        Intent intent2 = new Intent(this, Navigation.class);
+        intent2.putExtra("page", page);
+        startActivity(intent2);
     }
 
     public void updateNote(View view){
@@ -310,7 +309,6 @@ public class AddNote extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        imagePlace = (ImageView) findViewById(R.id.image_place);
         richEditor= (RichEditor) findViewById(R.id.notes_editor);
         Log.e("back", "back");
 
@@ -343,11 +341,6 @@ public class AddNote extends AppCompatActivity {
 
             int nh = (int) (BitmapFactory.decodeFile(imagePath).getHeight() * (512.0 / BitmapFactory.decodeFile(imagePath).getWidth()));
             imagePlace.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile(imagePath), 512, nh, true));
-
-            ImageView delete_btn = (ImageView) findViewById(R.id.delete_image);
-            delete_btn.setVisibility(View.VISIBLE);
-
-
         }
     }
 }

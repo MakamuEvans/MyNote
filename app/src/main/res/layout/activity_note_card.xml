@@ -63,7 +63,7 @@
                 android:layout_marginLeft="15dp"
                 android:maxLines="2"
                 android:id="@+id/card_notes"
-                android:text="@string/sample_note"
+                android:text=""
                 android:layout_weight="0.7"
                 />
 

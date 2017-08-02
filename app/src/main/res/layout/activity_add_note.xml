@@ -119,13 +119,12 @@
         </RelativeLayout>
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:layout_width="match_parent"
@@ -138,45 +137,14 @@
                     android:layout_marginTop="5dp"
                     android:hint="Title"/>
 
-                <!--<EditText
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/note_data"
-                    android:inputType="textMultiLine"
-                    android:background="@null"
-                    android:layout_height="wrap_content"
-                    android:hint="Touch to add Note"/>-->
-
                 <jp.wasabeef.richeditor.RichEditor
+                    android:layout_below="@+id/note_title"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/notes_editor">
 
                 </jp.wasabeef.richeditor.RichEditor>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/layout_border"
-                        android:id="@+id/image_place"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_close"
-                        android:clickable="true"
-                        android:onClick="deleteImage"
-                        android:layout_alignParentRight="true"
-                        android:visibility="gone"
-                        android:id="@+id/delete_image"
-                        android:textSize="20dp"/>
-                </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </ScrollView>
     </LinearLayout>
 
