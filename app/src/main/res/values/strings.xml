@@ -38,6 +38,15 @@
     <string name="title_activity_tab">TabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <string-array name="str_early_reminder">
+        <item>None</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hour</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
