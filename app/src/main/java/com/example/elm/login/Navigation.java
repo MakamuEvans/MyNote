@@ -176,6 +176,8 @@ public class Navigation extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(Navigation.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.logout_settings){
@@ -277,9 +279,9 @@ public class Navigation extends AppCompatActivity
                 case 1:
                     return "Notes";
                 case 2:
-                    return "Events";
+                    return "Reminders";
                 case 3:
-                    return "Summary";
+                    return "To Do";
 
             }
             return null;

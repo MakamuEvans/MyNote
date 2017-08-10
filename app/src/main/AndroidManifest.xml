@@ -46,7 +46,7 @@
             android:value="mynote.db" />
         <meta-data
             android:name="VERSION"
-            android:value="7" />
+            android:value="8" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -56,9 +56,9 @@
 
         <activity
             android:name=".AddNote"
-            android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.Nothing" />
+            android:theme="@style/AppTheme.Nothing"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".NoteCard" />
 
         <service
@@ -91,7 +91,10 @@
             android:name=".FullNote"
             android:label="@string/title_activity_full_note"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NewReminder"></activity>
+        <activity android:name=".NewReminder" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

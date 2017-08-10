@@ -1,14 +1,28 @@
 package layout;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.elm.login.R;
+import com.example.elm.login.adapter.ReminderAdapter;
+import com.example.elm.login.model.Note;
+import com.example.elm.login.model.Reminder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +41,9 @@ public class ReminderFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView recyclerView;
+    public List<Reminder> reminders = new ArrayList<>();
+    public ReminderAdapter reminderAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,11 +78,26 @@ public class ReminderFragment extends Fragment {
         }
     }
 
+    private ReminderBroadcast reminderBroadcast;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reminder, container, false);
+        //return inflater.inflate(R.layout.fragment_reminder, container, false);
+        View view=inflater.inflate(R.layout.fragment_reminder,container, false);
+
+        IntentFilter intentFilter = new IntentFilter(ReminderBroadcast.NEW_RECEIVER);
+        reminderBroadcast = new ReminderBroadcast();
+        getActivity().registerReceiver(reminderBroadcast, intentFilter);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.reminder_recycler);
+        reminders = Reminder.find(Reminder.class,null,null);
+        reminderAdapter = new ReminderAdapter(reminders);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(reminderAdapter);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,5 +137,25 @@ public class ReminderFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void addNew(Reminder reminder){
+        if (reminderAdapter!=null){
+            reminderAdapter.newData(reminder);
+            recyclerView.smoothScrollToPosition(0);
+        }
+    }
+
+    public class ReminderBroadcast extends BroadcastReceiver{
+        public static final String NEW_RECEIVER = "add_to_ui";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            String newNote = bundle.getString("reminder");
+            Gson gson = new Gson();
+            Type type = new TypeToken<Reminder>(){
+            }.getType();
+            Reminder reminder = gson.fromJson(newNote, type);
+        }
     }
 }

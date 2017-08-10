@@ -10,15 +10,15 @@ import java.sql.Date;
 
 public class Reminder extends SugarRecord {
     private String title;
-    private Date start;
-    private Date end;
+    private String start;
+    private String end;
     private String frequency;
     private String status;
 
     public Reminder() {
     }
 
-    public Reminder(String title, Date start, Date end, String frequency, String status) {
+    public Reminder(String title, String start, String end, String frequency, String status) {
         this.title = title;
         this.start = start;
         this.end = end;
@@ -34,19 +34,19 @@ public class Reminder extends SugarRecord {
         this.title = title;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 
