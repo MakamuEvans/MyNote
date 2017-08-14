@@ -195,6 +195,8 @@ public class Navigation extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            Intent intent = new Intent(this, NotificationBase.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -279,7 +281,7 @@ public class Navigation extends AppCompatActivity
                 case 1:
                     return "Notes";
                 case 2:
-                    return "Reminders";
+                    return "Alarms";
                 case 3:
                     return "To Do";
 

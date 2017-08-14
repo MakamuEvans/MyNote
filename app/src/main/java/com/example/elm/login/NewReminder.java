@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -24,14 +25,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elm.login.model.Alarm;
 import com.example.elm.login.model.Reminder;
+import com.example.elm.login.services.alarm.AlarmCrud;
+import com.example.elm.login.services.alarm.ReminderAlarms;
+import com.example.elm.login.utils.Constants;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.google.gson.Gson;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import layout.EarlyReminder;
@@ -39,8 +46,9 @@ import layout.ReminderFragment;
 
 public class NewReminder extends AppCompatActivity implements ReminderName.OnCompleteListener, EarlyReminder.OnCompleteListener {
 
-    TextView selectedDate, reminderName, reminderEarly;
-    private AlarmReceiver alarmReceiver;
+    TextView selectedDate, reminderName, reminderEarly, reminderDescription;
+    private  ReminderAlarms alarmReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +93,7 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
         });
     }
 
-    public void updateLabel(){
+    public void updateLabel() {
 
     }
 
@@ -111,81 +119,42 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
     @Override
     public void onCompleted(String duration) {
         TextView reminder_duration = (TextView) findViewById(R.id.reminder_early_activity);
-        reminder_duration.setText(duration+" before");
+        reminder_duration.setText(duration);
     }
 
-    public class AlarmReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.e("huh" , "alarm");
-            Bundle bundle = intent.getExtras();
-            String notificationTitle = bundle.getString("title");
-            Intent resultIntent = new Intent(context, AddNote.class);
-            Intent newReminder = new Intent(context, NewReminder.class);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(context,0,newReminder, PendingIntent.FLAG_UPDATE_CURRENT);
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.mipmap.logo)
-                            .setContentTitle(notificationTitle)
-                            .setDefaults(Notification.DEFAULT_ALL)
-                            .setAutoCancel(true)
-                            .addAction(R.mipmap.ic_action_check_free, "View", pendingIntent)
-                            .addAction(R.mipmap.ic_action_close, "Close", pendingIntent)
-                            .setContentText("You have a new Reminder. Check it out!");
-// Creates an explicit intent for an Activity in your app
-
-// The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-// Adds the back stack for the Intent (but not the Intent itself)
-            stackBuilder.addParentStack(AddNote.class);
-// Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-// mNotificationId is a unique integer your app uses to identify the
-// notification. For example, to cancel the notification, you can pass its ID
-//
-            mNotificationManager.notify(100, mBuilder.build());
-        }
-    }
-
-
-    public void setReminder(View view){
+    public void setReminder(View view) {
         //save alarm
         reminderName = (TextView) findViewById(R.id.reminder_name_activity);
         reminderEarly = (TextView) findViewById(R.id.reminder_early_activity);
+        reminderDescription = (EditText) findViewById(R.id.reminder_description);
         SingleDateAndTimePicker dateTime = (SingleDateAndTimePicker) findViewById(R.id.date_picker);
 
         String format = "MMM dd yyyy HH:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         String date_string = simpleDateFormat.format(dateTime.getDate());
-        Reminder newReminder = new Reminder(reminderName.getText().toString(),
-                date_string,
-                date_string,
-                reminderEarly.getText().toString(),
-                "Active");
-        newReminder.save();
+        String description = null;
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (reminderDescription.getText().toString().equals(null)) {
+            description = "Its Time!. Hello from myNote";
+        } else {
+            description = reminderDescription.getText().toString();
+        }
+        String prior = "null";
+        if (!reminderEarly.getText().toString().equals("None")) {
+            prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString());
+        }else {
+        }
 
         Intent intent10 = new Intent("DISPLAY_NOTIFICATION");
         intent10.putExtra("title", reminderName.getText().toString());
+        intent10.putExtra("content", description);
+        intent10.putExtra("notificationId", 100);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, intent10,PendingIntent.FLAG_UPDATE_CURRENT);
+        //save alarm blueprint
+        Alarm alarm = new Alarm(0, "actual");
+        alarm.save();
+        String alarmid = alarm.getId().toString();
 
-        Log.e("huh", new SimpleDateFormat("d", Locale.ENGLISH).format(dateTime.getDate()));
         Calendar calendar = Calendar.getInstance();
         int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(dateTime.getDate())) - 1;
         Log.e("month", String.valueOf(month0));
@@ -195,12 +164,31 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(dateTime.getDate())));
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(dateTime.getDate())));
         calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(dateTime.getDate())));
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60, pendingIntent);
 
+        //create alarm -->from a service
+        Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
+        intent.putExtra("calender", calendar.getTimeInMillis());
+        intent.putExtra("nId", 100);
+        intent.putExtra("aId", alarm.getId());
+        intent.putExtra("title", reminderName.getText().toString());
+        intent.putExtra("content", description);
+        intent.putExtra("create", true);
+        startService(intent);
+
+        Reminder newReminder = new Reminder(
+                reminderName.getText().toString(),
+                date_string,
+                prior,
+                reminderDescription.getText().toString(),
+                "Active",
+                Long.parseLong(alarm.getId().toString()));
+        newReminder.save();
+
+        //register receiver
         IntentFilter intentFilter = new IntentFilter("DISPLAY_NOTIFICATION");
-        alarmReceiver = new NewReminder.AlarmReceiver();
+        alarmReceiver = new ReminderAlarms();
         registerReceiver(alarmReceiver, intentFilter);
-        Toast.makeText(getBaseContext(), "Reminder set to  "+ dateTime.getDate(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "Reminder set to  " + dateTime.getDate(), Toast.LENGTH_SHORT).show();
 
         //update ui and launch relevant fragment
         String dt = new Gson().toJson(newReminder);
@@ -213,5 +201,58 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
         Intent intent2 = new Intent(this, Navigation.class);
         intent2.putExtra("page", page);
         startActivity(intent2);
+    }
+
+    public String priorReminder(String prior, String title) {
+        SingleDateAndTimePicker dateTime = (SingleDateAndTimePicker) findViewById(R.id.date_picker);
+        int value = Integer.parseInt(prior.replaceAll("[^0-9]", ""));
+
+        Log.e("check", String.valueOf(value));
+        Calendar calendar = Calendar.getInstance();
+        int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(dateTime.getDate())) - 1;
+
+        //calendar.add(Calendar.SECOND, 5);
+        calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(dateTime.getDate())));
+        calendar.set(Calendar.MONTH, month0);
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(dateTime.getDate())));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(dateTime.getDate())));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(dateTime.getDate())));
+        String time = null;
+        if (value == 5) {
+            calendar.add(calendar.MINUTE, -5);
+            time = "Five Minutes";
+            Log.e("extra?", "yes");
+        }
+        if (value == 10) {
+            calendar.add(calendar.MINUTE, -10);
+            time = "Ten Minutes";
+        }
+        if (value == 30) {
+            calendar.add(calendar.MINUTE, -30);
+            time = "Thirty Minutes";
+        }
+        if (value == 1) {
+            calendar.add(calendar.MINUTE, -60);
+            time = "One Hour";
+        }
+        if (value == 2) {
+            calendar.add(calendar.MINUTE, -120);
+            time = "Two Hours";
+        }
+
+        //save alarm blueprint
+        Alarm alarm = new Alarm(0,"prior");
+        alarm.save();
+
+        Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
+        intent.putExtra("calender", calendar.getTimeInMillis());
+        intent.putExtra("nId", 101);
+        intent.putExtra("aId", alarm.getId());
+        intent.putExtra("title", title);
+        intent.putExtra("content", "Prepared? You have  a Reminder in the next "+ time);
+        intent.putExtra("create", true);
+        startService(intent);
+
+        return time;
     }
 }

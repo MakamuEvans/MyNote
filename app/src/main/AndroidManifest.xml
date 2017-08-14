@@ -56,9 +56,9 @@
 
         <activity
             android:name=".AddNote"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation"
             android:theme="@style/AppTheme.Nothing"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".NoteCard" />
 
         <service
@@ -72,6 +72,9 @@
             android:exported="false" />
         <service
             android:name=".services.note.SyncUpdate"
+            android:exported="false" />
+        <service
+            android:name=".services.alarm.AlarmCrud"
             android:exported="false" />
 
         <receiver
@@ -91,10 +94,19 @@
             android:name=".FullNote"
             android:label="@string/title_activity_full_note"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NewReminder" />
+        <activity
+            android:name=".NewReminder"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".NotificationBase"
+            android:theme="@style/AppTheme.Nothing"
+            />
+        <activity
+            android:name=".LockScreenAlarm"
+            android:theme="@style/AppTheme.Nothing"/>
     </application>
 
 </manifest>

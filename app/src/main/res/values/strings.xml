@@ -40,11 +40,11 @@
 
     <string-array name="str_early_reminder">
         <item>None</item>
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>2 hour</item>
+        <item>5 minutes before</item>
+        <item>10 minutes before</item>
+        <item>30 minutes before</item>
+        <item>1 hour before</item>
+        <item>2 hours before</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

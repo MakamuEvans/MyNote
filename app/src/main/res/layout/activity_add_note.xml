@@ -116,35 +116,38 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"/>
-        </RelativeLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
 
-            <RelativeLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/close_page"
+                android:layout_margin="5dp">
 
-                <EditText
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="serif"
-                    android:textIsSelectable="true"
-                    android:inputType="textCapSentences"
-                    android:id="@+id/note_title"
-                    android:textStyle="bold"
-                    android:layout_marginTop="5dp"
-                    android:hint="Title"/>
+                    android:layout_height="wrap_content">
 
-                <jp.wasabeef.richeditor.RichEditor
-                    android:layout_below="@+id/note_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/notes_editor">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:textIsSelectable="true"
+                        android:inputType="textCapSentences"
+                        android:id="@+id/note_title"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"
+                        android:hint="Title"/>
 
-                </jp.wasabeef.richeditor.RichEditor>
-            </RelativeLayout>
-        </ScrollView>
+                    <jp.wasabeef.richeditor.RichEditor
+                        android:layout_below="@+id/note_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/notes_editor">
+
+                    </jp.wasabeef.richeditor.RichEditor>
+                </RelativeLayout>
+            </ScrollView>
+        </RelativeLayout>
+
     </LinearLayout>
 

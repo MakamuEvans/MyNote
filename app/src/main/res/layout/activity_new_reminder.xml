@@ -110,6 +110,16 @@
                             android:textColor="@color/colorPrimary"/>
                     </RelativeLayout>
 
+                    <EditText
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:id="@+id/reminder_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:hint="Notes/Description (Optional)"
+                        android:gravity="top"
+                        android:background="@drawable/round_corner"/>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

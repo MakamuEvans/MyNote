@@ -1,5 +1,7 @@
 package com.example.elm.login.model;
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 
 import java.sql.Date;
@@ -10,20 +12,22 @@ import java.sql.Date;
 
 public class Reminder extends SugarRecord {
     private String title;
-    private String start;
-    private String end;
-    private String frequency;
+    private String time;
+    private String prior;
+    private String description;
     private String status;
+    private Long uniquecode;
 
     public Reminder() {
     }
 
-    public Reminder(String title, String start, String end, String frequency, String status) {
+    public Reminder(String title, String time, String prior, String description, String status, Long uniquecode) {
         this.title = title;
-        this.start = start;
-        this.end = end;
-        this.frequency = frequency;
+        this.time = time;
+        this.prior = prior;
+        this.description = description;
         this.status = status;
+        this.uniquecode = uniquecode;
     }
 
     public String getTitle() {
@@ -34,28 +38,28 @@ public class Reminder extends SugarRecord {
         this.title = title;
     }
 
-    public String getStart() {
-        return start;
+    public String getTime() {
+        return time;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public String getEnd() {
-        return end;
+    public String getPrior() {
+        return prior;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setPrior(String prior) {
+        this.prior = prior;
     }
 
-    public String getFrequency() {
-        return frequency;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getStatus() {
@@ -65,4 +69,13 @@ public class Reminder extends SugarRecord {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Long getUniquecode() {
+        return uniquecode;
+    }
+
+    public void setUniquecode(Long uniquecode) {
+        this.uniquecode = uniquecode;
+    }
 }
+
