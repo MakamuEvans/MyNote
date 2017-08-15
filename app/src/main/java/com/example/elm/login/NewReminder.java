@@ -142,18 +142,10 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
         String prior = "null";
         if (!reminderEarly.getText().toString().equals("None")) {
             prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString());
-        }else {
         }
-
-        Intent intent10 = new Intent("DISPLAY_NOTIFICATION");
-        intent10.putExtra("title", reminderName.getText().toString());
-        intent10.putExtra("content", description);
-        intent10.putExtra("notificationId", 100);
-
         //save alarm blueprint
         Alarm alarm = new Alarm(0, "actual");
         alarm.save();
-        String alarmid = alarm.getId().toString();
 
         Calendar calendar = Calendar.getInstance();
         int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(dateTime.getDate())) - 1;
@@ -180,7 +172,7 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
                 date_string,
                 prior,
                 reminderDescription.getText().toString(),
-                "Active",
+                "1",
                 Long.parseLong(alarm.getId().toString()));
         newReminder.save();
 

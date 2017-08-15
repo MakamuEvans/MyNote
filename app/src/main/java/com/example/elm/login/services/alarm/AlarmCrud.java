@@ -11,6 +11,10 @@ import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.elm.login.model.Reminder;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
 import java.util.Calendar;
 
 /**
@@ -33,23 +37,31 @@ public class AlarmCrud extends Service {
         Log.e("service", "started");
         //get data
         Bundle bundle = intent.getExtras();
-        title = bundle.getString("title");
-        content = bundle.getString("content");
-        nId = bundle.getInt("nId");
-        calender = bundle.getLong("calender");
         aId = bundle.getLong("aId");
         create = bundle.getBoolean("create");
 
         //create or cancel
         if (create){ //create
+            title = bundle.getString("title");
+            content = bundle.getString("content");
+            nId = bundle.getInt("nId");
+            calender = bundle.getLong("calender");
+
             createAlarm(title,content,nId,calender,aId);
         }else { //cancel
-
+            cancelAlarm(aId);
         }
+        stopSelf(startId);
         return Service.START_STICKY;
     }
 
-    public void createAlarm(String title,String content, int nId, Long calender, Long aId){
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("destroyed", "yes");
+    }
+
+    public void createAlarm(String title, String content, int nId, Long calender, Long aId){
         Log.e("service", "startedyey");
         Intent intent = new Intent("DISPLAY_NOTIFICATION");
         intent.putExtra("title", title);
@@ -65,6 +77,16 @@ public class AlarmCrud extends Service {
 
     }
     public void cancelAlarm(Long aId){
+        Log.e("service", "cancelstarted");
 
+        Intent intent = new Intent("DISPLAY_NOTIFICATION");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getBaseContext(),
+                Integer.parseInt(aId.toString()),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }

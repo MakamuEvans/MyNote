@@ -56,6 +56,13 @@
                     />
             </LinearLayout>
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/stop_alarm"
+            android:src="@android:drawable/ic_media_pause"/>
         <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
             android:id="@+id/hicvp"
             android:layout_width="match_parent"

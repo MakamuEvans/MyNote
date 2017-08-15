@@ -9,8 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,10 +43,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elm.login.model.Note;
+import com.example.elm.login.model.Reminder;
 import com.example.elm.login.model.User;
 import com.example.elm.login.preferences.BasicAuth;
 import com.orm.query.Select;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -299,6 +307,7 @@ public class Navigation extends AppCompatActivity
         editor.commit();
         User.deleteAll(User.class);
         Note.deleteAll(Note.class);
+        Reminder.deleteAll(Reminder.class);
 
         Intent intent =new Intent(Navigation.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

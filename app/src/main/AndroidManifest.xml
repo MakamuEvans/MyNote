@@ -103,6 +103,7 @@
         <activity
             android:name=".NotificationBase"
             android:theme="@style/AppTheme.Nothing"
+            android:launchMode="singleInstance"
             />
         <activity
             android:name=".LockScreenAlarm"
