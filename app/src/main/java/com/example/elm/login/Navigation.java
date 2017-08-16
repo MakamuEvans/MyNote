@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import com.example.elm.login.model.Note;
 import com.example.elm.login.model.Reminder;
+import com.example.elm.login.model.Todo;
 import com.example.elm.login.model.User;
 import com.example.elm.login.preferences.BasicAuth;
 import com.orm.query.Select;
@@ -206,6 +207,7 @@ public class Navigation extends AppCompatActivity
             Intent intent = new Intent(this, NotificationBase.class);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            startActivity(new Intent(this, TodoFull.class));
 
         } else if (id == R.id.nav_slideshow) {
 

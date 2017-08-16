@@ -102,12 +102,15 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".NotificationBase"
-            android:theme="@style/AppTheme.Nothing"
             android:launchMode="singleInstance"
-            />
+            android:theme="@style/AppTheme.Nothing" />
         <activity
             android:name=".LockScreenAlarm"
-            android:theme="@style/AppTheme.Nothing"/>
+            android:theme="@style/AppTheme.Nothing" />
+        <activity
+            android:name=".TodoFull"
+            android:label="@string/title_activity_todo_full"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
