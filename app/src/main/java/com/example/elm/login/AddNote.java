@@ -1,7 +1,9 @@
 package com.example.elm.login;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -38,6 +40,7 @@ import java.util.List;
 import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
 import layout.ReminderFragment;
+import layout.ToDo2;
 
 public class AddNote extends AppCompatActivity {
     public static final String ACTION_RESP = "com.example.elm.login.services.note.Upload";
@@ -45,6 +48,7 @@ public class AddNote extends AppCompatActivity {
     ImageView imageView, imagePlace;
     TextView save, update;
     RichEditor richEditor;
+    Boolean savedStatus = false;
     Long note_id;
     Context context;
     public static final int READ_EXTERNAL_STORAGE = 123;
@@ -63,7 +67,7 @@ public class AddNote extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         richEditor= (RichEditor) findViewById(R.id.notes_editor);
-        richEditor.setEditorHeight(1000);
+        //richEditor.setEditorHeight(1000);
         //richEditor.setEditorFontSize(22);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setPadding(10,10,10,10);
@@ -98,8 +102,9 @@ public class AddNote extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.close_page);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                AddNote.super.onBackPressed();
+            public void onClick(final View v) {
+                onBackPressed();
+
             }
         });
 
@@ -126,7 +131,11 @@ public class AddNote extends AppCompatActivity {
         findViewById(R.id.editor_numbers).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                richEditor.setNumbers();
+                if (title.hasFocus()){
+                    Toast.makeText(getBaseContext(), "Only applicable to Note body",Toast.LENGTH_SHORT).show();
+                }else {
+                    richEditor.setNumbers();
+                }
             }
         });
 
@@ -144,15 +153,56 @@ public class AddNote extends AppCompatActivity {
                 }else {
                     imageStatus = true;
                 }
+
+                if (text.isEmpty()){
+                    if (title.getText().toString().isEmpty()){
+                        savedStatus = false;
+                    }
+                }
             }
         });
 
     }
+    View view1;
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
+        closeActivity(view1);
         overridePendingTransition(R.anim.slide_out_down, R.anim.slide_in_up);
+    }
+
+    public void closeActivity(final View view){
+        if (title.getText().toString().isEmpty() && richEditor.getHtml() == null){
+            AddNote.super.onBackPressed();
+        }else {
+            Log.e("yow", "hehe");
+            //AlertDialog alertDialog =new AlertDialog.Builder(AddNote.this).create();
+            new AlertDialog.Builder(AddNote.this)
+                    .setTitle("You have changes!")
+                    .setMessage("Click on save to avoid losing your note")
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveNote(view);
+                        }
+                    })
+                    .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AddNote.super.onBackPressed();
+                        }
+                    })
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+
     }
 
     public void saveNote(View view) {
@@ -324,7 +374,7 @@ public class AddNote extends AppCompatActivity {
             array.add(imagePath);
 
             //imagePlace.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-            richEditor.insertImage(imagePath + "\" style=\"width:100%;", "Image");
+            richEditor.insertImage(imagePath + "\" style=\"width:80%;", "Image");
             cursor.close();
         }
 

@@ -207,9 +207,10 @@ public class Navigation extends AppCompatActivity
             Intent intent = new Intent(this, NotificationBase.class);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(this, TodoFull.class));
+            startActivity(new Intent(this, ToDoDetails.class));
 
         } else if (id == R.id.nav_slideshow) {
+            startActivity(new Intent(this, NewToDo.class));
 
         } else if (id == R.id.nav_manage) {
 
@@ -270,7 +271,7 @@ public class Navigation extends AppCompatActivity
                 case 2:
                     return ReminderFragment.newInstance("pram", "param");
                 case 3:
-                    return SummaryFragment.newInstance("pram", "param");
+                    return EventsFragment.newInstance("pram", "param");
                 default:
                     return HomeFragment.newInstance("param1", "param2");
 

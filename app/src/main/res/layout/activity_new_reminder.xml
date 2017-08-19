@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:text="Set Reminder"
             android:onClick="setReminder"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/default_input_text"
             android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>

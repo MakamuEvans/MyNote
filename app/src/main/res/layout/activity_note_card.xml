@@ -22,6 +22,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="20dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -82,8 +84,6 @@
                 android:src="@android:drawable/ic_menu_delete"
                 android:layout_weight="0.15"/>
         </LinearLayout>
-
-
 
         <View
             android:layout_width="match_parent"

@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="7dp"
-        tools:layout_editor_absoluteX="8dp">
+        android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp">
+            android:layout_margin="10dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -100,11 +98,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="Save"
+                android:background="@drawable/default_input_text"
                 android:id="@+id/save_note"
                 android:textStyle="bold"
                 android:onClick="saveNote"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20dp"/>
+                android:textSize="18dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,17 +112,13 @@
                 android:onClick="updateNote"
                 android:id="@+id/update_note"
                 android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20dp"/>
+                android:background="@drawable/default_input_text"
+                android:textSize="18dp"/>
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/close_page"
-                android:layout_margin="5dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_below="@+id/close_page"
                     android:layout_height="wrap_content">
 
                     <EditText
@@ -138,15 +132,18 @@
                         android:layout_marginTop="5dp"
                         android:hint="Title"/>
 
-                    <jp.wasabeef.richeditor.RichEditor
-                        android:layout_below="@+id/note_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/notes_editor">
 
-                    </jp.wasabeef.richeditor.RichEditor>
+
+                        <jp.wasabeef.richeditor.RichEditor
+                            android:layout_below="@+id/note_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/notes_editor">
+
+                        </jp.wasabeef.richeditor.RichEditor>
+
                 </RelativeLayout>
-            </ScrollView>
+
         </RelativeLayout>
 
     </LinearLayout>

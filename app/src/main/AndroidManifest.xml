@@ -107,10 +107,8 @@
         <activity
             android:name=".LockScreenAlarm"
             android:theme="@style/AppTheme.Nothing" />
-        <activity
-            android:name=".TodoFull"
-            android:label="@string/title_activity_todo_full"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".NewToDo" />
+        <activity android:name=".ToDoDetails"></activity>
     </application>
 
 </manifest>

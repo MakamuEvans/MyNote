@@ -1,11 +1,15 @@
 package com.example.elm.login.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +32,7 @@ import java.util.Locale;
 
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myViewHolder> {
     public List<Reminder> allReminders;
+    Context context;
 
     public ReminderAdapter(List<Reminder> allReminders) {
         this.allReminders = allReminders;
@@ -150,6 +155,14 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
         }else {
             holder.reminderStatus.setImageResource(R.mipmap.ic_action_access_alarm);
         }
+
+        setFadeAnimation(holder.itemView);
+    }
+
+    private void setFadeAnimation(View view){
+        AlphaAnimation animation = new AlphaAnimation(0.0f,1.0f);
+        animation.setDuration(2000);
+        view.startAnimation(animation);
     }
 
     @Override

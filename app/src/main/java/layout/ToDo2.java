@@ -13,26 +13,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.elm.login.R;
-import com.example.elm.login.adapter.TodoAdapter;
-import com.example.elm.login.model.Todo;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.elm.login.ReminderName;
+import com.example.elm.login.adapter.MilestoneAdapter;
+import com.example.elm.login.model.Milestones;
+import com.example.elm.login.utils.Utils;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EventsFragment.OnFragmentInteractionListener} interface
+ * {@link ToDo2.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EventsFragment#newInstance} factory method to
+ * Use the {@link ToDo2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventsFragment extends Fragment {
+public class ToDo2 extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,7 +46,7 @@ public class EventsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public EventsFragment() {
+    public ToDo2() {
         // Required empty public constructor
     }
 
@@ -54,11 +56,11 @@ public class EventsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EventsFragment.
+     * @return A new instance of fragment ToDo2.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventsFragment newInstance(String param1, String param2) {
-        EventsFragment fragment = new EventsFragment();
+    public static ToDo2 newInstance(String param1, String param2) {
+        ToDo2 fragment = new ToDo2();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -75,25 +77,41 @@ public class EventsFragment extends Fragment {
         }
     }
 
-    private NewReceiver newReceiver;
-    public List<Todo> todos = new ArrayList<>();
-    private RecyclerView recyclerView;
-    public TodoAdapter todoAdapter;
+    String todoId;
+    RecyclerView recyclerView;
+    public List<Milestones> milestones = new ArrayList<>();
+    public MilestoneAdapter milestoneAdapter;
+    private  TaskReceiver taskReceiver;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_events, container, false);
-        IntentFilter intentFilter = new IntentFilter(NewReceiver.SYNC_ACTION);
-        newReceiver = new NewReceiver();
-        getActivity().registerReceiver(newReceiver, intentFilter);
+        View view = inflater.inflate(R.layout.fragment_to_do2, container, false);
+        TextView add_task = (TextView) view.findViewById(R.id.add_task);
+        todoId = getArguments().getString("id");
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.todo_recycler);
-        todos = Todo.listAll(Todo.class);
-        Log.e("count", String.valueOf(todos.size()));
-        todoAdapter = new TodoAdapter(todos);
+        IntentFilter intentFilter = new IntentFilter(TaskReceiver.ACTIION_REP);
+        taskReceiver= new TaskReceiver();
+        getActivity().registerReceiver(taskReceiver, intentFilter);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler);
+        milestones = Milestones.listAll(Milestones.class);
+        milestones = Select.from(Milestones.class)
+                .where(Condition.prop("todoid").eq(todoId))
+                .list();
+
+        milestoneAdapter = new MilestoneAdapter(milestones);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(todoAdapter);
+        recyclerView.setAdapter(milestoneAdapter);
+
+        add_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddMilestone addMilestone = new AddMilestone();
+                addMilestone.show(getActivity().getFragmentManager(), "Dialog");
+            }
+        });
         return view;
     }
 
@@ -104,7 +122,7 @@ public class EventsFragment extends Fragment {
         }
     }
 
-    /*@Override
+   /* @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -119,6 +137,15 @@ public class EventsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void onCompleted(String title) {
+        Milestones milestones = new Milestones(todoId,title,null,false);
+        milestones.save();
+        if (milestoneAdapter!=null){
+            milestoneAdapter.insert(milestones);
+        }
+
     }
 
     /**
@@ -136,24 +163,14 @@ public class EventsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void addNew(Todo todo){
-        if (todoAdapter!=null){
-            todoAdapter.insert(todo);
-            recyclerView.smoothScrollToPosition(0);
-        }
-    }
-
-    public class NewReceiver extends BroadcastReceiver{
-        public static final String SYNC_ACTION = "new_todo_action";
+    public class TaskReceiver extends BroadcastReceiver {
+        public static final String ACTIION_REP = "add_new_task";
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            String newToDo = bundle.getString("todo");
-            Gson gson = new Gson();
-            Type type = new TypeToken<Todo>(){
-            }.getType();
-            Todo todo = gson.fromJson(newToDo, type);
-            addNew(todo);
+            String title = bundle.getString("title");
+            onCompleted(title);
         }
     }
+
 }
