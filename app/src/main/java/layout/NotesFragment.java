@@ -20,6 +20,8 @@ import com.example.elm.login.adapter.NotesAdapter;
 import com.example.elm.login.model.Note;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -105,7 +107,9 @@ public class NotesFragment extends Fragment {
         getActivity().registerReceiver(deleteReceiver, intentFilter1);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler);
-        notes = Note.find(Note.class, "deleteflag != 'true'",null,null,"noteid ASC", null);
+        notes = Select.from(Note.class)
+                .where(Condition.prop("deleteflag").eq(0))
+                .list();
 
         notesAdapter = new NotesAdapter(notes);
 

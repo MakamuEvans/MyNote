@@ -63,6 +63,9 @@ public class SyncUpdate extends IntentService {
                 .first();
         User user = Select.from(User.class)
                 .first();
+        if (note.getNoteid() == null){
+            return 0;
+        }
         String credentials = Credentials.basic(user.getEmail(), user.getPass());
 
         if (note.getImage() != null){

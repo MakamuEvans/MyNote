@@ -50,6 +50,7 @@ public class AddNote extends AppCompatActivity {
     RichEditor richEditor;
     Boolean savedStatus = false;
     Long note_id;
+    Boolean breakStatus = false;
     Context context;
     public static final int READ_EXTERNAL_STORAGE = 123;
     public static final int CAMERA = 124;
@@ -111,20 +112,23 @@ public class AddNote extends AppCompatActivity {
         findViewById(R.id.editor_bold).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                richEditor.setBold();
+                if (title.hasFocus()){
+                    Toast.makeText(getBaseContext(), "Only applicable to Note's body",Toast.LENGTH_SHORT).show();
+                }else {
+                    richEditor.setBold();
+                }
             }
         });
-        findViewById(R.id.editor_quote).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                richEditor.setBlockquote();
-            }
-        });
+
 
         findViewById(R.id.editor_bullets).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                richEditor.setBullets();
+                if (title.hasFocus()){
+                    Toast.makeText(getBaseContext(), "Only applicable to Note's body",Toast.LENGTH_SHORT).show();
+                }else {
+                    richEditor.setBullets();
+                }
             }
         });
 
@@ -132,24 +136,24 @@ public class AddNote extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (title.hasFocus()){
-                    Toast.makeText(getBaseContext(), "Only applicable to Note body",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Only applicable to Note's body",Toast.LENGTH_SHORT).show();
                 }else {
                     richEditor.setNumbers();
                 }
             }
         });
 
-        findViewById(R.id.editor_todo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                richEditor.insertTodo();
-            }
-        });
 
         richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override public void onTextChange(String text) {
                 if (text.contains("<img src=")){
                     imageStatus = false;
+                    if (!text.contains("<br><img src=")){
+                        String finalHtml = text.replace("<img src=", "<br><img src=");
+                        finalHtml = finalHtml.replace("alt=\"Image\">", "alt=\"Image\"><br>");
+                        richEditor.setHtml(finalHtml);
+                        richEditor.focusEditor();
+                    }
                 }else {
                     imageStatus = true;
                 }
@@ -299,27 +303,43 @@ public class AddNote extends AppCompatActivity {
     private static int LOAD_IMAGE_RESULTS = 1;
     private static int TAKE_PICTURE_RESULTS =2;
 
-    public void takeImage(View view){
-        Log.e("taking photo", "yes");
-        if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.CAMERA},CAMERA);
+    public void cameraImage(View view){
+        if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.CAMERA},
+                    CAMERA);
             return;
         }
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, TAKE_PICTURE_RESULTS);
+        if (title.hasFocus()){
+            Toast.makeText(getBaseContext(), "Only applicable when Focus is in Note's body",Toast.LENGTH_SHORT).show();
+        }else {
+            insertImage(view, true);
+        }
     }
 
-    public void insertImage(View view) {
+    public void galleryImage(View view){
+        if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    READ_EXTERNAL_STORAGE);
+            return;
+        }
+        if (title.hasFocus()){
+            Toast.makeText(getBaseContext(), "Only applicable when Focus is in Note's body",Toast.LENGTH_SHORT).show();
+        }else {
+            insertImage(view,false);
+        }
+    }
+
+    public void insertImage(View view, Boolean camera) {
         Log.e("ati", "what");
         if (imageStatus){
-            if (ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(AddNote.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(AddNote.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        READ_EXTERNAL_STORAGE);
-                return;
+            if (camera){
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, TAKE_PICTURE_RESULTS);
+            }else {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, LOAD_IMAGE_RESULTS);
             }
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, LOAD_IMAGE_RESULTS);
         }else {
             Toast.makeText(view.getContext(), "Only one Image Supported! Delete current image and try again.", Toast.LENGTH_LONG).show();
         }
@@ -380,17 +400,16 @@ public class AddNote extends AppCompatActivity {
 
         if (requestCode == TAKE_PICTURE_RESULTS && resultCode == RESULT_OK && data != null){
             Uri pickedImage = data.getData();
-            Log.e("back", "back");
-
+            Log.e("cam", "cam");
 
             String[] filepath = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(pickedImage, filepath, null, null, null);
             cursor.moveToFirst();
             imagePath = cursor.getString(cursor.getColumnIndex(filepath[0]));
-            cursor.close();
+            Log.e("aii", imagePath);
 
-            int nh = (int) (BitmapFactory.decodeFile(imagePath).getHeight() * (512.0 / BitmapFactory.decodeFile(imagePath).getWidth()));
-            imagePlace.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile(imagePath), 512, nh, true));
+            richEditor.insertImage(imagePath + "\" style=\"width:80%;", "Image");
+            cursor.close();
         }
     }
 }

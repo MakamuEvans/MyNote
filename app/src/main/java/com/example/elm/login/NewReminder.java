@@ -44,16 +44,27 @@ import java.util.Locale;
 import layout.EarlyReminder;
 import layout.ReminderFragment;
 
-public class NewReminder extends AppCompatActivity implements ReminderName.OnCompleteListener, EarlyReminder.OnCompleteListener {
+public class NewReminder extends AppCompatActivity {
 
     TextView selectedDate, reminderName, reminderEarly, reminderDescription;
-    private  ReminderAlarms alarmReceiver;
+    private ReminderAlarms alarmReceiver;
+    private EarlyReceiver earlyReceiver;
+    private TitleReceiver titleReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_reminder);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //register receivers
+        IntentFilter intentFilter = new IntentFilter(earlyReceiver.ACTIION_REP);
+        earlyReceiver = new EarlyReceiver();
+        registerReceiver(earlyReceiver,intentFilter);
+
+        IntentFilter filter = new IntentFilter(TitleReceiver.ACTIION_REP);
+        titleReceiver = new TitleReceiver();
+        registerReceiver(titleReceiver, filter);
 
         String format = "MMM dd yyyy HH:mm";
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
@@ -110,13 +121,34 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
         }
     }
 
-    @Override
+    public class TitleReceiver extends BroadcastReceiver {
+        public static final String ACTIION_REP = "add_title";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            String title = bundle.getString("title");
+            onComplete(title);
+        }
+    }
+
+    public class EarlyReceiver extends BroadcastReceiver {
+        public static final String ACTIION_REP = "add_reminder";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            String duration = bundle.getString("duration");
+            onCompleted(duration);
+        }
+    }
+
     public void onComplete(String title) {
         TextView reminder_title = (TextView) findViewById(R.id.reminder_name_activity);
         reminder_title.setText(title);
     }
 
-    @Override
+
     public void onCompleted(String duration) {
         TextView reminder_duration = (TextView) findViewById(R.id.reminder_early_activity);
         reminder_duration.setText(duration);
@@ -233,7 +265,7 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
         }
 
         //save alarm blueprint
-        Alarm alarm = new Alarm(0,"prior");
+        Alarm alarm = new Alarm(0, "prior");
         alarm.save();
 
         Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
@@ -241,7 +273,7 @@ public class NewReminder extends AppCompatActivity implements ReminderName.OnCom
         intent.putExtra("nId", 101);
         intent.putExtra("aId", alarm.getId());
         intent.putExtra("title", title);
-        intent.putExtra("content", "Prepared? You have  a Reminder in the next "+ time);
+        intent.putExtra("content", "Prepared? You have  a Reminder in the next " + time);
         intent.putExtra("create", true);
         startService(intent);
 

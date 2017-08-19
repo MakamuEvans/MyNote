@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,7 @@ public class ReminderName extends DialogFragment {
     private String mParam1;
     private String mParam2;
 
-    private OnCompleteListener mListener;
+    //private OnCompleteListener mListener;
 
     public ReminderName() {
         // Required empty public constructor
@@ -60,14 +62,16 @@ public class ReminderName extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_reminder_name, null);
 
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(view.getContext())
                 .setTitle("Reminder title")
                 .setView(view)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         EditText title = (EditText) view.findViewById(R.id.reminder_title_dialog);
-                        mListener.onComplete(title.getText().toString());
+                        Intent intent = new Intent(NewReminder.TitleReceiver.ACTIION_REP);
+                        intent.putExtra("title", title.getText().toString());
+                        getActivity().sendBroadcast(intent);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -94,8 +98,8 @@ public class ReminderName extends DialogFragment {
     // TODO: Rename method, update argument and hook method into UI event
 
 
-    public static interface OnCompleteListener {
-        public abstract void onComplete(String title);
+   /* public interface OnCompleteListener {
+        void onComplete(String title);
     }
 
     @Override
@@ -113,7 +117,7 @@ public class ReminderName extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this

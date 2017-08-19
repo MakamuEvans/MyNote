@@ -1,6 +1,8 @@
 package com.example.elm.login.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elm.login.AddNote;
 import com.example.elm.login.FullNote;
+import com.example.elm.login.Navigation;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Note;
 
@@ -118,11 +122,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
                     note1.setFavourite(status);
                     note1.save();
 
-                    Toast.makeText(v.getContext(), "Favourited", Toast.LENGTH_SHORT).show();
                     if (note1.getFavourite()){
                         fav.setImageResource(R.mipmap.ic_action_pink);
+                        Toast.makeText(v.getContext(), note.getTitle()+" added to favourite", Toast.LENGTH_SHORT).show();
                     }else {
                         fav.setImageResource(R.mipmap.ic_action_favorite_pink);
+                        Toast.makeText(v.getContext(), note.getTitle()+" removed from favourite", Toast.LENGTH_SHORT).show();
                     }
 
                     Intent intent = new Intent();
@@ -136,17 +141,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
                 public void onClick(View v) {
                     int pos = getLayoutPosition();
                     Note note = allnotes.get(pos);
-                    Note note1 = Note.findById(Note.class, note.getId());
-                    note1.setDeleteflag(true);
-                    note1.save();
-
-                    removeItem(pos);
-
-
-
-                    Intent intent = new Intent();
-                    intent.setAction("delete");
-                    v.getContext().sendBroadcast(intent);
+                    delete(pos, note.getId(),v);
                 }
             });
 
@@ -187,6 +182,37 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
         allnotes.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, allnotes.size());
+    }
+
+    public void delete(final int pos, final Long id, final View view){
+        final Note note = Note.findById(Note.class, id);
+
+        new AlertDialog.Builder(view.getContext())
+                .setTitle("Are you sure?")
+                .setMessage("You are about to delete Note "+note.getTitle())
+                .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        note.setDeleteflag(true);
+                        note.save();
+
+                        removeItem(pos);
+
+
+
+                        Intent intent = new Intent();
+                        intent.setAction("delete");
+                        view.getContext().sendBroadcast(intent);
+                    }
+                })
+                .create()
+                .show();
     }
 
     public void deleteNote(Note note){

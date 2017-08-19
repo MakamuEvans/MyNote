@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.elm.login.NewReminder;
 import com.example.elm.login.R;
 import com.example.elm.login.ReminderName;
 
@@ -35,7 +37,7 @@ public class EarlyReminder extends DialogFragment {
     private String mParam1;
     private String mParam2;
 
-    private OnCompleteListener mListener;
+    //private OnCompleteListener mListener;
 
     public EarlyReminder() {
         // Required empty public constructor
@@ -79,7 +81,9 @@ public class EarlyReminder extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Spinner spinner = (Spinner) view.findViewById(R.id.reminder_duration);
-                        mListener.onCompleted(spinner.getSelectedItem().toString());
+                        Intent intent = new Intent(NewReminder.EarlyReceiver.ACTIION_REP);
+                        intent.putExtra("duration", spinner.getSelectedItem().toString());
+                        getActivity().sendBroadcast(intent);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -93,11 +97,11 @@ public class EarlyReminder extends DialogFragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
+       /* if (mListener != null) {
             //mListener.onFragmentInteraction(uri);
-        }
+        }*/
     }
-
+/*
     public static interface OnCompleteListener {
         public abstract void onCompleted(String duration);
     }
@@ -117,7 +121,7 @@ public class EarlyReminder extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this

@@ -172,5 +172,4 @@ public class ToDo2 extends Fragment{
             onCompleted(title);
         }
     }
-
 }

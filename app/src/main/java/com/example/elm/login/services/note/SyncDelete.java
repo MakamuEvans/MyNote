@@ -56,6 +56,9 @@ public class SyncDelete extends IntentService {
         final Note note = Select.from(Note.class)
                 .where(Condition.prop("deleteflag").eq(1))
                 .first();
+        if (note.getNoteid() == null){
+            return 0;
+        }
         System.out.println(note);
         User user = Select.from(User.class)
                 .first();
