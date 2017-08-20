@@ -1,5 +1,7 @@
 package com.example.elm.login;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,7 +32,6 @@ public class FullNote extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_full_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,23 +107,41 @@ public class FullNote extends AppCompatActivity {
 
                 return  true;
             case R.id.action_delete:
-                Toast.makeText(getBaseContext(), "delete", Toast.LENGTH_SHORT).show();
                 Note note = Note.findById(Note.class, note_id);
-                note.setDeleteflag(true);
-                note.save();
 
-                String data = new Gson().toJson(note);
-                Intent intent4 = new Intent();
-                intent4.setAction(NotesFragment.DeleteReceiver.SYNC_ACTION);
-                intent4.putExtra("note", data);
-                sendBroadcast(intent4);
+                new AlertDialog.Builder(this)
+                        .setTitle("Are you sure?")
+                        .setMessage("You are about to delete Note "+note.getTitle())
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                Intent intent3 = new Intent();
-                intent3.setAction("delete");
-                getBaseContext().sendBroadcast(intent3);
+                            }
+                        })
+                        .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Note note = Note.findById(Note.class, note_id);
+                                note.setDeleteflag(true);
+                                note.save();
 
-                finish();
+                                String data = new Gson().toJson(note);
+                                Intent intent4 = new Intent();
+                                intent4.setAction(NotesFragment.DeleteReceiver.SYNC_ACTION);
+                                intent4.putExtra("note", data);
+                                sendBroadcast(intent4);
 
+                                Intent intent3 = new Intent();
+                                intent3.setAction("delete");
+                                getBaseContext().sendBroadcast(intent3);
+
+                                finish();
+
+
+                            }
+                        })
+                        .create()
+                        .show();
                 return  true;
             case R.id.action_edit:
                 Intent intent1 = new Intent(FullNote.this, AddNote.class);

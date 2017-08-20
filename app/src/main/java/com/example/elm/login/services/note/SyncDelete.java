@@ -74,7 +74,7 @@ public class SyncDelete extends IntentService {
             public void onResponse(Call<Note> call, Response<Note> response) {
                 Log.e("er", "returnedd");
                 Note data = response.body();
-                System.out.println(data.getCreated_at());
+//                System.out.println(data.getCreated_at());
                 if (response.isSuccessful()) {
                     note.delete();
                     Log.e("status", "deleted");

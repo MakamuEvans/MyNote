@@ -50,6 +50,14 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_access_alarm"
             app:fab_label="New Reminder"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="wrap_content"
+            app:fab_colorNormal="@color/colorPrimary"
+            android:id="@+id/todo_fab"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_access_alarm"
+            app:fab_label="New ToDo"/>
     </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

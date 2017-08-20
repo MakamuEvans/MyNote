@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,12 +25,15 @@ import com.orm.query.Select;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class NotificationBase extends AppCompatActivity {
     public List<Reminder> activeReminders = new ArrayList<>();
     public List<Alarm> activeAlarms = new ArrayList<>();
     TextView notificationsCount;
     ImageView close_button, pause_media;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,7 @@ public class NotificationBase extends AppCompatActivity {
                     alarm.setAlarm(0);
                     alarm.save();
                 }
+                stopSound();
                 finish();
             }
         });
@@ -90,6 +95,29 @@ public class NotificationBase extends AppCompatActivity {
         Uri ringtone = Uri.parse(sp.getString("notifications_new_message_ringtone", "haha"));
         System.out.println(ringtone);
         playSound(this, ringtone);
+
+    }
+
+    private void soundController(final Uri uri){
+        new CountDownTimer(300000, 1000){
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                if (count<4){
+                    count = count +1;
+                    playSound(NotificationBase.this, uri);
+                }else {
+                    if (mMediaPlayer != null){
+                        mMediaPlayer.release();
+                    }
+                }
+            }
+        }.start();
     }
 
     private MediaPlayer mMediaPlayer;
@@ -103,16 +131,33 @@ public class NotificationBase extends AppCompatActivity {
                 mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
                 mMediaPlayer.prepare();
                 mMediaPlayer.start();
+                muteSound(alert);
+
             }
         } catch (IOException e) {
             System.out.println("OOPS");
         }
     }
 
+    public void muteSound(final Uri uri){
+        new CountDownTimer(60000, 1000){
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                stopSound();
+                soundController(uri);
+            }
+        }.start();
+    }
+
     private void stopSound(){
         if (mMediaPlayer != null){
             mMediaPlayer.stop();
-            mMediaPlayer.release();
         }
     }
 }

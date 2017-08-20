@@ -1,6 +1,8 @@
 package com.example.elm.login.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -64,10 +66,28 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getLayoutPosition();
-                    Reminder reminder = allReminders.get(position);
-                    reminder.delete();
-                    removeReminder(position);
+                    final int position = getLayoutPosition();
+                    final Reminder reminder = allReminders.get(position);
+
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Are you sure?")
+                            .setMessage("You are about to delete Alarm "+reminder.getTitle())
+                            .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    reminder.delete();
+                                    removeReminder(position);
+                                }
+                            })
+                            .create()
+                            .show();
+
                 }
             });
 

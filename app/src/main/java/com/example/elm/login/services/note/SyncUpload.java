@@ -139,7 +139,7 @@ public class SyncUpload extends IntentService {
 
                     Log.e("er", "returnedd");
                     Note data = response.body();
-                    System.out.println(data.toString());
+//                    System.out.println(data.toString());
                     if (response.isSuccessful()) {
                         note.setNoteid(data.getNoteid());
                         note.setStatus("Success");

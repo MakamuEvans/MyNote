@@ -19,12 +19,31 @@
             android:textSize="20dp"
             android:fontFamily="sans-serif"/>
 
-        <Button
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:text="Done"
-            android:background="@drawable/gradient"/>
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+
+            <Button
+                android:id="@+id/milestone_success"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="9dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Done"
+                android:background="@drawable/default_input_text"/>
+
+            <Button
+                android:id="@+id/milestone_fail"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="9dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="UnDo"
+                android:background="@drawable/default_input_text"/>
+        </RelativeLayout>
 
         <ImageView
             android:layout_width="0dp"

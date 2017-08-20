@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,8 +36,10 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
         Milestones milestones = allTasks.get(position);
         holder.title.setText(milestones.getDescription());
         if (milestones.getStatus() == false){
+            holder.mFail.setVisibility(View.GONE);
             holder.imageView.setImageResource(R.mipmap.ic_action_check_circle_not);
         }else {
+            holder.mSuccess.setVisibility(View.GONE);
             holder.imageView.setImageResource(R.mipmap.ic_action_check_circle);
         }
     }
@@ -49,10 +52,39 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
     public class myViewHolder extends RecyclerView.ViewHolder{
         TextView title;
         ImageView imageView;
-        public myViewHolder(View itemView) {
+        Button mSuccess, mFail;
+        public myViewHolder(final View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.milestone_card_title);
             imageView = (ImageView) itemView.findViewById(R.id.milestone_status);
+            mSuccess = (Button) itemView.findViewById(R.id.milestone_success);
+            mFail = (Button) itemView.findViewById(R.id.milestone_fail);
+
+            mSuccess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getLayoutPosition();
+                    Milestones milestones = allTasks.get(pos);
+                    milestones.setStatus(true);
+                    milestones.save();
+                    imageView.setImageResource(R.mipmap.ic_action_check_circle);
+                    mSuccess.setVisibility(View.GONE);
+                    mFail.setVisibility(View.VISIBLE);
+                }
+            });
+
+            mFail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getLayoutPosition();
+                    Milestones milestones = allTasks.get(pos);
+                    milestones.setStatus(false);
+                    milestones.save();
+                    imageView.setImageResource(R.mipmap.ic_action_check_circle_not);
+                    mFail.setVisibility(View.GONE);
+                    mSuccess.setVisibility(View.VISIBLE);
+                }
+            });
         }
     }
 

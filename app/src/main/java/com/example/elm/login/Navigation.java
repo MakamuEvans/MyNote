@@ -47,6 +47,7 @@ import com.example.elm.login.model.Reminder;
 import com.example.elm.login.model.Todo;
 import com.example.elm.login.model.User;
 import com.example.elm.login.preferences.BasicAuth;
+import com.github.clans.fab.FloatingActionMenu;
 import com.orm.query.Select;
 
 import java.io.IOException;
@@ -63,7 +64,8 @@ public class Navigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Navigation.SectionsPagerAdapter mSectionsPagerAdapter;
-    com.github.clans.fab.FloatingActionButton note_btn,reminder_btn;
+    com.github.clans.fab.FloatingActionButton note_btn,reminder_btn, todo_btn;
+    FloatingActionMenu menu_btn;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -113,22 +115,29 @@ public class Navigation extends AppCompatActivity
 
             note_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.note_fab);
             reminder_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.reminder_fab);
+            todo_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.todo_fab);
+            final FloatingActionMenu menu_btn = (FloatingActionMenu) findViewById(R.id.menu_fab);
 
+            todo_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu_btn.close(true);
+                    newToDo();
+                }
+            });
             note_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    menu_btn.close(true);
                     newNote();
-                    note_btn.setVisibility(View.INVISIBLE);
-                    reminder_btn.setVisibility(View.INVISIBLE);
                 }
             });
 
             reminder_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    menu_btn.close(true);
                     newReminder();
-                    note_btn.setVisibility(View.INVISIBLE);
-                    reminder_btn.setVisibility(View.INVISIBLE);
                 }
             });
 
@@ -150,12 +159,18 @@ public class Navigation extends AppCompatActivity
     }
 
     public void newNote(){
+
         Intent intent = new Intent(Navigation.this, AddNote.class);
         startActivity(intent);
     }
 
     public void newReminder(){
         Intent intent = new Intent(Navigation.this, NewReminder.class);
+        startActivity(intent);
+    }
+
+    public void newToDo(){
+        Intent intent = new Intent(Navigation.this, NewToDo.class);
         startActivity(intent);
     }
 

@@ -80,7 +80,6 @@ public class SyncFavourite extends IntentService {
             public void onResponse(Call<Note> call, Response<Note> response) {
                 Log.e("er", "returnedd");
                 Note data = response.body();
-                System.out.println(data.toString());
                 if (response.isSuccessful()) {
                     note.setFavaouriteflag(false);
                     note.save();
