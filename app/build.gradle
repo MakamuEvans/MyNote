@@ -40,6 +40,7 @@ dependencies {
     compile 'jp.wasabeef:richeditor-android:1.2.2'
     compile 'com.github.devlight:infinitecycleviewpager:1.0.2'
     compile 'com.github.clans:fab:1.6.4'
+    compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
     compile 'com.github.florent37:singledateandtimepicker:1.1.5'
     compile 'com.android.support:support-vector-drawable:25.1.0'
     testCompile 'junit:junit:4.12'
