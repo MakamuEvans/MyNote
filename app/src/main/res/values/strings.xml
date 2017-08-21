@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyNote</string>
+    <string name="app_name">myAssistant</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -15,6 +15,36 @@
     </string>
 
     <string name="app_slogan">Organize your Tomorrow, Today!</string>
+
+    <string name="tutorial_header">
+        \n\n
+        First, myAssistant is divided into three sections \n
+        1. myNotes \n
+        2. myReminders \n
+        3. myTodo \n
+    </string>
+
+    <string name="tutorial_note">
+        \n
+        With myNote, you can \n
+        1. Write your simple notes and save them. \n
+        2. Ability to append images to your notes. \n
+        3. Configure on-line backup of your notes. \n
+    </string>
+
+    <string name="tutorial_alarm">
+        \n
+        With myReminders, you can \n
+        1. Create and set alarms. \n
+    </string>
+
+    <string name="tutorial_todo">
+        \n
+        With myToDo, you can \n
+        1. Create ToDo activities \n
+        2. Add tasks to e each ToDo activity. \n
+        3. Track all the tasks and lets keep tab on your progress. \n
+    </string>
 
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>

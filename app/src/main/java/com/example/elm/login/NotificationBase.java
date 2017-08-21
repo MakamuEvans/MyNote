@@ -87,6 +87,9 @@ public class NotificationBase extends AppCompatActivity {
                     alarm.save();
                 }
                 stopSound();
+                if (mMediaPlayer != null){
+                    mMediaPlayer.release();
+                }
                 finish();
             }
         });

@@ -63,7 +63,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
                 holder.note.setText(Html.fromHtml(htmlText));
             }
         }
-        if (notes.getUploadflag()){
+        if (notes.getUploadflag() || notes.getFavaouriteflag() || notes.getUpdateflag()){
             holder.imageView.setImageResource(R.mipmap.ic_cloud);
         }else {
             holder.imageView.setImageResource(R.mipmap.ic_cloud_done);

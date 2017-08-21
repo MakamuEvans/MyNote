@@ -71,6 +71,7 @@ public class Navigation extends AppCompatActivity
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    TabLayout tabLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -99,8 +100,12 @@ public class Navigation extends AppCompatActivity
             mViewPager = (ViewPager) findViewById(R.id.container);
             mViewPager.setAdapter(mSectionsPagerAdapter);
 
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            tabLayout = (TabLayout) findViewById(R.id.tabs);
             tabLayout.setupWithViewPager(mViewPager);
+            tabLayout.getTabAt(0).setIcon(R.mipmap.ic_action_home_white);
+            tabLayout.getTabAt(1).setIcon(R.mipmap.ic_action_assignment_white);
+            tabLayout.getTabAt(2).setIcon(R.mipmap.ic_action_alarm_white);
+            tabLayout.getTabAt(3).setIcon(R.mipmap.ic_action_todo_white);
 
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
@@ -303,13 +308,13 @@ public class Navigation extends AppCompatActivity
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Home";
+                    return null;
                 case 1:
-                    return "Notes";
+                    return null;
                 case 2:
-                    return "Alarms";
+                    return null;
                 case 3:
-                    return "To Do";
+                    return null;
 
             }
             return null;
