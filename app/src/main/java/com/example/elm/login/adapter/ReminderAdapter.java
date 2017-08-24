@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -180,8 +181,8 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
     }
 
     private void setFadeAnimation(View view){
-        AlphaAnimation animation = new AlphaAnimation(0.0f,1.0f);
-        animation.setDuration(2000);
+        ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(800);
         view.startAnimation(animation);
     }
 
@@ -201,11 +202,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
         for (Reminder r:allReminders){
             if (r.getId().equals(reminder.getId())){
                 int position = allReminders.indexOf(r);
-                removeReminder(position);
-
-                allReminders.add(position,reminder);
-                notifyItemInserted(position);
-                notifyItemRangeChanged(position,allReminders.size());
+                notifyItemChanged(position, reminder);
                 break;
             }
         }

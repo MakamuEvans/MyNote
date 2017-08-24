@@ -1,39 +1,24 @@
 package layout;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.elm.login.R;
-import com.example.elm.login.adapter.TodoAdapter;
-import com.example.elm.login.model.Todo;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.orm.query.Select;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EventsFragment.OnFragmentInteractionListener} interface
+ * {@link RepeatingAlarm.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EventsFragment#newInstance} factory method to
+ * Use the {@link RepeatingAlarm#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventsFragment extends Fragment {
+public class RepeatingAlarm extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,7 +30,7 @@ public class EventsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public EventsFragment() {
+    public RepeatingAlarm() {
         // Required empty public constructor
     }
 
@@ -55,11 +40,11 @@ public class EventsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EventsFragment.
+     * @return A new instance of fragment RepeatingAlarm.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventsFragment newInstance(String param1, String param2) {
-        EventsFragment fragment = new EventsFragment();
+    public static RepeatingAlarm newInstance(String param1, String param2) {
+        RepeatingAlarm fragment = new RepeatingAlarm();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -76,31 +61,11 @@ public class EventsFragment extends Fragment {
         }
     }
 
-    private NewReceiver newReceiver;
-    public List<Todo> todos = new ArrayList<>();
-    private RecyclerView recyclerView;
-    public TodoAdapter todoAdapter;
-    private updateTodo updateTodo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_events, container, false);
-        IntentFilter intentFilter = new IntentFilter(NewReceiver.SYNC_ACTION);
-        newReceiver = new NewReceiver();
-        getActivity().registerReceiver(newReceiver, intentFilter);
-
-        IntentFilter filter = new IntentFilter(updateTodo.SYNC_ACTION);
-        getActivity().registerReceiver(new updateTodo(), filter);
-        recyclerView = (RecyclerView) view.findViewById(R.id.todo_recycler);
-        todos = Select.from(Todo.class)
-                .orderBy("Id DESC")
-                .list();
-        Log.e("count", String.valueOf(todos.size()));
-        todoAdapter = new TodoAdapter(todos);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(todoAdapter);
-        return view;
+        return inflater.inflate(R.layout.fragment_repeating_alarm, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -110,7 +75,7 @@ public class EventsFragment extends Fragment {
         }
     }
 
-    /*@Override
+   /* @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -140,42 +105,5 @@ public class EventsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public void addNew(Todo todo){
-        if (todoAdapter!=null){
-            todoAdapter.insert(todo);
-            recyclerView.smoothScrollToPosition(0);
-        }
-    }
-
-    public class NewReceiver extends BroadcastReceiver{
-        public static final String SYNC_ACTION = "new_todo_action";
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            String newToDo = bundle.getString("todo");
-            Gson gson = new Gson();
-            Type type = new TypeToken<Todo>(){
-            }.getType();
-            Todo todo = gson.fromJson(newToDo, type);
-            addNew(todo);
-        }
-    }
-
-    public void updateToDoList(Long id){
-        if (todoAdapter!=null){
-            todoAdapter.updateItem(id);
-        }
-    }
-
-    public class updateTodo extends BroadcastReceiver{
-        public static final String SYNC_ACTION = "update_todo";
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            Long id = bundle.getLong("id");
-            updateToDoList(id);
-        }
     }
 }

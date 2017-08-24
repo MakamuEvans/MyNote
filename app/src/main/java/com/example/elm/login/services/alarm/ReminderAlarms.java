@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.example.elm.login.LockScreenAlarm;
 import com.example.elm.login.NotificationBase;
@@ -103,7 +104,14 @@ public class ReminderAlarms extends BroadcastReceiver {
 
     }
     //handle actual reminders
+    Context context;
     public void actualAlarms(Context context){
-        context.startActivity(new Intent(context, NotificationBase.class));
+        if (NotificationBase.activityOpen){
+            Log.e("check", "haaaa");
+            Intent intent = new Intent(NotificationBase.newNotification.ACTION);
+            context.sendBroadcast(intent);
+        }else {
+            context.startActivity(new Intent(context, NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
     }
 }

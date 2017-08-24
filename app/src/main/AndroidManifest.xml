@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -77,6 +78,12 @@
             android:name=".services.alarm.AlarmCrud"
             android:exported="false" />
 
+        <receiver android:name=".services.alarm.ReminderAlarms">
+            <intent-filter>
+                <action android:name="DISPLAY_NOTIFICATION"/>
+            </intent-filter>
+        </receiver>
+
         <receiver
             android:name=".network.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">
@@ -102,7 +109,7 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".NotificationBase"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.Nothing" />
         <activity
             android:name=".LockScreenAlarm"

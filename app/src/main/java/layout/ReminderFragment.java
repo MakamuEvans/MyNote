@@ -19,6 +19,7 @@ import com.example.elm.login.model.Note;
 import com.example.elm.login.model.Reminder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orm.query.Select;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -92,7 +93,9 @@ public class ReminderFragment extends Fragment {
         getActivity().registerReceiver(reminderBroadcast, intentFilter);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.reminder_recycler);
-        reminders = Reminder.find(Reminder.class,null,null);
+        reminders = Select.from(Reminder.class)
+                .orderBy("Id DESC")
+                .list();
         reminderAdapter = new ReminderAdapter(reminders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(reminderAdapter);

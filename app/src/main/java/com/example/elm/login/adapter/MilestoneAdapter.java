@@ -2,6 +2,7 @@ package com.example.elm.login.adapter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.elm.login.R;
+import com.example.elm.login.ToDoDetails;
 import com.example.elm.login.model.Milestones;
 
 import java.util.List;
@@ -108,6 +110,10 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
                     imageView.setImageResource(R.mipmap.ic_action_check_circle);
                     mSuccess.setVisibility(View.GONE);
                     mFail.setVisibility(View.VISIBLE);
+
+                    Intent intent = new Intent();
+                    intent.setAction(ToDoDetails.newPercentage.SYNC_ACTION);
+                    itemView.getContext().sendBroadcast(intent);
                 }
             });
 
@@ -121,6 +127,10 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
                     imageView.setImageResource(R.mipmap.ic_action_check_circle_not);
                     mFail.setVisibility(View.GONE);
                     mSuccess.setVisibility(View.VISIBLE);
+
+                    Intent intent = new Intent();
+                    intent.setAction(ToDoDetails.newPercentage.SYNC_ACTION);
+                    itemView.getContext().sendBroadcast(intent);
                 }
             });
         }

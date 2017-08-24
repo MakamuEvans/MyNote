@@ -109,6 +109,7 @@ public class NotesFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler);
         notes = Select.from(Note.class)
                 .where(Condition.prop("deleteflag").eq(0))
+                .orderBy("Id DESC")
                 .list();
 
         notesAdapter = new NotesAdapter(notes);

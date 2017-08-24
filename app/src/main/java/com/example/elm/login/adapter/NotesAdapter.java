@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +75,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
         }else {
             holder.fav.setImageResource(R.mipmap.ic_action_favorite_pink);
         }
+        setFadeAnimation(holder.itemView);
+    }
+
+    private void setFadeAnimation(View view){
+        ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(800);
+        view.startAnimation(animation);
     }
 
     @Override
@@ -168,11 +177,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
             if (n.getId().equals(note.getId())){
                 Log.e("found", String.valueOf(allnotes.indexOf(n)));
                 int position = allnotes.indexOf(n);
-                removeItem(position);
-
-                allnotes.add(position, note);
-                notifyItemInserted(position);
-                notifyItemRangeChanged(position, allnotes.size());
+                notifyItemChanged(position, note);
                 break;
             }
         }
@@ -203,8 +208,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
                         note.save();
 
                         removeItem(pos);
-
-
 
                         Intent intent = new Intent();
                         intent.setAction("delete");

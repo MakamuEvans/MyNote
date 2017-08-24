@@ -208,10 +208,6 @@ public class NewReminder extends AppCompatActivity {
                 Long.parseLong(alarm.getId().toString()));
         newReminder.save();
 
-        //register receiver
-        IntentFilter intentFilter = new IntentFilter("DISPLAY_NOTIFICATION");
-        alarmReceiver = new ReminderAlarms();
-        registerReceiver(alarmReceiver, intentFilter);
         Toast.makeText(getBaseContext(), "Reminder set to  " + dateTime.getDate(), Toast.LENGTH_SHORT).show();
 
         //update ui and launch relevant fragment
