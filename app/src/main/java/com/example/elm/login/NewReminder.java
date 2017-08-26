@@ -269,25 +269,25 @@ public class NewReminder extends AppCompatActivity {
         List<String> alarm_days = new ArrayList<>();
         if (ssunday || smonday || stuesday || swednesday || sthursday || sfriday ||ssaturday){
             if (ssunday){
-                alarm_days.add("sunday");
+                alarm_days.add("Sunday");
             }
             if (smonday){
-                alarm_days.add("monday");
+                alarm_days.add("Monday");
             }
             if (stuesday){
-                alarm_days.add("tuesday");
+                alarm_days.add("Tuesday");
             }
             if (swednesday){
-                alarm_days.add("wednesday");
+                alarm_days.add("Wednesday");
             }
             if (sthursday){
-                alarm_days.add("thursday");
+                alarm_days.add("Thursday");
             }
             if (sfriday){
-                alarm_days.add("friday");
+                alarm_days.add("Friday");
             }
             if (ssaturday){
-                alarm_days.add("saturday");
+                alarm_days.add("Saturday");
             }
 
             String merged = android.text.TextUtils.join(",", alarm_days);

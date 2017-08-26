@@ -58,11 +58,6 @@ public class ReminderAlarms extends BroadcastReceiver {
         alarmId = bundle.getLong("alarmId");
         repeat = bundle.getBoolean("repeat");
 
-        //raise notification flag
-        Alarm alarm = Alarm.findById(Alarm.class, alarmId);
-        alarm.setAlarm(1);
-        alarm.save();
-
         //get type of notification -->early reminder n actual?
         if (nId == 100){
             //actual
@@ -71,7 +66,28 @@ public class ReminderAlarms extends BroadcastReceiver {
                     actualRepeats(alarmId, context);
                 }
             }
-            actualAlarms(context);
+            if (repeat){
+                Reminder reminder = Select.from(Reminder.class)
+                        .where(Condition.prop("uniquecode").eq(alarmId))
+                        .first();
+                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+                Calendar calendar = Calendar.getInstance();
+                String weekDay = dayFormat.format(calendar.getTime());
+                Log.e("dated", weekDay);
+                if (reminder.getRepeat().contains(weekDay)){
+                    actualAlarms(context);
+                    //raise notification flag
+                    Alarm alarm = Alarm.findById(Alarm.class, alarmId);
+                    alarm.setAlarm(1);
+                    alarm.save();
+                }
+            }else {
+                actualAlarms(context);
+                //raise notification flag
+                Alarm alarm = Alarm.findById(Alarm.class, alarmId);
+                alarm.setAlarm(1);
+                alarm.save();
+            }
         }else {
             //early reminder
             reminderAlarms(nTitle, nContent, context);

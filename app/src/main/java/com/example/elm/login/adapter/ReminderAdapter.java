@@ -109,17 +109,45 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                         Calendar calendar = Calendar.getInstance();
                         try {
                             date = convert_simpleDateFormat.parse(reminder.getTime());
-                            int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
-                            calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(date)));
-                            calendar.set(Calendar.MONTH, month0);
-                            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(date)));
+                            if (reminder.getRepeat() == null){
+                                int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
+                                calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(date)));
+                                calendar.set(Calendar.MONTH, month0);
+                                calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(date)));
+                            }
                             calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(date)));
                             calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(date)));
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                         Calendar now = Calendar.getInstance();
-                        if (calendar.getTimeInMillis() > now.getTimeInMillis()){
+                        if (reminder.getRepeat() == null){
+                            if (calendar.getTimeInMillis() > now.getTimeInMillis()){
+                                intent.putExtra("calender", calendar.getTimeInMillis());
+                                intent.putExtra("nId", 100);
+                                intent.putExtra("aId", reminder.getUniquecode());
+                                intent.putExtra("title", reminder.getTitle());
+                                intent.putExtra("content", reminder.getDescription());
+                                intent.putExtra("create", true);
+                                v.getContext().startService(intent);
+                                //update db
+                                reminder.setStatus("1");
+                                reminder.save();
+                                //update ui
+                                updateReminder(reminder);
+                                Log.e("haha", "hahaha");
+                            }else {
+                                Toast.makeText(v.getContext(), "The Alarm is in a past date", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Calendar calendar1 = Calendar.getInstance();
+                            Calendar calendar2 = Calendar.getInstance();
+                            calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
+                            calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
+
+                            if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
+                                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                            }
                             intent.putExtra("calender", calendar.getTimeInMillis());
                             intent.putExtra("nId", 100);
                             intent.putExtra("aId", reminder.getUniquecode());
@@ -133,9 +161,8 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                             //update ui
                             updateReminder(reminder);
                             Log.e("haha", "hahaha");
-                        }else {
-                            Toast.makeText(v.getContext(), "The Alarm is in a past date", Toast.LENGTH_SHORT).show();
                         }
+
 
                     }else if (reminder.getStatus().equals("1")){
                         //deactivate alarm
