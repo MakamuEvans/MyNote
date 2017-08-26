@@ -77,6 +77,12 @@
         <item>2 hours before</item>
     </string-array>
 
+    <string-array name="str_reminder_type">
+        <item>One Time</item>
+        <item>Repeating</item>
+
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

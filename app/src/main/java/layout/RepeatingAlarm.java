@@ -1,5 +1,7 @@
 package layout;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +20,7 @@ import com.example.elm.login.R;
  * Use the {@link RepeatingAlarm#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RepeatingAlarm extends Fragment {
+public class RepeatingAlarm extends DialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,10 +64,8 @@ public class RepeatingAlarm extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_repeating_alarm, container, false);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

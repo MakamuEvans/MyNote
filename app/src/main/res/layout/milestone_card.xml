@@ -58,15 +58,13 @@
                         android:text="Done"
                         android:background="@drawable/default_input_text"/>
 
-                    <Button
+                    <ImageView
                         android:id="@+id/milestone_fail"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:textSize="9dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="UnDo"
-                        android:background="@drawable/default_input_text"/>
+                        android:src="@mipmap/back" />
                 </RelativeLayout>
 
                 <ImageView

@@ -64,12 +64,17 @@ public class NotificationBase extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        SharedPreferences.Editor editor =preferences.edit();
+        editor.putBoolean("notificationOpen", true);
+        editor.commit();
+
         setContentView(R.layout.activity_notification_base);
 
-        SharedPreferences preferences = getSharedPreferences("myPref", 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("soundAlarm", true);
-        editor.commit();
+        SharedPreferences preferences1 = getSharedPreferences("myPref", 0);
+        SharedPreferences.Editor editor1 = preferences1.edit();
+        editor1.putBoolean("soundAlarm", true);
+        editor1.commit();
         //get active notifications
         activeAlarms = Select.from(Alarm.class)
                 .where(Condition.prop("type").eq("actual"))
@@ -126,7 +131,7 @@ public class NotificationBase extends AppCompatActivity {
     }
 
     private void soundController(final Uri uri) {
-        interval = new CountDownTimer(60000, 1000) {
+        interval = new CountDownTimer(300000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -208,8 +213,27 @@ public class NotificationBase extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        SharedPreferences.Editor editor =preferences.edit();
+        editor.putBoolean("notificationOpen", false);
+        editor.commit();
+        Log.e("destroy", "yes");
+        if (mMediaPlayer!=null){
+            stopSound();
+            //mMediaPlayer.release();
+        }
+        cancelCountDown();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        SharedPreferences.Editor editor =preferences.edit();
+        editor.putBoolean("notificationOpen", false);
+        editor.commit();
         Log.e("destroy", "yes");
         if (mMediaPlayer!=null){
             stopSound();

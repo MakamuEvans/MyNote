@@ -51,7 +51,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="serif"
-                            android:text="Latest Notes"
+                            android:text="Latest Reminder"
                             android:textColor="@color/colorPrimary"
                             android:textSize="20dp"
                             android:textStyle="bold" />
@@ -69,35 +69,44 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/reminder_time"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
                             android:maxLines="2"
                             android:text=""
                             android:textColor="@color/colorPrimary" />
 
-                        <ImageView
-                            android:id="@+id/card_del"
-                            android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.15"
-                            android:paddingBottom="10dp"
-                            android:src="@android:drawable/ic_menu_delete" />
+                            android:textSize="10dp"
+                            android:textStyle="italic"
+                            android:id="@+id/repeat_days"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/card_text"/>
+
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/card_del"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/card_text"/>
+                        android:layout_weight="0.15"
+                        android:paddingBottom="10dp"
+                        android:src="@android:drawable/ic_menu_delete" />
+
                 </LinearLayout>
 
             </LinearLayout>

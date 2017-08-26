@@ -159,7 +159,7 @@ public class Navigation extends AppCompatActivity
                     .first();
             View v =navigationView.getHeaderView(0);
             TextView usernname = (TextView) v.findViewById(R.id.nav_username);
-            usernname.setText(user.getLastname()+" , "+user.getFirstname());
+            usernname.setText(user.getLastname()+" ,, "+user.getFirstname());
         }
     }
 

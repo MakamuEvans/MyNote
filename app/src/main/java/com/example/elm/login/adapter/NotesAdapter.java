@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +37,10 @@ import java.util.Map;
  * Created by elm on 7/17/17.
  */
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder> {
+public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
+    private static final int EMPTY_VIEW = 1;
+    private static final int DATA_VIEW = 2;
     public List<Note> allnotes;
 
     public NotesAdapter(List<Note> allnotes) {
@@ -45,37 +48,52 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
     }
 
     @Override
-    public NotesAdapter.myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_note_card, parent, false);
-        return new myViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        RecyclerView.ViewHolder holder;
+        if (viewType == EMPTY_VIEW){
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.note_zero, parent, false);
+            holder = new emptyViewHolder(view);
+        }else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_note_card, parent, false);
+            holder = new myViewHolder(view);
+        }
+        return  holder;
     }
 
     @Override
-    public void onBindViewHolder(NotesAdapter.myViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //context = holder
-        Note notes = allnotes.get(position);
-        holder.title.setText(notes.getTitle());
-        holder.dated.setText(notes.getCreated_at());
-        String htmlText = notes.getNote();
-        if (htmlText != null){
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                holder.note.setText(Html.fromHtml(htmlText,Html.FROM_HTML_MODE_LEGACY));
-            } else {
-                holder.note.setText(Html.fromHtml(htmlText));
+        int viewType = getItemViewType(position);
+        if (viewType == EMPTY_VIEW){
+
+        }else {
+            myViewHolder holder1 = (myViewHolder) holder;
+            Note notes = allnotes.get(position);
+            holder1.title.setText(notes.getTitle());
+            holder1.dated.setText(notes.getCreated_at());
+            String htmlText = notes.getNote();
+            if (htmlText != null){
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    holder1.note.setText(Html.fromHtml(htmlText,Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    holder1.note.setText(Html.fromHtml(htmlText));
+                }
             }
+            if (notes.getUploadflag() || notes.getFavaouriteflag() || notes.getUpdateflag()){
+                holder1.imageView.setImageResource(R.mipmap.ic_cloud);
+            }else {
+                holder1.imageView.setImageResource(R.mipmap.ic_cloud_done);
+            }
+            if (notes.getFavourite()){
+                holder1.fav.setImageResource(R.mipmap.ic_action_pink);
+            }else {
+                holder1.fav.setImageResource(R.mipmap.ic_action_favorite_pink);
+            }
+            setFadeAnimation(holder.itemView);
         }
-        if (notes.getUploadflag() || notes.getFavaouriteflag() || notes.getUpdateflag()){
-            holder.imageView.setImageResource(R.mipmap.ic_cloud);
-        }else {
-            holder.imageView.setImageResource(R.mipmap.ic_cloud_done);
-        }
-        if (notes.getFavourite()){
-            holder.fav.setImageResource(R.mipmap.ic_action_pink);
-        }else {
-            holder.fav.setImageResource(R.mipmap.ic_action_favorite_pink);
-        }
-        setFadeAnimation(holder.itemView);
     }
 
     private void setFadeAnimation(View view){
@@ -86,7 +104,27 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
 
     @Override
     public int getItemCount() {
-        return allnotes.size();
+        if (allnotes.size() == 0){
+            return 1;
+        }else {
+            return allnotes.size();
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (allnotes.size() == 0){
+            return EMPTY_VIEW;
+        }else {
+            return DATA_VIEW;
+        }
+    }
+
+    public class emptyViewHolder extends RecyclerView.ViewHolder{
+
+        public emptyViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder{
@@ -165,8 +203,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.myViewHolder
 
     public void newData(Note note){
         this.allnotes.add(0, note);
-        notifyItemInserted(0);
         notifyItemRangeChanged(0, allnotes.size());
+        notifyItemInserted(0);
     }
 
     public void updateItem(Note note){

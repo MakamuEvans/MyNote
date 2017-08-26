@@ -42,12 +42,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder{
-        public TextView title,time,dated, card_text;
+        public TextView title,time,dated, card_text,repeat_days;
         public ImageView reminderStatus, delete;
         public myViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.reminder_title);
             time = (TextView) itemView.findViewById(R.id.reminder_time);
+            repeat_days = (TextView) itemView.findViewById(R.id.repeat_days);
             dated = (TextView) itemView.findViewById(R.id.reminder_dated);
             reminderStatus = (ImageView) itemView.findViewById(R.id.reminderstatus);
             delete = (ImageView) itemView.findViewById(R.id.card_del);
@@ -166,6 +167,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
         holder.title.setText(reminder.getTitle());
         holder.time.setText(reminder.getTime());
         holder.card_text.setVisibility(View.GONE);
+        holder.repeat_days.setText(reminder.getRepeat());
         if (reminder.getDescription().equals("")){
             holder.card_text.setText("No description provided");
         }else {

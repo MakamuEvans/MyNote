@@ -24,35 +24,64 @@
                 tools:layout_editor_absoluteY="0dp"
                 tools:layout_editor_absoluteX="8dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <ImageView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_action_today"/>
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
 
-                    <TextView
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_action_today"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/start_date"
+                            />
+
+                    </LinearLayout>
+
+                    <Spinner
                         android:layout_width="wrap_content"
+                        android:id="@+id/alarm_type"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:id="@+id/start_date"
-                        />
+                        android:entries="@array/str_reminder_type"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
 
-                </LinearLayout>
-
-                <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/layout_border"
-                    app:picker_curved="false"
-                    app:picker_cyclic="true"
-                    app:picker_visibleItemCount="7"
-                    android:id="@+id/date_picker"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@color/colorPrimary"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/layout_border"
+                        app:picker_visibleItemCount="5"
+                        android:id="@+id/date_picker"/>
+
+                    <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/layout_border"
+                        app:picker_visibleItemCount="5"
+                        android:id="@+id/time_picker"/>
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -85,6 +114,132 @@
                             android:textColor="@color/colorPrimary"/>
                     </RelativeLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="7dp"
+                        android:background="@color/colorPrimary"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/repeat_mode"
+                        android:layout_margin="7dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:id="@+id/repeat_title">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Repeat Mode" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Skip if its one time"
+                                android:layout_marginLeft="10dp"
+                                android:textSize="10dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/repeat_title"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textSize="20dp"
+                                android:textStyle="bold"
+                                android:id="@+id/repeat_sunday"
+                                android:layout_height="wrap_content"
+                                android:text="S" />
+                            <View
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:id="@+id/repeat_monday"
+                                android:textSize="20dp"
+                                android:layout_height="wrap_content"
+                                android:text="M" />
+                            <View
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:textSize="20dp"
+                                android:id="@+id/repeat_tuesday"
+                                android:layout_height="wrap_content"
+                                android:text="T" />
+                            <View
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:id="@+id/repeat_wednesday"
+                                android:textSize="20dp"
+                                android:layout_height="wrap_content"
+                                android:text="W" />
+                            <View
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:id="@+id/repeat_thursday"
+                                android:textSize="20dp"
+                                android:layout_height="wrap_content"
+                                android:text="T" />
+                            <View
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textStyle="bold"
+                                android:id="@+id/repeat_friday"
+                                android:textSize="20dp"
+                                android:layout_height="wrap_content"
+                                android:text="F" />
+                            <View
+                                android:layout_width="2dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorPrimary"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_margin="5dp"
+                                android:textSize="20dp"
+                                android:id="@+id/repeat_saturday"
+                                android:textStyle="bold"
+                                android:layout_height="wrap_content"
+                                android:text="S" />
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

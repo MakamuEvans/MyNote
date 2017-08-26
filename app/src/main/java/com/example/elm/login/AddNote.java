@@ -224,6 +224,7 @@ public class AddNote extends AppCompatActivity {
         String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
         if (imagePath != null){
             merged = android.text.TextUtils.join(",", array);
+            //haa
         }
         //save locally
         Note note2 = new Note(

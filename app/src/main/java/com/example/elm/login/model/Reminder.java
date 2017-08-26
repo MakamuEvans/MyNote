@@ -17,17 +17,19 @@ public class Reminder extends SugarRecord {
     private String description;
     private String status;
     private Long uniquecode;
+    private String repeat;
 
     public Reminder() {
     }
 
-    public Reminder(String title, String time, String prior, String description, String status, Long uniquecode) {
+    public Reminder(String title, String time, String prior, String description, String status, Long uniquecode, String repeat) {
         this.title = title;
         this.time = time;
         this.prior = prior;
         this.description = description;
         this.status = status;
         this.uniquecode = uniquecode;
+        this.repeat = repeat;
     }
 
     public String getTitle() {
@@ -76,6 +78,27 @@ public class Reminder extends SugarRecord {
 
     public void setUniquecode(Long uniquecode) {
         this.uniquecode = uniquecode;
+    }
+
+    public String getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(String repeat) {
+        this.repeat = repeat;
+    }
+
+    @Override
+    public String toString() {
+        return "Reminder{" +
+                "title='" + title + '\'' +
+                ", time='" + time + '\'' +
+                ", prior='" + prior + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", uniquecode=" + uniquecode +
+                ", repeat='" + repeat + '\'' +
+                '}';
     }
 }
 

@@ -33,7 +33,11 @@ public class Utils {
 
         Date date1 = null;
         try {
-            date1 = convert_simpleDateFormat.parse(reminder.getTime());
+            if (reminder.getRepeat() == null){
+                date1 = convert_simpleDateFormat.parse(reminder.getTime());
+            }else {
+                date1 = time_simpleDateFormat.parse(reminder.getTime());
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -41,8 +45,14 @@ public class Utils {
         //set data
         txt.setText(reminder.getTitle());
         content.setText(reminder.getDescription());
-        date.setText(date_simpleDateFormat.format(date1));
-        time.setText(time_simpleDateFormat.format(date1));
+        if (reminder.getRepeat() == null){
+            date.setText(date_simpleDateFormat.format(date1));
+            time.setText(time_simpleDateFormat.format(date1));
+        }else {
+            date.setText(time_simpleDateFormat.format(date1));
+            time.setText("");
+        }
+
     }
 
     public static class LibraryObject {

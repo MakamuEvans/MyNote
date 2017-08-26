@@ -61,15 +61,15 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
 
     public class myViewHolder extends RecyclerView.ViewHolder{
         TextView title;
-        ImageView imageView,mDelete;
-        Button mSuccess, mFail;
+        ImageView imageView,mDelete,mFail;
+        Button mSuccess;
         SwipeRevealLayout swipeRevealLayout;
         public myViewHolder(final View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.milestone_card_title);
             imageView = (ImageView) itemView.findViewById(R.id.milestone_status);
             mSuccess = (Button) itemView.findViewById(R.id.milestone_success);
-            mFail = (Button) itemView.findViewById(R.id.milestone_fail);
+            mFail = (ImageView) itemView.findViewById(R.id.milestone_fail);
             swipeRevealLayout = (SwipeRevealLayout) itemView.findViewById(R.id.swiper_milestone);
             mDelete = (ImageView) itemView.findViewById(R.id.milestone_delete);
 

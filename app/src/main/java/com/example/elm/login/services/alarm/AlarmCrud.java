@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
@@ -24,8 +25,9 @@ import java.util.Calendar;
 public class AlarmCrud extends Service {
     String title, content;
     int nId;
-    Long calender,aId;
-    boolean create;
+    Long calender, aId;
+    boolean create, repeat;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,21 +36,23 @@ public class AlarmCrud extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("service", "started");
+        Log.e("maywedha", "hoho");
         //get data
         Bundle bundle = intent.getExtras();
         aId = bundle.getLong("aId");
         create = bundle.getBoolean("create");
+        repeat = bundle.getBoolean("repeat");
 
         //create or cancel
-        if (create){ //create
+        if (create) { //create
             title = bundle.getString("title");
             content = bundle.getString("content");
             nId = bundle.getInt("nId");
             calender = bundle.getLong("calender");
 
-            createAlarm(title,content,nId,calender,aId);
-        }else { //cancel
+            createAlarm(title, content, nId, calender, aId, repeat);
+
+        } else { //cancel
             cancelAlarm(aId);
         }
         stopSelf(startId);
@@ -61,10 +65,11 @@ public class AlarmCrud extends Service {
         Log.e("destroyed", "yes");
     }
 
-    public void createAlarm(String title, String content, int nId, Long calender, Long aId){
+    public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat) {
         Log.e("service", "startedyey");
         Intent intent = new Intent("DISPLAY_NOTIFICATION");
         intent.putExtra("title", title);
+        intent.putExtra("repeat", repeat);
         intent.putExtra("content", content);
         intent.putExtra("notificationId", nId);
         intent.putExtra("alarmId", aId);
@@ -73,10 +78,27 @@ public class AlarmCrud extends Service {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(calender);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-
+        if (repeat){
+            Log.e("repeating", "yes");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+            }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+            }else {
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            }
+        }else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+        }
     }
-    public void cancelAlarm(Long aId){
+
+    public void cancelAlarm(Long aId) {
         Log.e("service", "cancelstarted");
 
         Intent intent = new Intent("DISPLAY_NOTIFICATION");
