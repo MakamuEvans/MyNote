@@ -76,8 +76,8 @@ public class Navigation extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences preferences = getSharedPreferences("myPref",0);
-        Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
-
+        //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
+        Boolean fk = true;
         if (!fk){
             Intent intent = new Intent(Navigation.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -123,11 +123,11 @@ public class Navigation extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
-            User user = Select.from(User.class)
+            /*User user = Select.from(User.class)
                     .first();
             View v =navigationView.getHeaderView(0);
             TextView usernname = (TextView) v.findViewById(R.id.nav_username);
-            usernname.setText(user.getLastname()+" ,, "+user.getFirstname());
+            usernname.setText(user.getLastname()+" ,, "+user.getFirstname());*/
         }
     }
 

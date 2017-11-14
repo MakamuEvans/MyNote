@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -47,7 +48,7 @@
             android:value="mynote.db" />
         <meta-data
             android:name="VERSION"
-            android:value="8" />
+            android:value="9" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -57,8 +58,8 @@
 
         <activity
             android:name=".AddNote"
-            android:noHistory="true"
             android:configChanges="orientation"
+            android:noHistory="true"
             android:theme="@style/AppTheme.Nothing"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".NoteCard" />
@@ -81,10 +82,9 @@
 
         <receiver android:name=".services.alarm.ReminderAlarms">
             <intent-filter>
-                <action android:name="DISPLAY_NOTIFICATION"/>
+                <action android:name="DISPLAY_NOTIFICATION" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".network.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">
@@ -104,20 +104,24 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NewReminder"
-            android:windowSoftInputMode="adjustPan"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".NotificationBase"
-            android:launchMode="singleTask"
             android:theme="@style/AppTheme.Nothing" />
         <activity
             android:name=".LockScreenAlarm"
             android:theme="@style/AppTheme.Nothing" />
         <activity android:name=".NewToDo" />
-        <activity android:name=".ToDoDetails"></activity>
+        <activity android:name=".ToDoDetails" />
+
+        <service
+            android:name=".services.alarm.SnoozeCounter"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

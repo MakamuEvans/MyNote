@@ -23,6 +23,7 @@ import java.util.Calendar;
  */
 
 public class AlarmCrud extends Service {
+    private final static String TAG = AlarmCrud.class.getSimpleName();
     private String title, content;
     private int nId;
     private Long calender, aId;
@@ -58,7 +59,7 @@ public class AlarmCrud extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("destroyed", "yes");
+        Log.e(TAG, "onDestroy Called");
     }
 
     public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat) {

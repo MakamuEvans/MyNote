@@ -44,6 +44,7 @@ import layout.ReminderFragment;
  */
 
 public class ReminderAlarms extends BroadcastReceiver {
+    private static final String TAG = ReminderAlarms.class.getSimpleName();
     String nTitle, nContent;
     int nId;
     Long alarmId;
@@ -151,11 +152,13 @@ public class ReminderAlarms extends BroadcastReceiver {
     Context context;
 
     public void actualAlarms(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("myPref", 0);
+        Log.e(TAG, "Actual Alarms called");
         Boolean isOpen = context.getSharedPreferences("myPref", 0).getBoolean("notificationOpen", false);
+        Log.e(TAG, isOpen.toString());
         if (isOpen) {
-            Intent intent = new Intent(NotificationBase.newNotification.ACTION);
-            context.sendBroadcast(intent);
+            /*Intent intent = new Intent(NotificationBase.newNotification.ACTION);
+            context.sendBroadcast(intent);*/
+            context.startActivity(new Intent(context, NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         } else {
             context.startActivity(new Intent(context, NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         }
