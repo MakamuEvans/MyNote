@@ -23,10 +23,10 @@ import java.util.Calendar;
  */
 
 public class AlarmCrud extends Service {
-    String title, content;
-    int nId;
-    Long calender, aId;
-    boolean create, repeat;
+    private String title, content;
+    private int nId;
+    private Long calender, aId;
+    private boolean create, repeat;
 
     @Nullable
     @Override
@@ -36,8 +36,6 @@ public class AlarmCrud extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("maywedha", "hoho");
-        //get data
         Bundle bundle = intent.getExtras();
         aId = bundle.getLong("aId");
         create = bundle.getBoolean("create");
@@ -49,9 +47,7 @@ public class AlarmCrud extends Service {
             content = bundle.getString("content");
             nId = bundle.getInt("nId");
             calender = bundle.getLong("calender");
-
             createAlarm(title, content, nId, calender, aId, repeat);
-
         } else { //cancel
             cancelAlarm(aId);
         }
@@ -66,7 +62,6 @@ public class AlarmCrud extends Service {
     }
 
     public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat) {
-        Log.e("service", "startedyey");
         Intent intent = new Intent("DISPLAY_NOTIFICATION");
         intent.putExtra("title", title);
         intent.putExtra("repeat", repeat);

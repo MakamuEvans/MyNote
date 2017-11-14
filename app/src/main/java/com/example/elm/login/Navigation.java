@@ -64,8 +64,6 @@ public class Navigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Navigation.SectionsPagerAdapter mSectionsPagerAdapter;
-    com.github.clans.fab.FloatingActionButton note_btn,reminder_btn, todo_btn;
-    FloatingActionMenu menu_btn;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -79,7 +77,6 @@ public class Navigation extends AppCompatActivity
         super.onCreate(savedInstanceState);
         SharedPreferences preferences = getSharedPreferences("myPref",0);
         Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
-        //preferences.getBoolean();
 
         if (!fk){
             Intent intent = new Intent(Navigation.this, LoginActivity.class);
@@ -118,35 +115,6 @@ public class Navigation extends AppCompatActivity
 
             }
 
-            note_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.note_fab);
-            reminder_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.reminder_fab);
-            todo_btn = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.todo_fab);
-            final FloatingActionMenu menu_btn = (FloatingActionMenu) findViewById(R.id.menu_fab);
-
-            todo_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu_btn.close(true);
-                    newToDo();
-                }
-            });
-            note_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu_btn.close(true);
-                    newNote();
-                }
-            });
-
-            reminder_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu_btn.close(true);
-                    newReminder();
-                }
-            });
-
-
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -164,7 +132,6 @@ public class Navigation extends AppCompatActivity
     }
 
     public void newNote(){
-
         Intent intent = new Intent(Navigation.this, AddNote.class);
         startActivity(intent);
     }
@@ -212,6 +179,16 @@ public class Navigation extends AppCompatActivity
         if (id == R.id.logout_settings){
             logOut();
         }
+        if (id == R.id.note_setting){
+            newNote();
+        }
+        if (id == R.id.reminder_setting){
+            newReminder();
+        }
+        if (id == R.id.todo_setting){
+            newToDo();
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -221,19 +198,23 @@ public class Navigation extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-            Intent intent = new Intent(this, NotificationBase.class);
+        //lazy to rename these things.....phew!!!!!!!
+        if (id == R.id.nav_home) {
+            Intent intent = new Intent(this, Navigation.class);
+            intent.putExtra("page", 0);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(this, ToDoDetails.class));
-
-        } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(this, NewToDo.class));
-
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_notes) {
+            Intent intent = new Intent(this, Navigation.class);
+            intent.putExtra("page", 1);
+            startActivity(intent);
+        } else if (id == R.id.nav_reminders) {
+            Intent intent = new Intent(this, Navigation.class);
+            intent.putExtra("page", 2);
+            startActivity(intent);
+        } else if (id == R.id.nav_todo) {
+            Intent intent = new Intent(this, Navigation.class);
+            intent.putExtra("page", 3);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elm.login.R;
 import com.example.elm.login.model.Todo;
@@ -78,7 +79,10 @@ public class ToDo1 extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("click", "yes");
+                if (title.getText().toString().isEmpty()){
+                    Toast.makeText(getContext(), "The Title should be filled", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Todo todo = new Todo(title.getText().toString(),
                         description.getText().toString(),
                         null,

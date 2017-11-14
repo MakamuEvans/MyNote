@@ -42,6 +42,7 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
     compile 'com.github.florent37:singledateandtimepicker:1.1.5'
+    compile 'com.valdesekamdem.library:md-toast:0.9.0'
     compile 'com.android.support:support-vector-drawable:25.1.0'
     testCompile 'junit:junit:4.12'
 }

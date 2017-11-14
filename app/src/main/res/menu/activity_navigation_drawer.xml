@@ -3,21 +3,21 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@mipmap/ic_home"
+            android:id="@+id/nav_home"
+            android:icon="@mipmap/ic_action_home_white"
             android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@mipmap/ic_assignment"
+            android:id="@+id/nav_notes"
+            android:icon="@mipmap/ic_action_assignment_white"
             android:title="Notes" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Events" />
+            android:id="@+id/nav_reminders"
+            android:icon="@mipmap/ic_action_alarm_white"
+            android:title="Reminders" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Summary" />
+            android:id="@+id/nav_todo"
+            android:icon="@mipmap/ic_action_todo_white"
+            android:title="ToDO" />
     </group>
 
     <item android:title="Communicate">
@@ -28,8 +28,15 @@
                 android:title="Share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@mipmap/ic_computer"
-                android:title="Web View" />
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="Preferences" />
+            <item
+                android:id="@+id/nav_rate"
+                android:icon="@android:drawable/star_on"
+                android:title="Give us a 5 star"/>
+            <item
+                android:id="@+id/nav_credit"
+                android:title="Developer credit"/>
         </menu>
     </item>
 

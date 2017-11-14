@@ -56,5 +56,9 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="MyAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/black_overlay</item>
+    </style>
 
 </resources>

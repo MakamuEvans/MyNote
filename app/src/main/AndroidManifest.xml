@@ -57,6 +57,7 @@
 
         <activity
             android:name=".AddNote"
+            android:noHistory="true"
             android:configChanges="orientation"
             android:theme="@style/AppTheme.Nothing"
             android:windowSoftInputMode="adjustPan" />
@@ -103,7 +104,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NewReminder"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:noHistory="true"/>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />

@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.elm.login.Navigation;
 import com.example.elm.login.R;
 import com.example.elm.login.ReminderName;
 import com.example.elm.login.adapter.MilestoneAdapter;
@@ -87,7 +89,7 @@ public class ToDo2 extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_to_do2, container, false);
-        TextView add_task = (TextView) view.findViewById(R.id.add_task);
+        LinearLayout add_task = (LinearLayout) view.findViewById(R.id.add_task);
         todoId = getArguments().getString("id");
 
         IntentFilter intentFilter = new IntentFilter(TaskReceiver.ACTIION_REP);
@@ -104,6 +106,18 @@ public class ToDo2 extends Fragment{
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(milestoneAdapter);
+
+        TextView close = (TextView) view.findViewById(R.id.finish);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int page = 3;
+                Intent intent = new Intent(getActivity(), Navigation.class);
+                intent.putExtra("page", page);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
 
         add_task.setOnClickListener(new View.OnClickListener() {
             @Override

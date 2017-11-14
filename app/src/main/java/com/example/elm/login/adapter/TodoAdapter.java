@@ -102,7 +102,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.myViewHolder> 
 
     public void updateItem(Long id){
         for (Todo n: allToDo){
-            Log.e("id", String.valueOf(n.getId()));
             if (n.getId().equals(id)){
                 int position = allToDo.indexOf(n);
                 Todo todo = Todo.findById(Todo.class, id);

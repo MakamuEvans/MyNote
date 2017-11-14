@@ -138,9 +138,9 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
 
     //CRUD
     public void insert(Milestones milestones){
-        this.allTasks.add(0, milestones);
-        notifyItemInserted(0);
-        this.notifyItemRangeChanged(0, allTasks.size());
+        this.allTasks.add(allTasks.size(), milestones);
+        notifyItemInserted(allTasks.size());
+        this.notifyItemRangeChanged(allTasks.size(), allTasks.size());
     }
     public void update(Milestones milestones){
 

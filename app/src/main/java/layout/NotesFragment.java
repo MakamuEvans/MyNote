@@ -173,7 +173,7 @@ public class NotesFragment extends Fragment {
 
     public void addNew(Note note){
         if (notesAdapter!=null){
-            notesAdapter.newData(note);
+            notesAdapter.newData(note, null);
             recyclerView.smoothScrollToPosition(0);
 
         }

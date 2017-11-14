@@ -7,18 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,33 +30,35 @@ import com.example.elm.login.model.User;
 import com.example.elm.login.network.NetworkUtil;
 import com.google.gson.Gson;
 import com.orm.query.Select;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
-import layout.ReminderFragment;
-import layout.ToDo2;
 
 public class AddNote extends AppCompatActivity {
     public static final String ACTION_RESP = "com.example.elm.login.services.note.Upload";
-    EditText title, note;
-    ImageView imageView, imagePlace;
-    TextView save, update;
-    RichEditor richEditor;
-    Boolean savedStatus = false;
-    Long note_id;
-    Boolean breakStatus = false;
-    Context context;
+    private EditText title, note;
+    private ImageView imageView, imagePlace;
+    private TextView save, update;
+    private RichEditor richEditor;
+    private Boolean savedStatus = false;
+    private Long note_id;
+    private Boolean breakStatus = false;
+    private Context context;
     public static final int READ_EXTERNAL_STORAGE = 123;
     public static final int CAMERA = 124;
-    String imagePath = null;
-    String merged = null;
-    List<String> array = new ArrayList<>();
-    Boolean imageStatus = true;
-
+    private String imagePath = null;
+    private String merged = null;
+    private List<String> array = new ArrayList<>();
+    private Boolean imageStatus = true;
+    private Boolean editListener =false;
+    private Boolean editmode = false;
+    private View view1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,7 @@ public class AddNote extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         if (bundle != null){
             if (bundle.containsKey("noteId")){
+                editmode = true;
                 update.setVisibility(View.VISIBLE);
                 save.setVisibility(View.INVISIBLE);
                 note_id = intent.getExtras().getLong("noteId");
@@ -105,7 +106,6 @@ public class AddNote extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
                 onBackPressed();
-
             }
         });
 
@@ -113,7 +113,7 @@ public class AddNote extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (title.hasFocus()){
-                    Toast.makeText(getBaseContext(), "Only applicable to Note's body",Toast.LENGTH_SHORT).show();
+                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 }else {
                     richEditor.setBold();
                 }
@@ -125,7 +125,7 @@ public class AddNote extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (title.hasFocus()){
-                    Toast.makeText(getBaseContext(), "Only applicable to Note's body",Toast.LENGTH_SHORT).show();
+                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 }else {
                     richEditor.setBullets();
                 }
@@ -136,13 +136,29 @@ public class AddNote extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (title.hasFocus()){
-                    Toast.makeText(getBaseContext(), "Only applicable to Note's body",Toast.LENGTH_SHORT).show();
+                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 }else {
                     richEditor.setNumbers();
                 }
             }
         });
 
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editListener = true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override public void onTextChange(String text) {
@@ -163,11 +179,12 @@ public class AddNote extends AppCompatActivity {
                         savedStatus = false;
                     }
                 }
+
+                editListener = true;
             }
         });
 
     }
-    View view1;
 
     @Override
     public void onBackPressed() {
@@ -177,18 +194,20 @@ public class AddNote extends AppCompatActivity {
     }
 
     public void closeActivity(final View view){
-        if (title.getText().toString().isEmpty() && richEditor.getHtml() == null){
+        if (!editListener){
             AddNote.super.onBackPressed();
         }else {
-            Log.e("yow", "hehe");
-            //AlertDialog alertDialog =new AlertDialog.Builder(AddNote.this).create();
-            new AlertDialog.Builder(AddNote.this)
-                    .setTitle("You have changes!")
-                    .setMessage("Click on save to avoid losing your note")
+            new AlertDialog.Builder(AddNote.this, R.style.MyAlertDialogTheme)
+                    .setTitle("You made changes!")
+                    .setMessage("Click on Save to avoid losing your data")
                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            saveNote(view);
+                            if (editmode){
+                                updateNote(view);
+                            }else {
+                                saveNote(view);
+                            }
                         }
                     })
                     .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
@@ -212,27 +231,27 @@ public class AddNote extends AppCompatActivity {
     public void saveNote(View view) {
         String noteData;
         title = (EditText) findViewById(R.id.note_title);
-        //note = (EditText) findViewById(R.id.note_data);
         richEditor= (RichEditor) findViewById(R.id.notes_editor);
         if (richEditor.getHtml() == null){
             noteData = null;
         }else {
             noteData = richEditor.getHtml();
         }
-        //Log.e("hee", richEditor.getHtml());
 
-        String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
         if (imagePath != null){
             merged = android.text.TextUtils.join(",", array);
-            //haa
         }
+
+        //get current date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
         //save locally
         Note note2 = new Note(
                 null,
                 title.getText().toString(),
                 noteData,
                 null,
-                null,
+                dateFormat.format(date),
                 false,
                 false,
                 true,
@@ -242,48 +261,53 @@ public class AddNote extends AppCompatActivity {
                 null);
         note2.save();
 
-        Log.e("dt", note2.toString());
-
-        Intent intent = new Intent("newUpload");
+        //alert upload service of new data
+        /*Intent intent = new Intent("newUpload");
         sendBroadcast(intent);
-
+*/
+        //alert note activity to update UI
         String dt = new Gson().toJson(note2);
         Intent intent1 = new Intent();
         intent1.setAction(AddNote.ACTION_RESP);
         intent1.putExtra("note", dt);
         sendBroadcast(intent1);
-        int page = 1;
 
+        //close activity and open relevant one.
+        int page = 1;
         Intent intent2 = new Intent(this, Navigation.class);
         intent2.putExtra("page", page);
+        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);
     }
 
     public void updateNote(View view){
         String noteData;
         title = (EditText) findViewById(R.id.note_title);
-        //note = (EditText) findViewById(R.id.note_data);
         richEditor= (RichEditor) findViewById(R.id.notes_editor);
         if (richEditor.getHtml() == null){
             noteData = null;
         }else {
             noteData = richEditor.getHtml();
         }
-        //Log.e("hee", richEditor.getHtml());
 
-        String status = NetworkUtil.getConnectivityStatusString(getBaseContext());
         if (imagePath != null){
             merged = android.text.TextUtils.join(",", array);
         }
+
+        //get current date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
+
         //save locally
         Note note1 = Note.findById(Note.class, note_id);
         note1.setTitle(title.getText().toString());
         note1.setNote(noteData);
+        note1.setCreated_at(dateFormat.format(date));
         note1.setUpdateflag(true);
         note1.save();
 
-        Intent intent = new Intent("Update");
-        sendBroadcast(intent);
+       /* Intent intent = new Intent("Update");
+        sendBroadcast(intent);*/
 
         String dt = new Gson().toJson(note1);
         Intent intent1 = new Intent();

@@ -24,6 +24,7 @@ import com.example.elm.login.FullNote;
 import com.example.elm.login.Navigation;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Note;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
 import org.w3c.dom.Text;
 
@@ -171,10 +172,12 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                     if (note1.getFavourite()){
                         fav.setImageResource(R.mipmap.ic_action_pink);
-                        Toast.makeText(v.getContext(), note.getTitle()+" added to favourite", Toast.LENGTH_SHORT).show();
+                        MDToast.makeText(v.getContext(),note.getTitle()+" added to favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS ).show();
+                        //Toast.makeText(v.getContext(), note.getTitle()+" added to favourite", Toast.LENGTH_SHORT).show();
                     }else {
                         fav.setImageResource(R.mipmap.ic_action_favorite_pink);
-                        Toast.makeText(v.getContext(), note.getTitle()+" removed from favourite", Toast.LENGTH_SHORT).show();
+                        MDToast.makeText(v.getContext(),note.getTitle()+" removed from favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                        //Toast.makeText(v.getContext(), note.getTitle()+" removed from favourite", Toast.LENGTH_SHORT).show();
                     }
 
                     Intent intent = new Intent();
@@ -201,21 +204,27 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.notifyDataSetChanged();
     }
 
-    public void newData(Note note){
-        this.allnotes.add(0, note);
-        notifyItemRangeChanged(0, allnotes.size());
-        notifyItemInserted(0);
+    public void newData(Note note, Integer position){
+        if (position == null){
+            this.allnotes.add(0, note);
+            notifyItemRangeChanged(0, allnotes.size());
+            notifyItemInserted(0);
+        }else {
+            this.allnotes.add(position, note);
+            notifyItemRangeChanged(position, allnotes.size());
+            notifyItemInserted(position);
+        }
     }
 
     public void updateItem(Note note){
-        Log.e("atview", String.valueOf(note.getId()));
-        Note data = null;
         for (Note n: allnotes){
             Log.e("id", String.valueOf(n.getId()));
+            Log.e("id", String.valueOf(note.getId()));
             if (n.getId().equals(note.getId())){
-                Log.e("found", String.valueOf(allnotes.indexOf(n)));
                 int position = allnotes.indexOf(n);
-                notifyItemChanged(position, note);
+                Note update = Note.findById(Note.class, note.getId());
+                removeItem(position);
+                newData(update, position);
                 break;
             }
         }

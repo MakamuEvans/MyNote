@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +36,7 @@ import com.example.elm.login.utils.Constants;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.google.gson.Gson;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -52,10 +54,10 @@ import layout.ReminderFragment;
 public class NewReminder extends AppCompatActivity {
 
     TextView selectedDate, reminderName, reminderEarly, reminderDescription;
-    private ReminderAlarms alarmReceiver;
     private EarlyReceiver earlyReceiver;
     private TitleReceiver titleReceiver;
-    Boolean repeating =false;
+    private Boolean repeating =false;
+    private View view;
     private Spinner spinner;
     private TextView tsunday,tmonday,ttuesday,twednesday,tthursday,tfriday,tsaturday;
     private boolean ssunday=false,smonday=false,stuesday=false,swednesday=false,sthursday=false,sfriday=false,ssaturday=false;
@@ -117,7 +119,6 @@ public class NewReminder extends AppCompatActivity {
                     repeat_mode.setVisibility(View.VISIBLE);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -219,14 +220,24 @@ public class NewReminder extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.new_reminder, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                //Write your logic here
                 this.finish();
                 return true;
+            case R.id.set_reminder_setting:
+                try {
+                    setReminder(view);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -265,6 +276,10 @@ public class NewReminder extends AppCompatActivity {
         reminder_duration.setText(duration);
     }
 
+    /**
+     * put all the dates of a repeating alarm into an array
+     * @return
+     */
     public String repeatDates(){
         List<String> alarm_days = new ArrayList<>();
         if (ssunday || smonday || stuesday || swednesday || sthursday || sfriday ||ssaturday){
@@ -298,12 +313,25 @@ public class NewReminder extends AppCompatActivity {
     }
 
     public void setReminder(View view) throws ParseException {
-        //save alarm
         reminderName = (TextView) findViewById(R.id.reminder_name_activity);
         reminderEarly = (TextView) findViewById(R.id.reminder_early_activity);
         reminderDescription = (EditText) findViewById(R.id.reminder_description);
         SingleDateAndTimePicker dateTime = (SingleDateAndTimePicker) findViewById(R.id.date_picker);
         SingleDateAndTimePicker time_picker = (SingleDateAndTimePicker) findViewById(R.id.time_picker);
+
+        //is title set?
+        if (reminderName.getText().toString().isEmpty() || reminderName.getText().toString().equals("None")){
+            MDToast.makeText(getBaseContext(), "Alarm Title should be filled", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+            return;
+        }
+
+        //which type of alarm?
+        if (repeating){
+            if (repeatDates() == null){
+                MDToast.makeText(getBaseContext(), "No week days selected for repeating alarm!", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                return;
+            }
+        }
 
         String format = "MMM dd yyyy HH:mm";
         String format2 = "HH:mm";
@@ -325,14 +353,13 @@ public class NewReminder extends AppCompatActivity {
         } else {
             description = reminderDescription.getText().toString();
         }
-        //save alarm blueprint
+
+        //save actual alarm blueprint
         Alarm alarm = new Alarm(0, "actual");
         alarm.save();
 
         Calendar calendar = Calendar.getInstance();
         int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
-        Log.e("month", String.valueOf(month0));
-        //calendar.add(Calendar.SECOND, 5);
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(date)));
         calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(date)));
 
@@ -348,9 +375,11 @@ public class NewReminder extends AppCompatActivity {
 
             if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
                 calendar.add(Calendar.DAY_OF_YEAR, 1);
+                Log.e("newTime", String.valueOf(calendar.getTime()));
             }
         }
 
+        //early reminder requested?
         String prior = reminderEarly.getText().toString();
         if (!reminderEarly.getText().toString().equals("None")) {
             prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString());
@@ -367,6 +396,7 @@ public class NewReminder extends AppCompatActivity {
         intent.putExtra("create", true);
         startService(intent);
 
+        //save alarm data to db
         Reminder newReminder = new Reminder(
                 reminderName.getText().toString(),
                 date_string,
@@ -377,7 +407,8 @@ public class NewReminder extends AppCompatActivity {
                 repeatDates());
         newReminder.save();
 
-        Toast.makeText(getBaseContext(), "Reminder set to  " + date_string, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), "Reminder set to  " + date_string, Toast.LENGTH_LONG).show();
+        MDToast.makeText(getBaseContext(), "Reminder set to  "+ date_string, MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
 
         //update ui and launch relevant fragment
         String dt = new Gson().toJson(newReminder);
@@ -385,10 +416,10 @@ public class NewReminder extends AppCompatActivity {
         intent1.setAction(ReminderFragment.ReminderBroadcast.NEW_RECEIVER);
         intent1.putExtra("reminder", dt);
         sendBroadcast(intent1);
-        int page = 2;
 
         Intent intent2 = new Intent(this, Navigation.class);
-        intent2.putExtra("page", page);
+        intent2.putExtra("page", Constants.REMINDER_TAB);
+        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);
     }
 
@@ -415,7 +446,6 @@ public class NewReminder extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
         Log.e("month", String.valueOf(month0));
-        //calendar.add(Calendar.SECOND, 5);
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(date)));
         calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(date)));
 
@@ -461,6 +491,7 @@ public class NewReminder extends AppCompatActivity {
         Alarm alarm = new Alarm(0, "prior");
         alarm.save();
 
+        //prepare reminder
         Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
         intent.putExtra("calender", calendar.getTimeInMillis());
         intent.putExtra("nId", 101);

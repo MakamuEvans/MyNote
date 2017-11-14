@@ -21,13 +21,14 @@ import android.widget.Toast;
 
 import com.example.elm.login.model.Note;
 import com.google.gson.Gson;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
 import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
 
 public class FullNote extends AppCompatActivity {
-    Long note_id = null;
-    Menu menu;
+    private Long note_id = null;
+    private TextView updated_on;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +43,18 @@ public class FullNote extends AppCompatActivity {
         Note note1 = Note.findById(Note.class, note_id);
 
         //set data
-        if (note1.getTitle() == null){
+        if (note1.getTitle() == null) {
             setTitle("Empty Title");
-        }else {
+        } else {
             setTitle(note1.getTitle());
         }
-       // TextView noteDetails = (TextView) findViewById(R.id.note_details);
         RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setInputEnabled(false);
         richEditor.setHtml(note1.getNote());
-        //noteDetails.setText(note1.getNote());
+
+        updated_on = (TextView) findViewById(R.id.updated_on);
+        updated_on.setText("last updated on: " + note1.getCreated_at());
 
     }
 
@@ -62,12 +64,11 @@ public class FullNote extends AppCompatActivity {
         Note note1 = Note.findById(Note.class, note_id);
 
         //set data
-        if (note1.getTitle() == null){
+        if (note1.getTitle() == null) {
             setTitle("Empty Title");
-        }else {
+        } else {
             setTitle(note1.getTitle());
         }
-        // TextView noteDetails = (TextView) findViewById(R.id.note_details);
         RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setInputEnabled(false);
@@ -75,24 +76,25 @@ public class FullNote extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 //Write your logic here
                 this.finish();
                 return true;
             case R.id.action_favourite:
-                Toast.makeText(getBaseContext(), "fav", Toast.LENGTH_SHORT).show();
                 Note note1 = Note.findById(Note.class, note_id);
                 note1.setFavaouriteflag(true);
-                Boolean status = !note1.getFavourite() ? true:false;
+                Boolean status = !note1.getFavourite() ? true : false;
                 note1.setFavourite(status);
                 note1.save();
 
-                if (status){
+                if (status) {
                     item.setIcon(R.mipmap.ic_action_favorite_white);
-                }else {
+                    MDToast.makeText(getBaseContext(), note1.getTitle() + " added to favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS).show();
+                } else {
                     item.setIcon(R.mipmap.ic_action_favorite_border);
+                    MDToast.makeText(getBaseContext(), note1.getTitle() + " removed from favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 }
 
                 String dt = new Gson().toJson(note1);
@@ -105,13 +107,13 @@ public class FullNote extends AppCompatActivity {
                 intent.setAction("favourite");
                 getBaseContext().sendBroadcast(intent);
 
-                return  true;
+                return true;
             case R.id.action_delete:
                 Note note = Note.findById(Note.class, note_id);
 
                 new AlertDialog.Builder(this)
                         .setTitle("Are you sure?")
-                        .setMessage("You are about to delete Note "+note.getTitle())
+                        .setMessage("You are about to delete Note " + note.getTitle())
                         .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -142,7 +144,7 @@ public class FullNote extends AppCompatActivity {
                         })
                         .create()
                         .show();
-                return  true;
+                return true;
             case R.id.action_edit:
                 Intent intent1 = new Intent(FullNote.this, AddNote.class);
                 intent1.putExtra("noteId", note_id);
@@ -158,9 +160,9 @@ public class FullNote extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_full_note, menu);
         Note note1 = Note.findById(Note.class, note_id);
 
-        if (note1.getFavourite()){
+        if (note1.getFavourite()) {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_white);
-        }else {
+        } else {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_border);
         }
         return true;
