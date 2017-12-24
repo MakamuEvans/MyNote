@@ -75,7 +75,7 @@ public class AddMilestone extends DialogFragment {
         final String noteId = getArguments().getString("task_id");
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle(noteId)
+                .setTitle("Add Task")
                 .setView(view)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override

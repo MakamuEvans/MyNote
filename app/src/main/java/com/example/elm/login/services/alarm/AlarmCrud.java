@@ -16,6 +16,8 @@ import com.example.elm.login.model.Reminder;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -48,6 +50,10 @@ public class AlarmCrud extends Service {
             content = bundle.getString("content");
             nId = bundle.getInt("nId");
             calender = bundle.getLong("calender");
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(calender);
+            Log.e("Timee",formatter.format(calendar.getTime()));
             createAlarm(title, content, nId, calender, aId, repeat);
         } else { //cancel
             cancelAlarm(aId);

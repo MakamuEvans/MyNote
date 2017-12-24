@@ -89,7 +89,13 @@ public class NotificationBase extends AppCompatActivity {
             Reminder reminder = Select.from(Reminder.class)
                     .where(Condition.prop("uniquecode").eq(alarm.getId()))
                     .first();
+
             activeReminders.add(reminder);
+
+            if (reminder.getRepeat() == null){
+                reminder.setStatus("0");
+                reminder.save();
+            }
         }
 
         //register receiver

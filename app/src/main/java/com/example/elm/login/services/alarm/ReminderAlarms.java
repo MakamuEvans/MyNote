@@ -76,6 +76,7 @@ public class ReminderAlarms extends BroadcastReceiver {
                 Calendar calendar = Calendar.getInstance();
                 String weekDay = dayFormat.format(calendar.getTime());
                 if (reminder.getRepeat().contains(weekDay)) {
+                    Log.e(TAG, "WeekFOund");
                     actualAlarms(context);
                     Alarm alarm = Alarm.findById(Alarm.class, alarmId);
                     alarm.setAlarm(1);
@@ -86,6 +87,7 @@ public class ReminderAlarms extends BroadcastReceiver {
                 //raise notification flag
                 Alarm alarm = Alarm.findById(Alarm.class, alarmId);
                 alarm.setAlarm(1);
+                //alarm.set
                 alarm.save();
             }
         } else {

@@ -7,4 +7,5 @@
     <color name="colorJumbotron">#684e55</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="read_theme">#FFF1E5</color>
 </resources>

@@ -21,6 +21,7 @@ import com.example.elm.login.NewReminder;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.services.alarm.AlarmCrud;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -137,7 +138,8 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                                 updateReminder(reminder);
                                 Log.e("haha", "hahaha");
                             }else {
-                                Toast.makeText(v.getContext(), "The Alarm is in a past date", Toast.LENGTH_SHORT).show();
+                                MDToast.makeText(v.getContext(),"The Alarm is in a past date", MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
+                                //Toast.makeText(v.getContext(), "The Alarm is in a past date", Toast.LENGTH_SHORT).show();
                             }
                         }else {
                             Calendar calendar1 = Calendar.getInstance();

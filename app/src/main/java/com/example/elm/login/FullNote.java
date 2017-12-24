@@ -49,7 +49,7 @@ public class FullNote extends AppCompatActivity {
             setTitle(note1.getTitle());
         }
         RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
-        richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
+        richEditor.setEditorBackgroundColor(Color.RED);
         richEditor.setInputEnabled(false);
         richEditor.setHtml(note1.getNote());
 
