@@ -266,7 +266,7 @@ public class Navigation extends AppCompatActivity
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
                 case 0:
-                    return HomeFragment.newInstance("param1", "param2");
+                    return Home1.newInstance("param1", "param2");
                 case 1:
                     return NotesFragment.newInstance("pram", "param");
                 case 2:

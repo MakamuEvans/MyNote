@@ -146,6 +146,10 @@ public class ToDoDetails extends AppCompatActivity {
             if (milestoneAdapter != null){
                 milestoneAdapter.insert(milestones);
             }
+
+            Intent intent1 = new Intent(EventsFragment.updateTodo.SYNC_ACTION);
+            intent1.putExtra("id", Long.valueOf(milestones.getTodoid()));
+            sendBroadcast(intent1);
         }
     }
 
