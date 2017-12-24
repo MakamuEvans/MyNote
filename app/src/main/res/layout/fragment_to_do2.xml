@@ -57,6 +57,7 @@
                 android:layout_margin="15dp"
                 android:id="@+id/add_task"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

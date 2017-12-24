@@ -72,8 +72,10 @@ public class AddMilestone extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_add_milestone, null);
 
+        final String noteId = getArguments().getString("task_id");
+
         return new AlertDialog.Builder(getActivity())
-                .setTitle("Add Task")
+                .setTitle(noteId)
                 .setView(view)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -81,6 +83,7 @@ public class AddMilestone extends DialogFragment {
                         TextView title = (TextView) view.findViewById(R.id.milestone_title);
                         Intent intent = new Intent(ToDo2.TaskReceiver.ACTIION_REP);
                         intent.putExtra("title", title.getText().toString());
+                        intent.putExtra("noteId", noteId);
                         getActivity().sendBroadcast(intent);
                     }
                 })

@@ -85,6 +85,11 @@
                 <action android:name="DISPLAY_NOTIFICATION" />
             </intent-filter>
         </receiver>
+        <receiver android:name="layout.ToDo2$TaskReceiver">
+            <intent-filter>
+                <action android:name="add_new_task"/>
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".network.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver">

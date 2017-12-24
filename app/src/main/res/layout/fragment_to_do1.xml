@@ -6,41 +6,39 @@
     tools:context="layout.ToDo1">
 
     <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/next_command"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_height="wrap_content"
-                    android:hint="ToDo Title"
+                    android:hint="Add Title here"
                     android:id="@+id/todo_title"/>
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:hint="ToDo Description"
-                    android:layout_marginBottom="30dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Add Description here (Optional)"
+                    android:layout_marginBottom="10dp"
                     android:gravity="top"
-                    android:id="@+id/todo_description"
-                    android:padding="10dp"
-                    android:background="@drawable/default_input_text"/>
+                    android:id="@+id/todo_description" />
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/next_command"
-            android:layout_alignParentTop="true">
+            android:id="@+id/next_command" >
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -72,7 +70,7 @@
                         android:text="CANCEL"/>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
-        </RelativeLayout>
-    </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

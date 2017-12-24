@@ -165,6 +165,7 @@ public class ReminderAlarms extends BroadcastReceiver {
     }
 
     public void actualRepeats(Long alarmId, Context context) {
+        Log.e(TAG, "ActualRepeats Called");
         //get alarm
         Reminder reminder = Select.from(Reminder.class)
                 .where(Condition.prop("uniquecode").eq(alarmId.toString()))
@@ -199,6 +200,7 @@ public class ReminderAlarms extends BroadcastReceiver {
         calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(date1)));
 
         Boolean repeated = true;
+        Log.e(TAG, calendar.toString());
 
         //create alarm -->from a service
         Intent intent = new Intent(context, AlarmCrud.class);

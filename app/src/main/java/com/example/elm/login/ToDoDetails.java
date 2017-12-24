@@ -10,25 +10,37 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.elm.login.adapter.MilestoneAdapter;
 import com.example.elm.login.model.Milestones;
+import com.example.elm.login.model.Note;
 import com.example.elm.login.model.Todo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orm.query.Condition;
 import com.orm.query.Select;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import layout.AddMilestone;
 import layout.EventsFragment;
 
 public class ToDoDetails extends AppCompatActivity {
     private RecyclerView recyclerView;
     public List<Milestones> milestones = new ArrayList<>();
-    private MilestoneAdapter milestoneAdapter;
+    public static MilestoneAdapter milestoneAdapter;
     private newPercentage percentage;
+    private newMilestoneReceiver milestoneReceiver;
+    private milestoneRemover milestoneRemover;
+    public TextView new_task;
     Long id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +56,27 @@ public class ToDoDetails extends AppCompatActivity {
         percentage = new newPercentage();
         registerReceiver(percentage, intentFilter);
 
+        IntentFilter intentFilter1 = new IntentFilter(newMilestoneReceiver.ACTIION_REP);
+        milestoneReceiver = new newMilestoneReceiver();
+        registerReceiver(milestoneReceiver, intentFilter1);
+
+        IntentFilter intentFilter2 = new IntentFilter(milestoneRemover.ACTIION_REP);
+        milestoneRemover = new milestoneRemover();
+        registerReceiver(milestoneRemover, intentFilter2);
+
+        new_task = (TextView) findViewById(R.id.new_task);
+        new_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddMilestone addMilestone = new AddMilestone();
+                MDToast.makeText(getApplicationContext(),"haha",MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
+                Bundle args = new Bundle();
+                args.putString("task_id", id.toString());
+                addMilestone.setArguments(args);
+
+                addMilestone.show(getFragmentManager(), "Dialog");
+            }
+        });
         Todo todo1 = Todo.findById(Todo.class, id);
         TextView description = (TextView) findViewById(R.id.todo_title_details);
         if (todo1.getDescription().isEmpty()){
@@ -96,8 +129,37 @@ public class ToDoDetails extends AppCompatActivity {
         }
     }
 
-    public void updateToDoList(Long id){
+    public class newMilestoneReceiver extends BroadcastReceiver {
+        public static final String ACTIION_REP = "detailed_new_task";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("Haa", "MilestoneReceiver Called");
+            Bundle bundle = intent.getExtras();
+            String newNote = bundle.getString("milestone");
+            Gson gson = new Gson();
+            Type type = new TypeToken<Milestones>(){
+            }.getType();
+            Milestones milestones = gson.fromJson(newNote, type);
 
+            progress(Long.valueOf(milestones.getTodoid()));
+
+            if (milestoneAdapter != null){
+                milestoneAdapter.insert(milestones);
+            }
+        }
+    }
+
+    public class milestoneRemover extends BroadcastReceiver{
+        public static final String ACTIION_REP = "remove_task";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            Long id = bundle.getLong("id");
+            progress(id);
+        }
+    }
+    public void updateToDoList(Long id){
     }
 
     public class newPercentage extends BroadcastReceiver{

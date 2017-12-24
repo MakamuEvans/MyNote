@@ -1,6 +1,7 @@
 package com.example.elm.login.adapter;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,8 +54,12 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.myViewHolder> 
                 .where(Condition.prop("status").eq(1))
                 .count();
 
+        ColorStateList oldColor = holder.total_count.getTextColors();
+
         if (total == completed){
             holder.title.setTextColor(holder.itemView.getResources().getColor(R.color.colorPrimary));
+        }else {
+            holder.title.setTextColor(oldColor);
         }
         holder.total_count.setText(total.toString());
         holder.completed_count.setText(completed.toString());

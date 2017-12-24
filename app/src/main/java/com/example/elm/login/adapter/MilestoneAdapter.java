@@ -1,6 +1,7 @@
 package com.example.elm.login.adapter;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -78,6 +79,7 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
                 public void onClick(View v) {
                     final int pos = getLayoutPosition();
                     final Milestones milestones = allTasks.get(pos);
+                    final Context context = v.getContext();
 
                     new AlertDialog.Builder(v.getContext())
                             .setTitle("Are you sure?")
@@ -92,7 +94,7 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     milestones.delete();
-                                    removeTask(pos);
+                                    removeTask(pos, Long.valueOf(milestones.getTodoid()), context);
                                 }
                             })
                             .create()
@@ -146,10 +148,14 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
 
     }
 
-    public void removeTask(int position){
+    public void removeTask(int position, Long id, Context context){
         allTasks.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, allTasks.size());
+
+        Intent intent = new Intent(ToDoDetails.milestoneRemover.ACTIION_REP);
+        intent.putExtra("id", id);
+        context.sendBroadcast(intent);
     }
 
     public void delete(int position){
