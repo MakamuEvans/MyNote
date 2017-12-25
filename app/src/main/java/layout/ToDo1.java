@@ -15,7 +15,11 @@ import android.widget.Toast;
 
 import com.example.elm.login.R;
 import com.example.elm.login.model.Todo;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
+import com.valdesekamdem.library.mdtoast.MDToast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,11 +72,33 @@ public class ToDo1 extends Fragment {
         }
     }
 
+    private AdView adView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_to_do1, container, false);
+
+        adView = (AdView) view.findViewById(R.id.Todo1adView);
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                adView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+        });
+
         TextView next= (TextView) view.findViewById(R.id.todo_next);
         final EditText title = (EditText) view.findViewById(R.id.todo_title);
         final EditText description = (EditText) view.findViewById(R.id.todo_description);
@@ -80,7 +106,8 @@ public class ToDo1 extends Fragment {
             @Override
             public void onClick(View v) {
                 if (title.getText().toString().isEmpty()){
-                    Toast.makeText(getContext(), "The Title should be filled", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "The Title should be filled", Toast.LENGTH_SHORT).show();
+                    MDToast.makeText(getContext(),"Title can not be blank!",MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                     return;
                 }
                 Todo todo = new Todo(title.getText().toString(),

@@ -286,13 +286,16 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:layout_width="match_parent"
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ReminderadView"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Reminder"
-            android:onClick="setReminder"
-            android:background="@drawable/default_input_text"
-            android:layout_alignParentBottom="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_ad_unit_id">
+        </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>
 

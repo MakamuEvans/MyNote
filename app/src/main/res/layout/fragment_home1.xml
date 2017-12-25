@@ -17,6 +17,22 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    app:adSize="LARGE_BANNER"
+                    app:adUnitId="@string/banner_ad_unit_id">
+                </com.google.android.gms.ads.AdView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/read_theme"
                 android:padding="10dp"
@@ -31,6 +47,7 @@
                     android:layout_width="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_height="20dp"
+                    android:id="@+id/expand_notes"
                     android:src="@mipmap/ic_expand" />
             </RelativeLayout>
 
@@ -61,6 +78,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/total_notes"
                                 android:text="10"
                                 android:textSize="40dp"/>
 
@@ -92,6 +110,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/week_notes"
                                 android:text="3"
                                 android:textSize="30dp"/>
 
@@ -124,6 +143,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="4"
+                                android:id="@+id/favourite_notes"
                                 android:textSize="30dp"/>
 
                             <TextView
@@ -136,12 +156,13 @@
                     </android.support.v7.widget.CardView>
 
                 </LinearLayout>
+
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@color/read_theme"
                 android:padding="10dp"
                 android:tag="sticky">
 
@@ -153,6 +174,7 @@
                     android:layout_width="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_height="20dp"
+                    android:id="@+id/expand_reminders"
                     android:src="@mipmap/ic_expand" />
             </RelativeLayout>
 
@@ -184,6 +206,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="18"
+                                android:id="@+id/total_alarms"
                                 android:textSize="40dp"/>
 
                             <TextView
@@ -215,6 +238,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10"
+                                android:id="@+id/week_alarms"
                                 android:textSize="30dp"/>
 
                             <TextView
@@ -246,6 +270,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="4"
+                                android:id="@+id/active_alarms"
                                 android:textSize="30dp"/>
 
                             <TextView
@@ -280,6 +305,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="(4 , 2)"
+                                android:id="@+id/type_alarms"
                                 android:textSize="30dp"/>
 
                             <TextView
@@ -307,6 +333,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2"
+                                android:id="@+id/missed_alarms"
                                 android:textSize="30dp"/>
 
                             <TextView
@@ -319,12 +346,27 @@
                     </android.support.v7.widget.CardView>
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.gms.ads.AdView
+                        android:id="@+id/adView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        app:adSize="FLUID"
+                        app:adUnitId="@string/banner_ad_unit_id">
+                    </com.google.android.gms.ads.AdView>
+                </RelativeLayout>
+
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorJumbotron"
+                android:background="@color/read_theme"
                 android:padding="10dp"
                 android:tag="sticky">
 
@@ -336,6 +378,7 @@
                     android:layout_width="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_height="20dp"
+                    android:id="@+id/expand_todo"
                     android:src="@mipmap/ic_expand" />
             </RelativeLayout>
 

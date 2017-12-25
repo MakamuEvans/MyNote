@@ -1,12 +1,28 @@
 package com.example.elm.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.elm.login.model.Note;
+import com.example.elm.login.model.Reminder;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 /**
@@ -18,6 +34,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Home1 extends Fragment {
+    private TextView total_notes,week_notes,fav_notes,total_alarms,week_alarms, active_alarms,type_alarms,missed_alarms;
+    private ImageView expandToDo,expandNotes,expandReminders;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,12 +77,125 @@ public class Home1 extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    private AdView mAdView,mAdView1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home1, container, false);
+        View view =  inflater.inflate(R.layout.fragment_home1, container, false);
+
+        mAdView = (AdView) view.findViewById(R.id.adView);
+        mAdView.setVisibility(View.GONE);
+        mAdView1 = (AdView) view.findViewById(R.id.adView2);
+        mAdView1.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView1.loadAd(adRequest);
+
+        mAdView1.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mAdView1.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                mAdView1.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                mAdView1.setVisibility(View.GONE);
+            }
+        });
+        mAdView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mAdView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                mAdView.setVisibility(View.GONE);
+            }
+        });
+
+        total_notes = (TextView) view.findViewById(R.id.total_notes);
+        week_notes = (TextView) view.findViewById(R.id.week_notes);
+        fav_notes = (TextView) view.findViewById(R.id.favourite_notes);
+
+        total_alarms = (TextView) view.findViewById(R.id.total_alarms);
+        week_alarms = (TextView) view.findViewById(R.id.week_alarms);
+        active_alarms = (TextView) view.findViewById(R.id.active_alarms);
+        type_alarms = (TextView) view.findViewById(R.id.type_alarms);
+
+        expandToDo = (ImageView) view.findViewById(R.id.expand_todo);
+        expandNotes = (ImageView) view.findViewById(R.id.expand_notes);
+        expandReminders = (ImageView) view.findViewById(R.id.expand_reminders);
+        expandToDo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Navigation.class);
+                intent.putExtra("page", 3);
+                startActivity(intent);
+            }
+        });
+        expandNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Navigation.class);
+                intent.putExtra("page", 1);
+                startActivity(intent);
+            }
+        });
+        expandReminders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Navigation.class);
+                intent.putExtra("page", 2);
+                startActivity(intent);
+            }
+        });
+
+        init();
+
+        return view;
+    }
+
+    private void init(){
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+
+        total_notes.setText(String.valueOf(Select.from(Note.class).count()));
+        fav_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("favourite").eq("1")).count()));
+        week_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("createdAt").gt(formatter.format(cal.getTime().getTime()))).count()));
+
+        total_alarms.setText(String.valueOf(Select.from(Reminder.class).count()));
+        active_alarms.setText(String.valueOf(Select.from(Reminder.class).where(Condition.prop("status").eq("1")).count()));
+        String repeating = String.valueOf(Select.from(Reminder.class).where(Condition.prop("repeat").isNull()).count());
+        String oneTime = String.valueOf(Select.from(Reminder.class).where(Condition.prop("repeat").isNotNull()).count());
+
+        type_alarms.setText("("+repeating+" , "+oneTime+")");
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

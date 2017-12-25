@@ -35,6 +35,9 @@ import com.example.elm.login.services.alarm.ReminderAlarms;
 import com.example.elm.login.utils.Constants;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
@@ -58,6 +61,7 @@ public class NewReminder extends AppCompatActivity {
     private TitleReceiver titleReceiver;
     private Boolean repeating =false;
     private View view;
+    private AdView adView;
     private Spinner spinner;
     private TextView tsunday,tmonday,ttuesday,twednesday,tthursday,tfriday,tsaturday;
     private boolean ssunday=false,smonday=false,stuesday=false,swednesday=false,sthursday=false,sfriday=false,ssaturday=false;
@@ -67,6 +71,27 @@ public class NewReminder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_reminder);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //
+        adView = (AdView) findViewById(R.id.ReminderadView);
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                adView.setVisibility(View.GONE);
+            }
+        });
+
 
         //initialize repeaters
         tmonday = (TextView) findViewById(R.id.repeat_monday);
