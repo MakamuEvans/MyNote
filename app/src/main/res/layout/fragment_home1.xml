@@ -34,7 +34,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/read_theme"
+                android:background="@color/colorPrimary"
                 android:padding="10dp"
                 android:tag="sticky">
 
@@ -65,6 +65,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:layout_weight=".4"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -97,6 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -129,6 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -162,7 +165,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/read_theme"
+                android:background="@color/colorPrimary"
                 android:padding="10dp"
                 android:tag="sticky">
 
@@ -193,6 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight=".4"
+                        android:minHeight="100dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
 
@@ -224,6 +228,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -256,6 +261,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -291,6 +297,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".6"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -319,6 +326,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -353,6 +361,7 @@
                     <com.google.android.gms.ads.AdView
                         android:id="@+id/adView2"
                         android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_alignParentBottom="true"
@@ -366,7 +375,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/read_theme"
+                android:background="@color/colorPrimary"
                 android:padding="10dp"
                 android:tag="sticky">
 
@@ -397,6 +406,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight=".4"
+                        android:minHeight="100dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
 
@@ -427,6 +437,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -462,6 +473,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:layout_weight=".4"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -493,6 +505,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
+                        android:minHeight="100dp"
                         android:padding="3dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
@@ -525,6 +538,7 @@
                         android:layout_weight=".3"
                         android:layout_margin="5dp"
                         android:padding="3dp"
+                        android:minHeight="100dp"
                         android:background="@color/colorError"
                         app:cardElevation="10dp">
 
