@@ -99,8 +99,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                 public void onClick(View v) {
                     int position = getLayoutPosition();
                     Reminder reminder = allReminders.get(position);
-                    Log.e("adapterstatus", reminder.getStatus());
-                    if (reminder.getStatus().equals("0")){
+                    if (!reminder.getStatus()){
                         //attempt to make the alarm active
                         Intent intent = new Intent(v.getContext(), AlarmCrud.class);
                         //handle date first
@@ -126,13 +125,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                             if (calendar.getTimeInMillis() > now.getTimeInMillis()){
                                 intent.putExtra("calender", calendar.getTimeInMillis());
                                 intent.putExtra("nId", 100);
-                                intent.putExtra("aId", reminder.getUniquecode());
+                                intent.putExtra("aId", reminder.getId());
                                 intent.putExtra("title", reminder.getTitle());
                                 intent.putExtra("content", reminder.getDescription());
                                 intent.putExtra("create", true);
                                 v.getContext().startService(intent);
                                 //update db
-                                reminder.setStatus("1");
+                                reminder.setStatus(false);
                                 reminder.save();
                                 //update ui
                                 updateReminder(reminder);
@@ -152,13 +151,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                             }
                             intent.putExtra("calender", calendar.getTimeInMillis());
                             intent.putExtra("nId", 100);
-                            intent.putExtra("aId", reminder.getUniquecode());
+                            intent.putExtra("aId", reminder.getId());
                             intent.putExtra("title", reminder.getTitle());
                             intent.putExtra("content", reminder.getDescription());
                             intent.putExtra("create", true);
                             v.getContext().startService(intent);
                             //update db
-                            reminder.setStatus("1");
+                            reminder.setStatus(true);
                             reminder.save();
                             //update ui
                             updateReminder(reminder);
@@ -170,10 +169,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                         //deactivate alarm
                         Intent intent = new Intent(v.getContext(), AlarmCrud.class);
                         intent.putExtra("create", false);
-                        intent.putExtra("aId", reminder.getUniquecode());
+                        intent.putExtra("aId", reminder.getId());
                         v.getContext().startService(intent);
                         //update db
-                        reminder.setStatus("0");
+                        reminder.setStatus(false);
                         reminder.save();
                         //update ui
                         updateReminder(reminder);

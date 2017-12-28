@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.elm.login.model.Reminder;
+import com.example.elm.login.utils.Constants;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -49,6 +50,8 @@ public class AlarmCrud extends Service {
             title = bundle.getString("title");
             content = bundle.getString("content");
             nId = bundle.getInt("nId");
+            if (nId == Constants.earlyReminder)
+                Log.e("AtherereCreate", String.valueOf(nId));
             calender = bundle.getLong("calender");
             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
             Calendar calendar = Calendar.getInstance();
@@ -69,6 +72,7 @@ public class AlarmCrud extends Service {
     }
 
     public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat) {
+        Log.e("AtherereC", title+content+nId+aId);
         Intent intent = new Intent("DISPLAY_NOTIFICATION");
         intent.putExtra("title", title);
         intent.putExtra("repeat", repeat);
@@ -76,7 +80,7 @@ public class AlarmCrud extends Service {
         intent.putExtra("notificationId", nId);
         intent.putExtra("alarmId", aId);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), Integer.parseInt(aId.toString()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), Integer.parseInt(nId+aId.toString()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(calender);

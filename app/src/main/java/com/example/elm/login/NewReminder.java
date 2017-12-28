@@ -28,7 +28,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.elm.login.model.Alarm;
 import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.services.alarm.AlarmCrud;
@@ -462,6 +461,7 @@ public class NewReminder extends AppCompatActivity {
     }
 
     public String priorReminder(String prior, String title, Long id) throws ParseException {
+        Log.e("Atherere", "Prior called");
         SingleDateAndTimePicker dateTime = (SingleDateAndTimePicker) findViewById(R.id.date_picker);
         SingleDateAndTimePicker time_picker = (SingleDateAndTimePicker) findViewById(R.id.time_picker);
 
@@ -538,11 +538,13 @@ public class NewReminder extends AppCompatActivity {
         intent.putExtra("calender", calendar.getTimeInMillis());
         intent.putExtra("nId", Constants.earlyReminder);
         intent.putExtra("aId", alarmReminder.getId());
+        intent.putExtra("repeat", repeating);
         intent.putExtra("title", title);
         intent.putExtra("content", "Ready? You have  a Reminder in the next " + time);
         intent.putExtra("create", true);
         startService(intent);
 
+        Log.e("Atherere", "done");
         return prior;
     }
 }

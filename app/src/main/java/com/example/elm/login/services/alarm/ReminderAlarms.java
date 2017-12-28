@@ -24,7 +24,6 @@ import com.example.elm.login.Navigation;
 import com.example.elm.login.NewReminder;
 import com.example.elm.login.NotificationBase;
 import com.example.elm.login.R;
-import com.example.elm.login.model.Alarm;
 import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.utils.Constants;
@@ -62,6 +61,8 @@ public class ReminderAlarms extends BroadcastReceiver {
         alarmId = bundle.getLong("alarmId");
         repeat = bundle.getBoolean("repeat");
 
+        Log.e("Atherere", String.valueOf(nId));
+
         //get type of notification -->early reminder n actual?
         if (nId == Constants.actualReminder) {
             //actual
@@ -93,6 +94,7 @@ public class ReminderAlarms extends BroadcastReceiver {
             } else {
                 Reminder reminder = Reminder.findById(Reminder.class, alarmId);
                 reminder.setActive(true);
+                reminder.setStatus(false);
                 reminder.save();
                 actualAlarms(context);
                /* //raise notification flag
@@ -103,6 +105,7 @@ public class ReminderAlarms extends BroadcastReceiver {
             }
         } else {
             //early reminder
+            Log.e("Atherere", "Early Reminder");
             AlarmReminder alarmReminder = AlarmReminder.findById(AlarmReminder.class, alarmId);
             alarmReminder.setActive(true);
             alarmReminder.save();
@@ -117,11 +120,13 @@ public class ReminderAlarms extends BroadcastReceiver {
         int count;
         SharedPreferences sharedPreferences = null;
         count = context.getSharedPreferences("myPref", 0).getInt("alarmReminders", 0);
-        count = (int) Select.from(AlarmReminder.class).where(Condition.prop("active").eq(true)).count();
+        count = (int) Select.from(AlarmReminder.class).where(Condition.prop("active").eq("1")).count();
 
         //set action responses
         Intent resultIntent = new Intent(context, NotificationBase.class);
+        resultIntent.putExtra("notification", true);
         Intent openReminder = new Intent(context, NotificationBase.class);
+        openReminder.putExtra("notification", true);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //prepare notification
@@ -130,19 +135,16 @@ public class ReminderAlarms extends BroadcastReceiver {
                 .setContentTitle("myCheck: New Reminder(s)!")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setAutoCancel(true)
-                .addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent)
-                .addAction(R.mipmap.ic_action_close, "Got it!", pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
 
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         System.out.println(count);
         //handle notification putting in mind other active similar notifications
-        if (count == 0) {
-            SharedPreferences.Editor pref = context.getSharedPreferences("myPref", 0).edit();
-            pref.putInt("alarmReminders", 1);
-            pref.apply();
+        if (count == 1) {
 
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
             stackBuilder.addParentStack(NotificationBase.class);
@@ -152,14 +154,13 @@ public class ReminderAlarms extends BroadcastReceiver {
                             0,
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
+            builder.addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent);
+           // builder.addAction(R.mipmap.ic_action_close, "Got it!", null);
             builder.setContentText(nTitle);
             builder.setContentIntent(resultPendingIntent);
             mNotificationManager.notify(101, builder.build());
         } else {
-            SharedPreferences.Editor pref = context.getSharedPreferences("myPref", 0).edit();
-            pref.putInt("alarmReminders", count + 1);
-            pref.apply();
-
+            builder.addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent);
             builder.setContentText("You have " + count + " Reminders");
             mNotificationManager.notify(101, builder.build());
         }

@@ -1,5 +1,6 @@
 package com.example.elm.login;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.elm.login.adapter.NotificationsAdapter;
-import com.example.elm.login.model.Alarm;
+import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.services.alarm.AlarmCrud;
 import com.example.elm.login.services.alarm.SnoozeCounter;
@@ -40,12 +41,13 @@ public class NotificationBase extends AppCompatActivity {
     private static final String TAG = NotificationBase.class.getSimpleName();
     public static boolean activityOpen = false;
     public List<Reminder> activeReminders = new ArrayList<>();
-    public List<Reminder> activeAlarms = new ArrayList<>();
+    public List<AlarmReminder> activeNotifications = new ArrayList<>();
     TextView notificationsCount;
     ImageView close_button, pause_media;
     int count = 0;
     CountDownTimer interval, muter;
     private newNotification newNotificationn;
+    Boolean notification = false;
     Vibrator vibrator;
     long[] pattern = {0, 2000, 1000};
     protected PowerManager.WakeLock wakeLock;
@@ -76,26 +78,37 @@ public class NotificationBase extends AppCompatActivity {
 
         setContentView(R.layout.activity_notification_base);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+            if (bundle.containsKey("notification"))
+                notification = intent.getExtras().getBoolean("notification");
+
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.cancel(101);
+        }
+
         SharedPreferences preferences1 = getSharedPreferences("myPref", 0);
         SharedPreferences.Editor editor1 = preferences1.edit();
         editor1.putBoolean("soundAlarm", true);
         editor1.commit();
         //get active notifications
-        activeReminders = Select.from(Reminder.class)
-                .where(Condition.prop("active").eq(true))
-                .list();
-       /* for (Reminder alarm : activeAlarms) {
-            Reminder reminder = Select.from(Reminder.class)
-                    .where(Condition.prop("uniquecode").eq(alarm.getId()))
-                    .first();
+        if (!notification) {
+            activeReminders = Select.from(Reminder.class)
+                    .where(Condition.prop("active").eq("1"))
+                    .list();
+        } else {
+            activeNotifications = Select.from(AlarmReminder.class)
+                    .where(Condition.prop("active").eq("1"))
+                    .list();
 
-            activeReminders.add(reminder);
-
-            if (reminder.getRepeat() == null){
-                reminder.setStatus("0");
-                reminder.save();
+            for (AlarmReminder reminder : activeNotifications
+                    ) {
+                activeReminders.add(Reminder.findById(Reminder.class, reminder.getId()));
             }
-        }*/
+        }
+
 
         //register receiver
         IntentFilter intentFilter = new IntentFilter(newNotificationn.ACTION);
@@ -108,7 +121,7 @@ public class NotificationBase extends AppCompatActivity {
         horizontalInfiniteCycleViewPager.setAdapter(new NotificationsAdapter(getBaseContext(), false, activeReminders));
 
         notificationsCount = (TextView) findViewById(R.id.notifications_count);
-        notificationsCount.setText("You have " + activeAlarms.size() + " Reminder(s)");
+        notificationsCount.setText("You have " + activeReminders.size() + " Reminder(s)");
         close_button = (ImageView) findViewById(R.id.reminders_close);
         pause_media = (ImageView) findViewById(R.id.stop_alarm);
 
@@ -121,13 +134,25 @@ public class NotificationBase extends AppCompatActivity {
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeReminders = Select.from(Reminder.class)
-                        .where(Condition.prop("active").eq(true))
-                        .list();
-                for (Reminder alarm : activeAlarms) {
-                    alarm.setActive(false);
-                    alarm.save();
+                if (!notification) {
+                    activeReminders = Select.from(Reminder.class)
+                            .where(Condition.prop("active").eq("1"))
+                            .list();
+                    for (Reminder alarm : activeReminders) {
+                        alarm.setActive(false);
+                        alarm.save();
+                    }
+                } else {
+                    activeNotifications = Select.from(AlarmReminder.class)
+                            .where(Condition.prop("active").eq("1"))
+                            .list();
+                    for (AlarmReminder reminder : activeNotifications
+                            ) {
+                        reminder.setActive(false);
+                        reminder.save();
+                    }
                 }
+
                 destroy();
             }
         });
@@ -135,7 +160,8 @@ public class NotificationBase extends AppCompatActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         Uri ringtone = Uri.parse(sp.getString("notifications_new_message_ringtone", "content://settings/system/ringtone"));
         System.out.println(ringtone);
-        playSound(this, ringtone);
+        if (!notification)
+            playSound(this, ringtone);
 
     }
 
@@ -162,9 +188,10 @@ public class NotificationBase extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Log.e(TAG,"onResume Called");
+        Log.e(TAG, "onResume Called");
         super.onResume();
     }
+
     private MediaPlayer mMediaPlayer;
 
     private void playSound(Context context, Uri alert) {
@@ -183,7 +210,7 @@ public class NotificationBase extends AppCompatActivity {
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(pattern, 0);
 
-            PowerManager.WakeLock wakeLock = ((PowerManager)getSystemService(POWER_SERVICE)).newWakeLock(
+            PowerManager.WakeLock wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
                     PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm"
             );
             wakeLock.acquire(10000);
