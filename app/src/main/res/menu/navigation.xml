@@ -14,6 +14,11 @@
         app:showAsAction="never"/>
 
     <item
+        android:title="Share"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_share"/>
+
+    <item
         android:title="New"
         app:showAsAction="always">
         <menu>

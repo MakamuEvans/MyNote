@@ -17,7 +17,9 @@ public class Constants {
     final public static int one_hour = 60*1000*60;
     final public static int two_hours = 60*1000*120;
 
-    final public static int ACTUAL_ALARM = 100;
+    //notification types
+    public static final int earlyReminder = 101;
+    public static final int actualReminder = 100;
 
     public String uniqueCode(){
         Date presentTime_Date = Calendar.getInstance().getTime();

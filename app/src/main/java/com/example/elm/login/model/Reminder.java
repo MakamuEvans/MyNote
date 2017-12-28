@@ -13,22 +13,22 @@ import java.sql.Date;
 public class Reminder extends SugarRecord {
     private String title;
     private String time;
-    private String prior;
+    private Boolean prior;
     private String description;
-    private String status;
-    private Long uniquecode;
+    private Boolean status;
+    private Boolean active;
     private String repeat;
 
     public Reminder() {
     }
 
-    public Reminder(String title, String time, String prior, String description, String status, Long uniquecode, String repeat) {
+    public Reminder(String title, String time, Boolean prior, String description, Boolean status, Boolean active, String repeat) {
         this.title = title;
         this.time = time;
         this.prior = prior;
         this.description = description;
         this.status = status;
-        this.uniquecode = uniquecode;
+        this.active = active;
         this.repeat = repeat;
     }
 
@@ -48,11 +48,11 @@ public class Reminder extends SugarRecord {
         this.time = time;
     }
 
-    public String getPrior() {
+    public Boolean getPrior() {
         return prior;
     }
 
-    public void setPrior(String prior) {
+    public void setPrior(Boolean prior) {
         this.prior = prior;
     }
 
@@ -64,20 +64,12 @@ public class Reminder extends SugarRecord {
         this.description = description;
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    public Long getUniquecode() {
-        return uniquecode;
-    }
-
-    public void setUniquecode(Long uniquecode) {
-        this.uniquecode = uniquecode;
     }
 
     public String getRepeat() {
@@ -88,15 +80,23 @@ public class Reminder extends SugarRecord {
         this.repeat = repeat;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "Reminder{" +
                 "title='" + title + '\'' +
                 ", time='" + time + '\'' +
-                ", prior='" + prior + '\'' +
+                ", prior=" + prior +
                 ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                ", uniquecode=" + uniquecode +
+                ", status=" + status +
+                ", active=" + active +
                 ", repeat='" + repeat + '\'' +
                 '}';
     }

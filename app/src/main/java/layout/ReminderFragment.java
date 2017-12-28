@@ -17,6 +17,9 @@ import com.example.elm.login.R;
 import com.example.elm.login.adapter.ReminderAdapter;
 import com.example.elm.login.model.Note;
 import com.example.elm.login.model.Reminder;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orm.query.Select;
@@ -80,6 +83,7 @@ public class ReminderFragment extends Fragment {
     }
 
     private ReminderBroadcast reminderBroadcast;
+    private AdView adView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,6 +91,25 @@ public class ReminderFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_reminder, container, false);
         View view=inflater.inflate(R.layout.fragment_reminder,container, false);
+
+        adView = (AdView) view.findViewById(R.id.ReminderadView);
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                adView.setVisibility(View.GONE);
+            }
+        });
 
         IntentFilter intentFilter = new IntentFilter(ReminderBroadcast.NEW_RECEIVER);
         reminderBroadcast = new ReminderBroadcast();

@@ -40,7 +40,7 @@ public class NotificationBase extends AppCompatActivity {
     private static final String TAG = NotificationBase.class.getSimpleName();
     public static boolean activityOpen = false;
     public List<Reminder> activeReminders = new ArrayList<>();
-    public List<Alarm> activeAlarms = new ArrayList<>();
+    public List<Reminder> activeAlarms = new ArrayList<>();
     TextView notificationsCount;
     ImageView close_button, pause_media;
     int count = 0;
@@ -81,11 +81,10 @@ public class NotificationBase extends AppCompatActivity {
         editor1.putBoolean("soundAlarm", true);
         editor1.commit();
         //get active notifications
-        activeAlarms = Select.from(Alarm.class)
-                .where(Condition.prop("type").eq("actual"))
-                .where(Condition.prop("alarm").eq(1))
+        activeReminders = Select.from(Reminder.class)
+                .where(Condition.prop("active").eq(true))
                 .list();
-        for (Alarm alarm : activeAlarms) {
+       /* for (Reminder alarm : activeAlarms) {
             Reminder reminder = Select.from(Reminder.class)
                     .where(Condition.prop("uniquecode").eq(alarm.getId()))
                     .first();
@@ -96,7 +95,7 @@ public class NotificationBase extends AppCompatActivity {
                 reminder.setStatus("0");
                 reminder.save();
             }
-        }
+        }*/
 
         //register receiver
         IntentFilter intentFilter = new IntentFilter(newNotificationn.ACTION);
@@ -122,12 +121,11 @@ public class NotificationBase extends AppCompatActivity {
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeAlarms = Select.from(Alarm.class)
-                        .where(Condition.prop("type").eq("actual"))
-                        .where(Condition.prop("alarm").eq(1))
+                activeReminders = Select.from(Reminder.class)
+                        .where(Condition.prop("active").eq(true))
                         .list();
-                for (Alarm alarm : activeAlarms) {
-                    alarm.setAlarm(0);
+                for (Reminder alarm : activeAlarms) {
+                    alarm.setActive(false);
                     alarm.save();
                 }
                 destroy();

@@ -25,7 +25,9 @@ import com.example.elm.login.NewReminder;
 import com.example.elm.login.NotificationBase;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Alarm;
+import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
+import com.example.elm.login.utils.Constants;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.google.gson.Gson;
 import com.orm.query.Condition;
@@ -61,37 +63,50 @@ public class ReminderAlarms extends BroadcastReceiver {
         repeat = bundle.getBoolean("repeat");
 
         //get type of notification -->early reminder n actual?
-        if (nId == 100) {
+        if (nId == Constants.actualReminder) {
             //actual
+            //handle alarms differently for api 19 and above due to OS changes
             if (Build.VERSION.SDK_INT >= 19) {
                 if (repeat) {
                     actualRepeats(alarmId, context);
                 }
             }
+            //is alarm repeating?
             if (repeat) {
-                Reminder reminder = Select.from(Reminder.class)
-                        .where(Condition.prop("uniquecode").eq(alarmId))
-                        .first();
+                //find the alarm
+                Reminder reminder = Reminder.findById(Reminder.class, alarmId);
+                //set date format
                 SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
                 Calendar calendar = Calendar.getInstance();
                 String weekDay = dayFormat.format(calendar.getTime());
                 if (reminder.getRepeat().contains(weekDay)) {
-                    Log.e(TAG, "WeekFOund");
+                    Log.e(TAG, "WeekFound");
+                    //set reminder as active
+                    reminder.setActive(true);
+                    reminder.save();
+
                     actualAlarms(context);
-                    Alarm alarm = Alarm.findById(Alarm.class, alarmId);
+                   /* Alarm alarm = Alarm.findById(Alarm.class, alarmId);
                     alarm.setAlarm(1);
-                    alarm.save();
+                    alarm.save();*/
                 }
             } else {
+                Reminder reminder = Reminder.findById(Reminder.class, alarmId);
+                reminder.setActive(true);
+                reminder.save();
                 actualAlarms(context);
-                //raise notification flag
+               /* //raise notification flag
                 Alarm alarm = Alarm.findById(Alarm.class, alarmId);
                 alarm.setAlarm(1);
                 //alarm.set
-                alarm.save();
+                alarm.save();*/
             }
         } else {
             //early reminder
+            AlarmReminder alarmReminder = AlarmReminder.findById(AlarmReminder.class, alarmId);
+            alarmReminder.setActive(true);
+            alarmReminder.save();
+
             reminderAlarms(nTitle, nContent, context);
         }
     }
@@ -102,6 +117,7 @@ public class ReminderAlarms extends BroadcastReceiver {
         int count;
         SharedPreferences sharedPreferences = null;
         count = context.getSharedPreferences("myPref", 0).getInt("alarmReminders", 0);
+        count = (int) Select.from(AlarmReminder.class).where(Condition.prop("active").eq(true)).count();
 
         //set action responses
         Intent resultIntent = new Intent(context, NotificationBase.class);
@@ -111,8 +127,9 @@ public class ReminderAlarms extends BroadcastReceiver {
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.mipmap.logo)
-                .setContentTitle("myNote: New Reminder(s)!")
+                .setContentTitle("myCheck: New Reminder(s)!")
                 .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true)
                 .addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent)
                 .addAction(R.mipmap.ic_action_close, "Got it!", pendingIntent);
@@ -121,7 +138,6 @@ public class ReminderAlarms extends BroadcastReceiver {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         System.out.println(count);
-        System.out.println("haha");
         //handle notification putting in mind other active similar notifications
         if (count == 0) {
             SharedPreferences.Editor pref = context.getSharedPreferences("myPref", 0).edit();
@@ -192,8 +208,10 @@ public class ReminderAlarms extends BroadcastReceiver {
             description = reminder.getDescription();
         }
 
-        if (!reminder.getPrior().equals("None")) {
-            reminderRepeats(reminder.getPrior(), reminder.getTitle(), date1, alarmId, context);
+        if (!reminder.getPrior()) {
+            //AlarmReminder.find(AlarmReminder.class, "reminderid=")
+            AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).first();
+            reminderRepeats(alarmReminder.getTime(), reminder.getTitle(), date1, alarmId, context);
         }
 
         Calendar calendar = Calendar.getInstance();
@@ -207,7 +225,7 @@ public class ReminderAlarms extends BroadcastReceiver {
         //create alarm -->from a service
         Intent intent = new Intent(context, AlarmCrud.class);
         intent.putExtra("calender", calendar.getTimeInMillis());
-        intent.putExtra("nId", 100);
+        intent.putExtra("nId", Constants.actualReminder);
         intent.putExtra("repeat", repeated);
         intent.putExtra("aId", alarmId);
         intent.putExtra("title", reminder.getTitle());
@@ -249,7 +267,7 @@ public class ReminderAlarms extends BroadcastReceiver {
 
         Intent intent = new Intent(context, AlarmCrud.class);
         intent.putExtra("calender", calendar.getTimeInMillis());
-        intent.putExtra("nId", 101);
+        intent.putExtra("nId", Constants.earlyReminder);
         intent.putExtra("aId", alarmId);
         intent.putExtra("title", title);
         intent.putExtra("content", "Prepared? You have  a Reminder in the next " + time);

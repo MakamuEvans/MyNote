@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elm.login.model.Alarm;
+import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.services.alarm.AlarmCrud;
 import com.example.elm.login.services.alarm.ReminderAlarms;
@@ -337,7 +338,13 @@ public class NewReminder extends AppCompatActivity {
         }
     }
 
+    /**
+     * set reminder
+     * @param view
+     * @throws ParseException
+     */
     public void setReminder(View view) throws ParseException {
+        //initialize data
         reminderName = (TextView) findViewById(R.id.reminder_name_activity);
         reminderEarly = (TextView) findViewById(R.id.reminder_early_activity);
         reminderDescription = (EditText) findViewById(R.id.reminder_description);
@@ -358,12 +365,15 @@ public class NewReminder extends AppCompatActivity {
             }
         }
 
+        //date format
         String format = "MMM dd yyyy HH:mm";
         String format2 = "HH:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(format2, Locale.ENGLISH);
         String date_string;
         Date date;
+
+        //get date depending on ReminderType
         if (!repeating){
             date_string = simpleDateFormat.format(dateTime.getDate());
             date = simpleDateFormat.parse(simpleDateFormat.format(dateTime.getDate()));
@@ -373,15 +383,13 @@ public class NewReminder extends AppCompatActivity {
         }
         String description = null;
 
+        //Sort out description
         if (reminderDescription.getText().toString().equals(null)) {
             description = "Its Time!. Hello from myNote";
         } else {
             description = reminderDescription.getText().toString();
         }
 
-        //save actual alarm blueprint
-        Alarm alarm = new Alarm(0, "actual");
-        alarm.save();
 
         Calendar calendar = Calendar.getInstance();
         int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
@@ -406,31 +414,36 @@ public class NewReminder extends AppCompatActivity {
 
         //early reminder requested?
         String prior = reminderEarly.getText().toString();
+        Boolean priorSet = false;
         if (!reminderEarly.getText().toString().equals("None")) {
-            prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString());
+            priorSet = true;
         }
-
-        //create alarm -->from a service
-        Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
-        intent.putExtra("calender", calendar.getTimeInMillis());
-        intent.putExtra("nId", 100);
-        intent.putExtra("repeat", repeating);
-        intent.putExtra("aId", alarm.getId());
-        intent.putExtra("title", reminderName.getText().toString());
-        intent.putExtra("content", description);
-        intent.putExtra("create", true);
-        startService(intent);
 
         //save alarm data to db
         Reminder newReminder = new Reminder(
                 reminderName.getText().toString(),
                 date_string,
-                prior,
+                priorSet,
                 reminderDescription.getText().toString(),
-                "1",
-                Long.parseLong(alarm.getId().toString()),
+                true,
+                false,
                 repeatDates());
         newReminder.save();
+
+        if (priorSet){
+            prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString(), newReminder.getId());
+        }
+
+        //create alarm -->from a service
+        Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
+        intent.putExtra("calender", calendar.getTimeInMillis());
+        intent.putExtra("nId", Constants.actualReminder);
+        intent.putExtra("repeat", repeating);
+        intent.putExtra("aId", newReminder.getId());
+        intent.putExtra("title", reminderName.getText().toString());
+        intent.putExtra("content", description);
+        intent.putExtra("create", true);
+        startService(intent);
 
         //Toast.makeText(getBaseContext(), "Reminder set to  " + date_string, Toast.LENGTH_LONG).show();
         MDToast.makeText(getBaseContext(), "Reminder set to  "+ date_string, MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
@@ -448,7 +461,7 @@ public class NewReminder extends AppCompatActivity {
         startActivity(intent2);
     }
 
-    public String priorReminder(String prior, String title) throws ParseException {
+    public String priorReminder(String prior, String title, Long id) throws ParseException {
         SingleDateAndTimePicker dateTime = (SingleDateAndTimePicker) findViewById(R.id.date_picker);
         SingleDateAndTimePicker time_picker = (SingleDateAndTimePicker) findViewById(R.id.time_picker);
 
@@ -512,17 +525,21 @@ public class NewReminder extends AppCompatActivity {
         }
         Log.e("calendar", String.valueOf(calendar.get(Calendar.MINUTE)));
 
-        //save alarm blueprint
-        Alarm alarm = new Alarm(0, "prior");
-        alarm.save();
+        //save reminder
+        AlarmReminder alarmReminder = new AlarmReminder(
+                id,
+                prior,
+                false
+        );
+        alarmReminder.save();
 
         //prepare reminder
         Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
         intent.putExtra("calender", calendar.getTimeInMillis());
-        intent.putExtra("nId", 101);
-        intent.putExtra("aId", alarm.getId());
+        intent.putExtra("nId", Constants.earlyReminder);
+        intent.putExtra("aId", alarmReminder.getId());
         intent.putExtra("title", title);
-        intent.putExtra("content", "Prepared? You have  a Reminder in the next " + time);
+        intent.putExtra("content", "Ready? You have  a Reminder in the next " + time);
         intent.putExtra("create", true);
         startService(intent);
 

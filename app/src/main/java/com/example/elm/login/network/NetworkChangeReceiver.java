@@ -27,13 +27,13 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                 context.startService(uploadintent);
 
                 Intent fav = new Intent(context, SyncFavourite.class);
-                context.startService(fav);
+                //context.startService(fav);
 
                 Intent delete = new Intent(context, SyncDelete.class);
-                context.startService(delete);
+                //context.startService(delete);
 
                 Intent update = new Intent(context, SyncUpdate.class);
-                context.startService(update);
+                //context.startService(update);
             }
             if (intent.getAction().equals("newUpload")){
                 Intent uploadintent = new Intent(context, SyncUpload.class);
@@ -41,15 +41,15 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             }
             if (intent.getAction().equals("favourite")){
                 Intent fav = new Intent(context, SyncFavourite.class);
-                context.startService(fav);
+               // context.startService(fav);
             }
             if (intent.getAction().equals("delete")){
                 Intent fav = new Intent(context, SyncDelete.class);
-                context.startService(fav);
+                //context.startService(fav);
             }
             if (intent.getAction().equals("Update")){
                 Intent fav = new Intent(context, SyncUpdate.class);
-                context.startService(fav);
+                //context.startService(fav);
             }
         }else {
             Log.e("internet", "Intaneti imelosti");

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,9 @@ import com.example.elm.login.FullNote;
 import com.example.elm.login.Navigation;
 import com.example.elm.login.R;
 import com.example.elm.login.model.Note;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
 import org.w3c.dom.Text;
@@ -39,13 +43,17 @@ import java.util.Map;
  */
 
 public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    Context context;
+    private Context context;
+    Navigation navigation;
     private static final int EMPTY_VIEW = 1;
     private static final int DATA_VIEW = 2;
+    private static final int AD_VIEW = 3;
     public List<Note> allnotes;
+    private String add = "ca-app-pub-3940256099942544/6300978111";
 
-    public NotesAdapter(List<Note> allnotes) {
+    public NotesAdapter(List<Note> allnotes, Context context) {
         this.allnotes = allnotes;
+        this.context = context;
     }
 
     @Override
@@ -56,19 +64,34 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.note_zero, parent, false);
             holder = new emptyViewHolder(view);
-        }else {
+            return  holder;
+        }else if (viewType ==AD_VIEW){
+            AdView adView = new AdView(context);
+            adView.setAdSize(AdSize.BANNER);
+            adView.setAdUnitId(add);
+            float density = context.getResources().getDisplayMetrics().density;
+            int height = Math.round(AdSize.BANNER.getHeight()*density);
+            AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.FILL_PARENT, height);
+            adView.setLayoutParams(params);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            view = adView;
+            holder = new emptyViewHolder(view);
+            return  holder;
+        } else {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.activity_note_card, parent, false);
             holder = new myViewHolder(view);
+            return  holder;
         }
-        return  holder;
+
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //context = holder
         int viewType = getItemViewType(position);
-        if (viewType == EMPTY_VIEW){
+        if (viewType == EMPTY_VIEW || viewType == AD_VIEW){
 
         }else {
             myViewHolder holder1 = (myViewHolder) holder;
@@ -116,7 +139,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public int getItemViewType(int position) {
         if (allnotes.size() == 0){
             return EMPTY_VIEW;
-        }else {
+        } else if (allnotes.get(position) == null){
+            return AD_VIEW;
+        }  else {
             return DATA_VIEW;
         }
     }
