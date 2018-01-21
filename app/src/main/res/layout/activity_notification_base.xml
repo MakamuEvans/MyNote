@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="myNote"
+                    android:text="@string/app_name"
                     android:textSize="45dp"
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
@@ -51,28 +51,64 @@
                     android:layout_width="wrap_content"
                     android:id="@+id/notifications_count"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="You have one Reminder"
                     android:textColor="@android:color/white"
                     />
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/stop_alarm"
-            android:src="@android:drawable/ic_media_pause"/>
-        <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
-            android:id="@+id/hicvp"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
-            app:icvp_scroll_duration="250"
-            app:icvp_center_page_scale_offset="30dp"
-            app:icvp_min_page_scale_offset="5dp"
-            app:icvp_max_page_scale="0.8"
-            app:icvp_min_page_scale="0.55"
-            app:icvp_medium_scaled="false"/>
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
+                android:id="@+id/hicvp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".7"
+                app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
+                app:icvp_scroll_duration="250"
+                app:icvp_center_page_scale_offset="30dp"
+                app:icvp_min_page_scale_offset="5dp"
+                app:icvp_max_page_scale="0.8"
+                app:icvp_min_page_scale="0.55"
+                app:icvp_medium_scaled="false"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/reminder_action"
+                android:visibility="gone"
+                android:layout_height="0dp"
+                android:layout_weight=".3"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:text="Snooze"
+                    android:id="@+id/snooze_alarm"
+                    android:layout_margin="5dp"
+                    android:textSize="20dp"
+                    android:background="@drawable/default_button_white"
+                    android:layout_weight=".5"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:textSize="20dp"
+                    android:id="@+id/close_alarm"
+                    android:layout_margin="5dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/default_button"
+                    android:text="Close"
+                    android:layout_weight=".5"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
 </FrameLayout>

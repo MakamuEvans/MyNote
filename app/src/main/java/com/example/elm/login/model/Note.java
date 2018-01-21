@@ -12,6 +12,7 @@ public class Note extends SugarRecord {
     private String note;
     private String status;
     private String created_at;
+    private String updated_at;
     private Boolean favourite;
     private Boolean favaouriteflag;
     private Boolean uploadflag;
@@ -24,12 +25,13 @@ public class Note extends SugarRecord {
     public Note() {
     }
 
-    public Note(String noteid, String title, String note, String status, String created_at, Boolean favourite, Boolean favaouriteflag, Boolean uploadflag, Boolean updateflag, Boolean deleteflag, String image, String imageurl) {
+    public Note(String noteid, String title, String note, String status, String created_at, String updated_at, Boolean favourite, Boolean favaouriteflag, Boolean uploadflag, Boolean updateflag, Boolean deleteflag, String image, String imageurl) {
         this.noteid = noteid;
         this.title = title;
         this.note = note;
         this.status = status;
         this.created_at = created_at;
+        this.updated_at = updated_at;
         this.favourite = favourite;
         this.favaouriteflag = favaouriteflag;
         this.uploadflag = uploadflag;
@@ -37,6 +39,14 @@ public class Note extends SugarRecord {
         this.deleteflag = deleteflag;
         this.image = image;
         this.imageurl = imageurl;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 
     public String getNoteid() {

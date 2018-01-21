@@ -48,6 +48,7 @@ import com.example.elm.login.model.Todo;
 import com.example.elm.login.model.User;
 import com.example.elm.login.preferences.BasicAuth;
 import com.github.clans.fab.FloatingActionMenu;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.io.IOException;
@@ -123,11 +124,6 @@ public class Navigation extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
-            /*User user = Select.from(User.class)
-                    .first();
-            View v =navigationView.getHeaderView(0);
-            TextView usernname = (TextView) v.findViewById(R.id.nav_username);
-            usernname.setText(user.getLastname()+" ,, "+user.getFirstname());*/
         }
     }
 
@@ -191,6 +187,21 @@ public class Navigation extends AppCompatActivity
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * determine the fragment to be loaded in home screen.
+     * depends if there is data in DB
+     * @return
+     */
+    private Boolean homeVersion(){
+        if (Select.from(Note.class).where(Condition.prop("deleteflag").eq(0)).count() > 0 ||
+                Select.from(Reminder.class).count() > 0 ||
+                Select.from(Todo.class).count() > 0){
+            return true;
+        }else {
+            return  false;
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -266,7 +277,11 @@ public class Navigation extends AppCompatActivity
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
                 case 0:
-                    return Home1.newInstance("param1", "param2");
+                    if (homeVersion()){
+                        return Home1.newInstance("param1", "param2");
+                    }else {
+                        return HomeFragment.newInstance("param1", "param2");
+                    }
                 case 1:
                     return NotesFragment.newInstance("pram", "param");
                 case 2:
@@ -274,7 +289,11 @@ public class Navigation extends AppCompatActivity
                 case 3:
                     return EventsFragment.newInstance("pram", "param");
                 default:
-                    return HomeFragment.newInstance("param1", "param2");
+                    if (homeVersion()){
+                        return Home1.newInstance("param1", "param2");
+                    }else {
+                        return HomeFragment.newInstance("param1", "param2");
+                    }
 
             }
         }

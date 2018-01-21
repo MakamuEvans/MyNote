@@ -9,8 +9,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,8 @@ import layout.NotesFragment;
 public class FullNote extends AppCompatActivity {
     private Long note_id = null;
     private TextView updated_on;
+    private RichEditor richEditor;
+    Note note1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class FullNote extends AppCompatActivity {
 
         Intent intent = getIntent();
         note_id = intent.getExtras().getLong("noteId");
-        Note note1 = Note.findById(Note.class, note_id);
+        note1 = Note.findById(Note.class, note_id);
 
         //set data
         if (note1.getTitle() == null) {
@@ -48,13 +52,13 @@ public class FullNote extends AppCompatActivity {
         } else {
             setTitle(note1.getTitle());
         }
-        RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
-        richEditor.setEditorBackgroundColor(Color.RED);
+        richEditor = (RichEditor) findViewById(R.id.notes_editor);
+       // richEditor.setEditorBackgroundColor(Color.RED);
         richEditor.setInputEnabled(false);
         richEditor.setHtml(note1.getNote());
 
         updated_on = (TextView) findViewById(R.id.updated_on);
-        updated_on.setText("last updated on: " + note1.getCreated_at());
+        updated_on.setText("last updated on: " + note1.getUpdated_at());
 
     }
 
@@ -78,6 +82,12 @@ public class FullNote extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_share:
+                final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.setType("text/html");
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "HAHA");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(note1.getNote()));
+                startActivity(Intent.createChooser(emailIntent, "Send to:"));
             case android.R.id.home:
                 //Write your logic here
                 this.finish();

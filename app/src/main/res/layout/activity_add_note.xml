@@ -49,6 +49,16 @@
                     android:src="@mipmap/ic_action_format_bold"
                     android:textSize="20dp" />
 
+                <ImageView
+                    android:id="@+id/editor_italic"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="30dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_height="22dp"
+                    android:clickable="true"
+                    android:src="@mipmap/ic_italic"
+                    android:textSize="20dp" />
 
                 <ImageView
                     android:id="@+id/editor_bullets"
@@ -70,24 +80,12 @@
 
 
                 <ImageView
-                    android:id="@+id/insert_image"
+                    android:id="@+id/strike_through"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:clickable="true"
-                    android:onClick="galleryImage"
-                    android:src="@mipmap/ic_action_photo" />
-
-                <ImageView
-                    android:id="@+id/take_image"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:clickable="true"
-                    android:onClick="cameraImage"
-                    android:src="@mipmap/ic_action_camera_alt"
-                    android:textSize="20dp" />
+                    android:src="@mipmap/ic_strike" />
 
             </LinearLayout>
         </LinearLayout>
@@ -122,6 +120,7 @@
                     android:layout_alignParentRight="true"
                     android:background="@drawable/default_input_text"
                     android:onClick="updateNote"
+                    android:elevation="5dp"
                     android:text="Update"
                     android:textSize="18dp"
                     android:textStyle="bold" />

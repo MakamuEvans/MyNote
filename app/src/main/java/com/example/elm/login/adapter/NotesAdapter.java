@@ -44,7 +44,6 @@ import java.util.Map;
 
 public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
-    Navigation navigation;
     private static final int EMPTY_VIEW = 1;
     private static final int DATA_VIEW = 2;
     private static final int AD_VIEW = 3;
@@ -97,7 +96,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             myViewHolder holder1 = (myViewHolder) holder;
             Note notes = allnotes.get(position);
             holder1.title.setText(notes.getTitle());
-            holder1.dated.setText(notes.getCreated_at());
+            holder1.dated.setText(notes.getUpdated_at());
             String htmlText = notes.getNote();
             if (htmlText != null){
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -243,13 +242,13 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void updateItem(Note note){
         for (Note n: allnotes){
-            Log.e("id", String.valueOf(n.getId()));
-            Log.e("id", String.valueOf(note.getId()));
             if (n.getId().equals(note.getId())){
                 int position = allnotes.indexOf(n);
-                Note update = Note.findById(Note.class, note.getId());
+                /*Note update = Note.findById(Note.class, note.getId());
                 removeItem(position);
-                newData(update, position);
+                newData(update, position);*/
+                //int position = allnotes.indexOf(r);
+                notifyItemChanged(position, note);
                 break;
             }
         }

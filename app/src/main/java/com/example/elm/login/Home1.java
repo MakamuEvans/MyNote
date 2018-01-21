@@ -178,9 +178,9 @@ public class Home1 extends Fragment {
         cal.clear(Calendar.MILLISECOND);
         cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 
-        total_notes.setText(String.valueOf(Select.from(Note.class).count()));
-        fav_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("favourite").eq("1")).count()));
-        week_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("createdAt").gt(formatter.format(cal.getTime().getTime()))).count()));
+        total_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("deleteflag").eq("0")).count()));
+        fav_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("deleteflag").eq("0")).where(Condition.prop("favourite").eq("1")).count()));
+        week_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("deleteflag").eq("0")).where(Condition.prop("createdAt").gt(formatter.format(cal.getTime().getTime()))).count()));
 
         total_alarms.setText(String.valueOf(Select.from(Reminder.class).count()));
         active_alarms.setText(String.valueOf(Select.from(Reminder.class).where(Condition.prop("status").eq("1")).count()));

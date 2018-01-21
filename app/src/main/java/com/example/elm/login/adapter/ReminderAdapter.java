@@ -19,8 +19,11 @@ import android.widget.Toast;
 
 import com.example.elm.login.NewReminder;
 import com.example.elm.login.R;
+import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.services.alarm.AlarmCrud;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.text.ParseException;
@@ -34,7 +37,9 @@ import java.util.Locale;
  * Created by elm on 8/10/17.
  */
 
-public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myViewHolder> {
+public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int EMPTY_VIEW = 1;
+    private static final int DATA_VIEW = 2;
     public List<Reminder> allReminders;
     Context context;
 
@@ -42,9 +47,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
         this.allReminders = allReminders;
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder{
-        public TextView title,time,dated, card_text,repeat_days;
+    public class myViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, time, dated, card_text, repeat_days;
         public ImageView reminderStatus, delete;
+
         public myViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.reminder_title);
@@ -58,9 +64,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (card_text.getVisibility() == View.VISIBLE){
+                    if (card_text.getVisibility() == View.VISIBLE) {
                         card_text.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         card_text.setVisibility(View.VISIBLE);
                     }
                 }
@@ -74,7 +80,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
 
                     new AlertDialog.Builder(v.getContext())
                             .setTitle("Are you sure?")
-                            .setMessage("You are about to delete Alarm "+reminder.getTitle())
+                            .setMessage("You are about to delete Alarm " + reminder.getTitle())
                             .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -99,7 +105,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                 public void onClick(View v) {
                     int position = getLayoutPosition();
                     Reminder reminder = allReminders.get(position);
-                    if (!reminder.getStatus()){
+                    if (!reminder.getStatus()) {
                         //attempt to make the alarm active
                         Intent intent = new Intent(v.getContext(), AlarmCrud.class);
                         //handle date first
@@ -109,7 +115,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                         Calendar calendar = Calendar.getInstance();
                         try {
                             date = convert_simpleDateFormat.parse(reminder.getTime());
-                            if (reminder.getRepeat() == null){
+                            if (reminder.getRepeat() == null) {
                                 int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
                                 calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(date)));
                                 calendar.set(Calendar.MONTH, month0);
@@ -121,32 +127,32 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                             e.printStackTrace();
                         }
                         Calendar now = Calendar.getInstance();
-                        if (reminder.getRepeat() == null){
-                            if (calendar.getTimeInMillis() > now.getTimeInMillis()){
-                                intent.putExtra("calender", calendar.getTimeInMillis());
+                        if (reminder.getRepeat() == null) {
+                            if (calendar.getTimeInMillis() > now.getTimeInMillis()) {
+                               /* intent.putExtra("calender", calendar.getTimeInMillis());
                                 intent.putExtra("nId", 100);
                                 intent.putExtra("aId", reminder.getId());
                                 intent.putExtra("title", reminder.getTitle());
                                 intent.putExtra("content", reminder.getDescription());
                                 intent.putExtra("create", true);
-                                v.getContext().startService(intent);
+                                v.getContext().startService(intent);*/
                                 //update db
-                                reminder.setStatus(false);
+                                reminder.setStatus(true);
                                 reminder.save();
                                 //update ui
                                 updateReminder(reminder);
                                 Log.e("haha", "hahaha");
-                            }else {
-                                MDToast.makeText(v.getContext(),"The Alarm is in a past date", MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
+                            } else {
+                                MDToast.makeText(v.getContext(), "The Alarm is in a past date", MDToast.LENGTH_SHORT, MDToast.TYPE_INFO).show();
                                 //Toast.makeText(v.getContext(), "The Alarm is in a past date", Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            Calendar calendar1 = Calendar.getInstance();
+                        } else {
+                           /* Calendar calendar1 = Calendar.getInstance();
                             Calendar calendar2 = Calendar.getInstance();
                             calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
                             calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
 
-                            if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
+                            if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()) {
                                 calendar.add(Calendar.DAY_OF_YEAR, 1);
                             }
                             intent.putExtra("calender", calendar.getTimeInMillis());
@@ -156,21 +162,20 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
                             intent.putExtra("content", reminder.getDescription());
                             intent.putExtra("create", true);
                             v.getContext().startService(intent);
-                            //update db
+                            //update db*/
                             reminder.setStatus(true);
                             reminder.save();
                             //update ui
                             updateReminder(reminder);
-                            Log.e("haha", "hahaha");
                         }
 
 
-                    }else if (reminder.getStatus().equals("1")){
+                    } else {
                         //deactivate alarm
-                        Intent intent = new Intent(v.getContext(), AlarmCrud.class);
+                       /* Intent intent = new Intent(v.getContext(), AlarmCrud.class);
                         intent.putExtra("create", false);
                         intent.putExtra("aId", reminder.getId());
-                        v.getContext().startService(intent);
+                        v.getContext().startService(intent);*/
                         //update db
                         reminder.setStatus(false);
                         reminder.save();
@@ -183,34 +188,76 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
     }
 
     @Override
-    public ReminderAdapter.myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_reminder_card, parent, false);
-        return new myViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        RecyclerView.ViewHolder holder;
+        if (viewType != EMPTY_VIEW){
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_reminder_card, parent, false);
+            holder = new myViewHolder(view);
+            return holder;
+        }else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.alarm_zero, parent, false);
+            holder = new emptyViewHolder(view);
+            return holder;
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(ReminderAdapter.myViewHolder holder, int position) {
-        Reminder reminder = allReminders.get(position);
-        holder.title.setText(reminder.getTitle());
-        holder.time.setText(reminder.getTime());
-        holder.card_text.setVisibility(View.GONE);
-        holder.repeat_days.setText(reminder.getRepeat());
-        if (reminder.getDescription().equals("")){
-            holder.card_text.setText("No description provided");
-        }else {
-            holder.card_text.setText(reminder.getDescription());
-        }
-        if (reminder.getStatus().equals("0")){
-            holder.reminderStatus.setImageResource(R.mipmap.ic_action_access_time);
-        }else {
-            holder.reminderStatus.setImageResource(R.mipmap.ic_action_access_alarm);
-        }
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        int viewType = getItemViewType(position);
+        if (viewType != EMPTY_VIEW) {
+            myViewHolder holder = (myViewHolder) viewHolder;
+            Reminder reminder = allReminders.get(position);
+            holder.title.setText(reminder.getTitle());
+            holder.time.setText(reminder.getTime());
+            holder.card_text.setVisibility(View.GONE);
+            holder.repeat_days.setText(reminder.getRepeat());
+            if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).count() > 0){
+                AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).first();
+                int value = Integer.parseInt(alarmReminder.getTime().replaceAll("[^0-9]", ""));
 
-        setFadeAnimation(holder.itemView);
+                String before = null;
+                if (value == 5) {
+                    before = "-5 Mins";
+                }
+                if (value == 10) {
+                    before = "-10 Mins";
+                }
+                if (value == 30) {
+                    before = "-30 Mins";
+                }
+                if (value == 1) {
+                    before = "-1 Hr";
+                }
+                if (value == 2) {
+                    before = "-2 Hrs";
+                }
+
+                if (before != null)
+                    holder.dated.setText(before);
+            }
+
+            if (reminder.getDescription().equals("")) {
+                holder.card_text.setText("No description provided");
+            } else {
+                holder.card_text.setText(reminder.getDescription());
+            }
+            if (!reminder.getStatus()) {
+                holder.reminderStatus.setImageResource(R.mipmap.ic_action_access_time);
+            } else {
+                holder.reminderStatus.setImageResource(R.mipmap.ic_action_access_alarm);
+            }
+
+            setFadeAnimation(holder.itemView);
+        }else {
+
+        }
     }
 
-    private void setFadeAnimation(View view){
+    private void setFadeAnimation(View view) {
         ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(800);
         view.startAnimation(animation);
@@ -218,19 +265,37 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
 
     @Override
     public int getItemCount() {
+        if (allReminders.size() == 0)
+            return 1;
         return allReminders.size();
     }
 
-    public void newData(Reminder reminder){
+    @Override
+    public int getItemViewType(int position) {
+        if (allReminders.size() == 0) {
+            return EMPTY_VIEW;
+        } else {
+            return DATA_VIEW;
+        }
+    }
+
+    public class emptyViewHolder extends RecyclerView.ViewHolder {
+
+        public emptyViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public void newData(Reminder reminder) {
         this.allReminders.add(0, reminder);
         notifyItemInserted(0);
         notifyItemRangeChanged(0, allReminders.size());
     }
 
-    public void updateReminder(Reminder reminder){
+    public void updateReminder(Reminder reminder) {
         Reminder data = null;
-        for (Reminder r:allReminders){
-            if (r.getId().equals(reminder.getId())){
+        for (Reminder r : allReminders) {
+            if (r.getId().equals(reminder.getId())) {
                 int position = allReminders.indexOf(r);
                 notifyItemChanged(position, reminder);
                 break;
@@ -238,7 +303,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.myView
         }
     }
 
-    public void removeReminder(int position){
+    public void removeReminder(int position) {
         allReminders.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, allReminders.size());

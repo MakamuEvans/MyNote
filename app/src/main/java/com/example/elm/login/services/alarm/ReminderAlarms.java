@@ -72,10 +72,11 @@ public class ReminderAlarms extends BroadcastReceiver {
                     actualRepeats(alarmId, context);
                 }
             }
+            Reminder reminder;
             //is alarm repeating?
             if (repeat) {
                 //find the alarm
-                Reminder reminder = Reminder.findById(Reminder.class, alarmId);
+                reminder = Reminder.findById(Reminder.class, alarmId);
                 //set date format
                 SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
                 Calendar calendar = Calendar.getInstance();
@@ -85,41 +86,46 @@ public class ReminderAlarms extends BroadcastReceiver {
                     //set reminder as active
                     reminder.setActive(true);
                     reminder.save();
-
-                    actualAlarms(context);
-                   /* Alarm alarm = Alarm.findById(Alarm.class, alarmId);
-                    alarm.setAlarm(1);
-                    alarm.save();*/
+                    if (reminder.getStatus())
+                        actualAlarms(context);
                 }
             } else {
-                Reminder reminder = Reminder.findById(Reminder.class, alarmId);
+                reminder = Reminder.findById(Reminder.class, alarmId);
                 reminder.setActive(true);
+                reminder.save();
+                if (reminder.getStatus())
+                    actualAlarms(context);
+
                 reminder.setStatus(false);
                 reminder.save();
-                actualAlarms(context);
-               /* //raise notification flag
-                Alarm alarm = Alarm.findById(Alarm.class, alarmId);
-                alarm.setAlarm(1);
-                //alarm.set
-                alarm.save();*/
+            }
+
+            //clear from notification
+            if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(alarmId)).count() > 0){
+                AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(alarmId)).first();
+                alarmReminder.setActive(false);
+                alarmReminder.save();
+                reminderAlarms(reminder.getTitle(), context);
             }
         } else {
             //early reminder
-            Log.e("Atherere", "Early Reminder");
             AlarmReminder alarmReminder = AlarmReminder.findById(AlarmReminder.class, alarmId);
-            alarmReminder.setActive(true);
-            alarmReminder.save();
 
-            reminderAlarms(nTitle, nContent, context);
+            //get parent alarm
+            Reminder reminder = Reminder.findById(Reminder.class, alarmReminder.getReminderid());
+            if (reminder.getStatus()) {
+                alarmReminder.setActive(true);
+                alarmReminder.save();
+                reminderAlarms(nTitle, context);
+            }
         }
     }
 
     //handle reminders to alarms
-    public void reminderAlarms(String nTitle, String nContent, Context context) {
+    public void reminderAlarms(String nTitle, Context context) {
         //check if there are other active reminders.
         int count;
         SharedPreferences sharedPreferences = null;
-        count = context.getSharedPreferences("myPref", 0).getInt("alarmReminders", 0);
         count = (int) Select.from(AlarmReminder.class).where(Condition.prop("active").eq("1")).count();
 
         //set action responses
@@ -144,7 +150,9 @@ public class ReminderAlarms extends BroadcastReceiver {
 
         System.out.println(count);
         //handle notification putting in mind other active similar notifications
-        if (count == 1) {
+        if (count == 0){
+            mNotificationManager.cancel(101);
+        }else if (count == 1) {
 
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
             stackBuilder.addParentStack(NotificationBase.class);
@@ -155,7 +163,7 @@ public class ReminderAlarms extends BroadcastReceiver {
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
             builder.addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent);
-           // builder.addAction(R.mipmap.ic_action_close, "Got it!", null);
+            // builder.addAction(R.mipmap.ic_action_close, "Got it!", null);
             builder.setContentText(nTitle);
             builder.setContentIntent(resultPendingIntent);
             mNotificationManager.notify(101, builder.build());
@@ -186,9 +194,7 @@ public class ReminderAlarms extends BroadcastReceiver {
     public void actualRepeats(Long alarmId, Context context) {
         Log.e(TAG, "ActualRepeats Called");
         //get alarm
-        Reminder reminder = Select.from(Reminder.class)
-                .where(Condition.prop("uniquecode").eq(alarmId.toString()))
-                .first();
+        Reminder reminder = Reminder.findById(Reminder.class, alarmId);
         //get dates right
         String time_format = "HH:mm";
         final SimpleDateFormat time_simpleDateFormat = new SimpleDateFormat(time_format, Locale.ENGLISH);
@@ -209,7 +215,7 @@ public class ReminderAlarms extends BroadcastReceiver {
             description = reminder.getDescription();
         }
 
-        if (!reminder.getPrior()) {
+        if (reminder.getPrior()) {
             //AlarmReminder.find(AlarmReminder.class, "reminderid=")
             AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).first();
             reminderRepeats(alarmReminder.getTime(), reminder.getTitle(), date1, alarmId, context);

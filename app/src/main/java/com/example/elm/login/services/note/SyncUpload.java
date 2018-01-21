@@ -56,7 +56,7 @@ public class SyncUpload extends IntentService {
         Log.e("ai", notes.toString());
         count = notes.size();
         if (count >0){
-            upload();
+            //upload();
         }
     }
 

@@ -116,12 +116,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
     }
-
+*/
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
@@ -131,6 +131,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            this.finish();
+            return  true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -144,11 +160,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
      * {@inheritDoc}
      */
-    @Override
+    /*@Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
-    }
+    }*/
+
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setupActionBar();
+            getFragmentManager().beginTransaction().replace(android.R.id.content,
+                    new GeneralPreferenceFragment()).commit();
+
+        }
+
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        public static class GeneralPreferenceFragment extends PreferenceFragment {
+            @Override
+            public void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                addPreferencesFromResource(R.xml.pref_general);
+
+            }
+
+        }
+
+
+
+
+
+
 
     /**
      * This method stops fragment injection in malicious applications.
@@ -165,7 +208,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    /*@TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -178,7 +221,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("example_text"));
-            /*bindPreferenceSummaryToValue(findPreference("example_list"));*/
+            *//*bindPreferenceSummaryToValue(findPreference("example_list"));*//*
         }
 
         @Override
@@ -190,7 +233,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
     /**
      * This fragment shows notification preferences only. It is used when the

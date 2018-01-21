@@ -418,6 +418,10 @@ public class NewReminder extends AppCompatActivity {
             priorSet = true;
         }
 
+        //current_date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date today = new Date();
+
         //save alarm data to db
         Reminder newReminder = new Reminder(
                 reminderName.getText().toString(),
@@ -426,7 +430,9 @@ public class NewReminder extends AppCompatActivity {
                 reminderDescription.getText().toString(),
                 true,
                 false,
-                repeatDates());
+                repeatDates(),
+                dateFormat.format(today),
+                dateFormat.format(today));
         newReminder.save();
 
         if (priorSet){

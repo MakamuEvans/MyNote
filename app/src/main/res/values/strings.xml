@@ -30,23 +30,24 @@
 
     <string name="tutorial_note">
         \n
-        With myNote, you can \n
-        1. Write your simple notes and save them. \n
-        2. Ability to append images to your notes. \n
-        3. Configure on-line backup of your notes. \n
+        With myNote, you can \n \n
+        1. Write your Notes on the GO! and save them. \n
+        2. Format your Notes to your preference. \n
+        3. Track all your Notes. \n
     </string>
 
     <string name="tutorial_alarm">
         \n
-        With myReminders, you can \n
-        1. Create and set alarms. \n
+        With myReminders, you can \n \n
+        1. Create and set Reminders so you never miss an important moment. \n
+        2. Create Repeating Alarms, ensuring you are up on time.
     </string>
 
     <string name="tutorial_todo">
         \n
-        With myToDo, you can \n
+        With myToDo, you can \n \n
         1. Create ToDo activities \n
-        2. Add tasks to e each ToDo activity. \n
+        2. Add tasks to each ToDo activity. \n
         3. Track all the tasks and lets keep tab on your progress. \n
     </string>
 
@@ -196,7 +197,7 @@
     </string>
 
     <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_default_display_name">Buddy</string>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -213,22 +214,51 @@
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
+    <string name="pref_title_ring_duration">Ring Duration</string>
+    <string name="pref_title_snooze_duration">Snooze Duration</string>
+    <string name="pref_title_morning">Ideal Morning Hour</string>
+    <string name="pref_title_evening">Ideal Evening Hour</string>
+    <string-array name="pref_ring_duration">
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
     </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
+    <string-array name="pref_timing_morning">
+        <item>0500hrs</item>
+        <item>0600hrs</item>
+        <item>0700hrs</item>
+        <item>0800hrs</item>
+    </string-array>
+    <string-array name="pref_timing_evening">
+        <item>1700hrs</item>
+        <item>1800hrs</item>
+        <item>1900hrs</item>
+        <item>2000hrs</item>
+    </string-array>
+    <string-array name="pref_snooze_duration">
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+    </string-array>
+    <string-array name="pref_ring_duration_values">
         <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="pref_timing_values">
+        <item>5</item>
+        <item>5</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="pref_snooze_duration_values">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
     </string-array>
 
     <string-array name="list_preference_entries">

@@ -20,6 +20,7 @@ import com.orm.query.Select;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by elm on 8/15/17.
@@ -80,7 +81,10 @@ public class AlarmCrud extends Service {
         intent.putExtra("notificationId", nId);
         intent.putExtra("alarmId", aId);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), Integer.parseInt(nId+aId.toString()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddSSS");
+        String format = simpleDateFormat.format(new Date());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), Integer.parseInt(nId+aId.toString()+format), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(calender);

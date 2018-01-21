@@ -19,7 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.elm.login.adapter.NotificationsAdapter;
@@ -43,7 +45,8 @@ public class NotificationBase extends AppCompatActivity {
     public List<Reminder> activeReminders = new ArrayList<>();
     public List<AlarmReminder> activeNotifications = new ArrayList<>();
     TextView notificationsCount;
-    ImageView close_button, pause_media;
+    ImageView close_button;
+    private Button close_b,pause_media;
     int count = 0;
     CountDownTimer interval, muter;
     private newNotification newNotificationn;
@@ -51,6 +54,7 @@ public class NotificationBase extends AppCompatActivity {
     Vibrator vibrator;
     long[] pattern = {0, 2000, 1000};
     protected PowerManager.WakeLock wakeLock;
+    private LinearLayout reminder_action;
 
 
     @Override
@@ -77,6 +81,7 @@ public class NotificationBase extends AppCompatActivity {
         editor.commit();
 
         setContentView(R.layout.activity_notification_base);
+        reminder_action = (LinearLayout) findViewById(R.id.reminder_action);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -95,6 +100,7 @@ public class NotificationBase extends AppCompatActivity {
         editor1.commit();
         //get active notifications
         if (!notification) {
+            reminder_action.setVisibility(View.VISIBLE);
             activeReminders = Select.from(Reminder.class)
                     .where(Condition.prop("active").eq("1"))
                     .list();
@@ -105,7 +111,7 @@ public class NotificationBase extends AppCompatActivity {
 
             for (AlarmReminder reminder : activeNotifications
                     ) {
-                activeReminders.add(Reminder.findById(Reminder.class, reminder.getId()));
+                activeReminders.add(Reminder.findById(Reminder.class, reminder.getReminderid()));
             }
         }
 
@@ -122,8 +128,20 @@ public class NotificationBase extends AppCompatActivity {
 
         notificationsCount = (TextView) findViewById(R.id.notifications_count);
         notificationsCount.setText("You have " + activeReminders.size() + " Reminder(s)");
+        if (notification)
+            notificationsCount.setText(activeReminders.size() + " Upcoming Reminder(s)");
         close_button = (ImageView) findViewById(R.id.reminders_close);
-        pause_media = (ImageView) findViewById(R.id.stop_alarm);
+
+        pause_media = (Button) findViewById(R.id.snooze_alarm);
+        close_b = (Button) findViewById(R.id.close_alarm);
+
+        close_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                close();
+                destroy();
+            }
+        });
 
         pause_media.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,25 +152,7 @@ public class NotificationBase extends AppCompatActivity {
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!notification) {
-                    activeReminders = Select.from(Reminder.class)
-                            .where(Condition.prop("active").eq("1"))
-                            .list();
-                    for (Reminder alarm : activeReminders) {
-                        alarm.setActive(false);
-                        alarm.save();
-                    }
-                } else {
-                    activeNotifications = Select.from(AlarmReminder.class)
-                            .where(Condition.prop("active").eq("1"))
-                            .list();
-                    for (AlarmReminder reminder : activeNotifications
-                            ) {
-                        reminder.setActive(false);
-                        reminder.save();
-                    }
-                }
-
+                close();
                 destroy();
             }
         });
@@ -163,6 +163,30 @@ public class NotificationBase extends AppCompatActivity {
         if (!notification)
             playSound(this, ringtone);
 
+    }
+
+    private void snooze(){
+    }
+
+    private void close(){
+        if (!notification) {
+            activeReminders = Select.from(Reminder.class)
+                    .where(Condition.prop("active").eq("1"))
+                    .list();
+            for (Reminder alarm : activeReminders) {
+                alarm.setActive(false);
+                alarm.save();
+            }
+        } else {
+            activeNotifications = Select.from(AlarmReminder.class)
+                    .where(Condition.prop("active").eq("1"))
+                    .list();
+            for (AlarmReminder reminder : activeNotifications
+                    ) {
+                reminder.setActive(false);
+                reminder.save();
+            }
+        }
     }
 
     private void soundController(final Uri uri) {

@@ -21,6 +21,9 @@ import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -102,6 +105,11 @@ public class ToDo1 extends Fragment {
         TextView next= (TextView) view.findViewById(R.id.todo_next);
         final EditText title = (EditText) view.findViewById(R.id.todo_title);
         final EditText description = (EditText) view.findViewById(R.id.todo_description);
+
+        //current date
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        final Date date = new Date();
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,10 +118,14 @@ public class ToDo1 extends Fragment {
                     MDToast.makeText(getContext(),"Title can not be blank!",MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                     return;
                 }
-                Todo todo = new Todo(title.getText().toString(),
+                Todo todo = new Todo(
+                        title.getText().toString(),
                         description.getText().toString(),
                         null,
-                        "0");
+                        "0",
+                        dateFormat.format(date),
+                        dateFormat.format(date)
+                        );
                 todo.save();
 
                 //update todo recycler

@@ -43,7 +43,7 @@ import layout.NotesFragment;
 public class AddNote extends AppCompatActivity {
     public static final String ACTION_RESP = "com.example.elm.login.services.note.Upload";
     private EditText title, note;
-    private ImageView imageView, imagePlace;
+    private ImageView imageView, imagePlace, strike_through;
     private TextView save, update;
     private RichEditor richEditor;
     private Boolean savedStatus = false;
@@ -120,6 +120,27 @@ public class AddNote extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.editor_italic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (title.hasFocus()){
+                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                }else {
+                    richEditor.setItalic();
+                }
+            }
+        });
+
+        findViewById(R.id.strike_through).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (title.hasFocus()){
+                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                }else {
+                    richEditor.setStrikeThrough();
+                }
+            }
+        });
 
         findViewById(R.id.editor_bullets).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,6 +273,7 @@ public class AddNote extends AppCompatActivity {
                 noteData,
                 null,
                 dateFormat.format(date),
+                dateFormat.format(date),
                 false,
                 false,
                 true,
@@ -302,8 +324,8 @@ public class AddNote extends AppCompatActivity {
         Note note1 = Note.findById(Note.class, note_id);
         note1.setTitle(title.getText().toString());
         note1.setNote(noteData);
-        note1.setCreated_at(dateFormat.format(date));
-        note1.setUpdateflag(true);
+        note1.setUpdated_at(dateFormat.format(date));
+        //note1.setUpdateflag(true);
         note1.save();
 
        /* Intent intent = new Intent("Update");

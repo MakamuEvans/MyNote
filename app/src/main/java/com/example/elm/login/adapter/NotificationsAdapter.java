@@ -50,7 +50,9 @@ public class NotificationsAdapter extends PagerAdapter {
         final View view;
 
         view = layoutInflater.inflate(R.layout.two_way_item, container, false);
-        setupItem(view, activeReminders.get(position));
+        System.out.println(activeReminders.get(position));
+        if (activeReminders.get(position) != null)
+            setupItem(view, activeReminders.get(position));
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
