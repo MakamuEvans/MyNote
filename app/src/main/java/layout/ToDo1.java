@@ -103,12 +103,20 @@ public class ToDo1 extends Fragment {
         });
 
         TextView next= (TextView) view.findViewById(R.id.todo_next);
+        TextView cancel= (TextView) view.findViewById(R.id.todo_cancel);
         final EditText title = (EditText) view.findViewById(R.id.todo_title);
         final EditText description = (EditText) view.findViewById(R.id.todo_description);
 
         //current date
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         final Date date = new Date();
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override

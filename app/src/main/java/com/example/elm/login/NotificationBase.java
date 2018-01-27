@@ -46,7 +46,7 @@ public class NotificationBase extends AppCompatActivity {
     public List<AlarmReminder> activeNotifications = new ArrayList<>();
     TextView notificationsCount;
     ImageView close_button;
-    private Button close_b,pause_media;
+    private Button close_b, pause_media;
     int count = 0;
     CountDownTimer interval, muter;
     private newNotification newNotificationn;
@@ -55,7 +55,8 @@ public class NotificationBase extends AppCompatActivity {
     long[] pattern = {0, 2000, 1000};
     protected PowerManager.WakeLock wakeLock;
     private LinearLayout reminder_action;
-
+    private int alartTime, snoozeTime;
+    Boolean vibrate;
 
     @Override
     protected void onStart() {
@@ -85,7 +86,7 @@ public class NotificationBase extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        if (bundle != null){
+        if (bundle != null) {
             if (bundle.containsKey("notification"))
                 notification = intent.getExtras().getBoolean("notification");
 
@@ -158,6 +159,11 @@ public class NotificationBase extends AppCompatActivity {
         });
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        alartTime = Integer.parseInt(sp.getString("ring_duration", "1"));
+        snoozeTime = Integer.parseInt(sp.getString("snooze_duration", "5"));
+        vibrate = sp.getBoolean("notifications_new_message_vibrate", true);
+
+        Log.e("Yow", String.valueOf(alartTime) + "  " + String.valueOf(snoozeTime));
         Uri ringtone = Uri.parse(sp.getString("notifications_new_message_ringtone", "content://settings/system/ringtone"));
         System.out.println(ringtone);
         if (!notification)
@@ -165,10 +171,10 @@ public class NotificationBase extends AppCompatActivity {
 
     }
 
-    private void snooze(){
+    private void snooze() {
     }
 
-    private void close(){
+    private void close() {
         if (!notification) {
             activeReminders = Select.from(Reminder.class)
                     .where(Condition.prop("active").eq("1"))
@@ -193,7 +199,7 @@ public class NotificationBase extends AppCompatActivity {
         Intent intent = new Intent(NotificationBase.this, SnoozeCounter.class);
         startService(intent);
 
-        interval = new CountDownTimer(30000, 1000) {
+        interval = new CountDownTimer(snoozeTime * 60000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -225,6 +231,7 @@ public class NotificationBase extends AppCompatActivity {
             mMediaPlayer.setDataSource(context, alert);
             final AudioManager audioManager = (AudioManager) context
                     .getSystemService(Context.AUDIO_SERVICE);
+            //if ()
             audioManager.setStreamVolume(AudioManager.STREAM_ALARM, 20, 0);
             //if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
             Log.e(TAG, "Playing Sound");
@@ -232,12 +239,13 @@ public class NotificationBase extends AppCompatActivity {
             mMediaPlayer.prepare();
             mMediaPlayer.start();
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(pattern, 0);
+            if (vibrate)
+                vibrator.vibrate(pattern, 0);
 
             PowerManager.WakeLock wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
                     PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm"
             );
-            wakeLock.acquire(10000);
+            wakeLock.acquire(alartTime * 60000);
 
             muteSound(alert);
             //}
@@ -247,7 +255,7 @@ public class NotificationBase extends AppCompatActivity {
     }
 
     public void muteSound(final Uri uri) {
-        muter = new CountDownTimer(10000, 1000) {
+        muter = new CountDownTimer(alartTime * 60000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {

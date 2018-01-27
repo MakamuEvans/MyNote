@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.elm.login.model.Note;
 import com.example.elm.login.model.Reminder;
+import com.example.elm.login.model.Todo;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -34,7 +35,8 @@ import java.util.Calendar;
  * create an instance of this fragment.
  */
 public class Home1 extends Fragment {
-    private TextView total_notes,week_notes,fav_notes,total_alarms,week_alarms, active_alarms,type_alarms,missed_alarms;
+    private TextView total_notes,week_notes,fav_notes,total_alarms,week_alarms, active_alarms,type_alarms,missed_alarms,
+            total_todo,week_todo,completed_todo,incomplete_todo;
     private ImageView expandToDo,expandNotes,expandReminders;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -135,6 +137,11 @@ public class Home1 extends Fragment {
         active_alarms = (TextView) view.findViewById(R.id.active_alarms);
         type_alarms = (TextView) view.findViewById(R.id.type_alarms);
 
+        total_todo = (TextView) view.findViewById(R.id.total_todo);
+        week_todo = (TextView) view.findViewById(R.id.week_todo);
+        completed_todo = (TextView) view.findViewById(R.id.completed_todo);
+        incomplete_todo = (TextView) view.findViewById(R.id.incomplete_todo);
+
         expandToDo = (ImageView) view.findViewById(R.id.expand_todo);
         expandNotes = (ImageView) view.findViewById(R.id.expand_notes);
         expandReminders = (ImageView) view.findViewById(R.id.expand_reminders);
@@ -178,14 +185,22 @@ public class Home1 extends Fragment {
         cal.clear(Calendar.MILLISECOND);
         cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 
+        //notes
         total_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("deleteflag").eq("0")).count()));
         fav_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("deleteflag").eq("0")).where(Condition.prop("favourite").eq("1")).count()));
         week_notes.setText(String.valueOf(Select.from(Note.class).where(Condition.prop("deleteflag").eq("0")).where(Condition.prop("createdAt").gt(formatter.format(cal.getTime().getTime()))).count()));
 
+        //reminders
         total_alarms.setText(String.valueOf(Select.from(Reminder.class).count()));
         active_alarms.setText(String.valueOf(Select.from(Reminder.class).where(Condition.prop("status").eq("1")).count()));
-        String repeating = String.valueOf(Select.from(Reminder.class).where(Condition.prop("repeat").isNull()).count());
-        String oneTime = String.valueOf(Select.from(Reminder.class).where(Condition.prop("repeat").isNotNull()).count());
+        week_alarms.setText(String.valueOf(Select.from(Reminder.class).where(Condition.prop("createdAt").gt(formatter.format(cal.getTime().getTime()))).count()));
+        String repeating = String.valueOf(Select.from(Reminder.class).where(Condition.prop("repeat").isNotNull()).count());
+        String oneTime = String.valueOf(Select.from(Reminder.class).where(Condition.prop("repeat").isNull()).count());
+
+        //todo
+        total_todo.setText(String.valueOf(Select.from(Todo.class).count()));
+        week_todo.setText(String.valueOf(Select.from(Todo.class).where(Condition.prop("createdAt").gt(formatter.format(cal.getTime().getTime()))).count()));
+
 
         type_alarms.setText("("+repeating+" , "+oneTime+")");
 

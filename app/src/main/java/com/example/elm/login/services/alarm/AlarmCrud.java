@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by elm on 8/15/17.
@@ -73,6 +74,13 @@ public class AlarmCrud extends Service {
     }
 
     public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddSSS");
+        Random r = new Random();
+        int random = (r.nextInt(999) + 9);
+        String format = simpleDateFormat.format(new Date());
+        int alarmTracker = Integer.parseInt(nId+aId.toString()+format);
+        alarmTracker = alarmTracker - random;
+
         Log.e("AtherereC", title+content+nId+aId);
         Intent intent = new Intent("DISPLAY_NOTIFICATION");
         intent.putExtra("title", title);
@@ -80,11 +88,9 @@ public class AlarmCrud extends Service {
         intent.putExtra("content", content);
         intent.putExtra("notificationId", nId);
         intent.putExtra("alarmId", aId);
+        intent.putExtra("alarmTracker", alarmTracker);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddSSS");
-        String format = simpleDateFormat.format(new Date());
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), Integer.parseInt(nId+aId.toString()+format), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), alarmTracker, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(calender);

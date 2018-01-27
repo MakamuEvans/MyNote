@@ -28,7 +28,7 @@
                 android:title="Share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/settings"
                 android:title="Preferences" />
             <item
                 android:id="@+id/nav_rate"

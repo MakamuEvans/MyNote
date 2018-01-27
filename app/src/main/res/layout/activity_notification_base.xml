@@ -86,25 +86,37 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="80dp"
-                    android:text="Snooze"
-                    android:id="@+id/snooze_alarm"
-                    android:layout_margin="5dp"
-                    android:textSize="20dp"
-                    android:background="@drawable/default_button_white"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5">
 
-                <Button
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:text="Snooze"
+                        android:id="@+id/snooze_alarm"
+                        android:layout_margin="5dp"
+                        android:textSize="20sp"
+                        android:background="@drawable/snooze" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:textSize="20dp"
-                    android:id="@+id/close_alarm"
-                    android:layout_margin="5dp"
                     android:layout_height="80dp"
-                    android:background="@drawable/default_button"
-                    android:text="Close"
-                    android:layout_weight=".5"/>
+                    android:layout_weight=".5">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"
+                        android:id="@+id/close_alarm"
+                        android:layout_margin="5dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/paste"
+                        android:text="Close" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

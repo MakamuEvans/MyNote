@@ -541,7 +541,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2"
+                                android:text="#"
                                 android:id="@+id/completed_todo"
                                 android:textSize="40dp"/>
 
@@ -555,38 +555,6 @@
 
                     </android.support.v7.widget.CardView>
 
-                    <android.support.v7.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".3"
-                        android:layout_margin="5dp"
-                        android:minHeight="100dp"
-                        android:padding="3dp"
-                        android:background="@color/colorError"
-                        app:cardElevation="10dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:id="@+id/week_completed_todo"
-                                android:textSize="30dp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Completed ToDo(s)" />
-
-
-                        </LinearLayout>
-
-                    </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
                         android:layout_width="0dp"
@@ -607,14 +575,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="5"
+                                android:text="#"
                                 android:id="@+id/incomplete_todo"
                                 android:textSize="30dp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Incomplete ToDo(s)" />
+                                android:text="Pending Tasks" />
 
 
                         </LinearLayout>

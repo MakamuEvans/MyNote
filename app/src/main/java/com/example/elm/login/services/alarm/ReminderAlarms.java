@@ -47,7 +47,7 @@ import layout.ReminderFragment;
 public class ReminderAlarms extends BroadcastReceiver {
     private static final String TAG = ReminderAlarms.class.getSimpleName();
     String nTitle, nContent;
-    int nId;
+    int nId, alarmTracker;
     Long alarmId;
     Boolean repeat;
 
@@ -60,6 +60,7 @@ public class ReminderAlarms extends BroadcastReceiver {
         nId = bundle.getInt("notificationId");
         alarmId = bundle.getLong("alarmId");
         repeat = bundle.getBoolean("repeat");
+        alarmTracker = bundle.getInt("alarmTracker");
 
         Log.e("Atherere", String.valueOf(nId));
 
@@ -77,27 +78,37 @@ public class ReminderAlarms extends BroadcastReceiver {
             if (repeat) {
                 //find the alarm
                 reminder = Reminder.findById(Reminder.class, alarmId);
-                //set date format
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
-                Calendar calendar = Calendar.getInstance();
-                String weekDay = dayFormat.format(calendar.getTime());
-                if (reminder.getRepeat().contains(weekDay)) {
-                    Log.e(TAG, "WeekFound");
-                    //set reminder as active
+                if (reminder != null){
+                    //set date format
+                    SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+                    Calendar calendar = Calendar.getInstance();
+                    String weekDay = dayFormat.format(calendar.getTime());
+                    if (reminder.getRepeat().contains(weekDay)) {
+                        Log.e(TAG, "WeekFound");
+                        //set reminder as active
+                        reminder.setActive(true);
+                        reminder.save();
+                        if (reminder.getStatus())
+                            actualAlarms(context);
+                    }
+                }else {
+                    cancelAlarm(alarmTracker, context);
+                }
+
+            } else {
+                reminder = Reminder.findById(Reminder.class, alarmId);
+                if (reminder != null){
                     reminder.setActive(true);
                     reminder.save();
                     if (reminder.getStatus())
                         actualAlarms(context);
-                }
-            } else {
-                reminder = Reminder.findById(Reminder.class, alarmId);
-                reminder.setActive(true);
-                reminder.save();
-                if (reminder.getStatus())
-                    actualAlarms(context);
 
-                reminder.setStatus(false);
-                reminder.save();
+                    reminder.setStatus(false);
+                    reminder.save();
+                }else {
+                    cancelAlarm(alarmTracker, context);
+                }
+
             }
 
             //clear from notification
@@ -113,10 +124,14 @@ public class ReminderAlarms extends BroadcastReceiver {
 
             //get parent alarm
             Reminder reminder = Reminder.findById(Reminder.class, alarmReminder.getReminderid());
-            if (reminder.getStatus()) {
-                alarmReminder.setActive(true);
-                alarmReminder.save();
-                reminderAlarms(nTitle, context);
+            if (reminder != null){
+                if (reminder.getStatus()) {
+                    alarmReminder.setActive(true);
+                    alarmReminder.save();
+                    reminderAlarms(nTitle, context);
+                }
+            }else {
+                cancelAlarm(alarmTracker, context);
             }
         }
     }
@@ -280,5 +295,19 @@ public class ReminderAlarms extends BroadcastReceiver {
         intent.putExtra("content", "Prepared? You have  a Reminder in the next " + time);
         intent.putExtra("create", true);
         context.startService(intent);
+    }
+
+    public void cancelAlarm(int aId, Context context) {
+        //Log.e("service", "cancelstarted");
+
+        Intent intent = new Intent("DISPLAY_NOTIFICATION");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context,
+                aId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }

@@ -71,6 +71,7 @@ public class Navigation extends AppCompatActivity
      */
     private ViewPager mViewPager;
     TabLayout tabLayout;
+    private TextView user_name;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -123,7 +124,12 @@ public class Navigation extends AppCompatActivity
             toggle.syncState();
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
             navigationView.setNavigationItemSelectedListener(this);
+
+            user_name = (TextView) header.findViewById(R.id.nav_username);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            user_name.setText(sp.getString("user_name", "Buddy"));
         }
     }
 
@@ -171,9 +177,6 @@ public class Navigation extends AppCompatActivity
             Intent intent = new Intent(Navigation.this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        }
-        if (id == R.id.logout_settings){
-            logOut();
         }
         if (id == R.id.note_setting){
             newNote();
@@ -321,7 +324,7 @@ public class Navigation extends AppCompatActivity
         }
     }
 
-    public void logOut(){
+   /* public void logOut(){
         //reset basic auth
         Toast.makeText(getBaseContext(), "Logging you out...", Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences = getSharedPreferences("myPref", 0);
@@ -335,5 +338,5 @@ public class Navigation extends AppCompatActivity
         Intent intent =new Intent(Navigation.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
+    }*/
 }
