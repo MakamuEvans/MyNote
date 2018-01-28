@@ -237,6 +237,11 @@ public class NewReminder extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
     public void changeTextColor(TextView textView, Boolean status){
         if (status){
             textView.setTextColor(getResources().getColor(R.color.colorPrimary));

@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 app:adSize="MEDIUM_RECTANGLE"
-                app:adUnitId="@string/banner_ad_unit_id">
+                app:adUnitId="@string/banner_newTodo">
             </com.google.android.gms.ads.AdView>
 
         </RelativeLayout>

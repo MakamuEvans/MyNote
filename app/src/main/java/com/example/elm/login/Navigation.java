@@ -48,6 +48,8 @@ import com.example.elm.login.model.Todo;
 import com.example.elm.login.model.User;
 import com.example.elm.login.preferences.BasicAuth;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -72,6 +74,7 @@ public class Navigation extends AppCompatActivity
     private ViewPager mViewPager;
     TabLayout tabLayout;
     private TextView user_name;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -92,6 +95,13 @@ public class Navigation extends AppCompatActivity
             setContentView(R.layout.activity_navigation);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+            Bundle bundle2 = new Bundle();
+            //bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+            bundle2.putString(FirebaseAnalytics.Param.ITEM_NAME, "Open");
+            bundle2.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "App opened");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle2);
 
             mSectionsPagerAdapter = new Navigation.SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -131,6 +141,11 @@ public class Navigation extends AppCompatActivity
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             user_name.setText(sp.getString("user_name", "Buddy"));
         }
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+        String topic = versionCode+versionName;
+        Log.e("version", topic);
+        FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
 
     public void newNote(){
@@ -232,7 +247,8 @@ public class Navigation extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(Navigation.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

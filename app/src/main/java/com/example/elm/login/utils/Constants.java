@@ -20,6 +20,7 @@ public class Constants {
     //notification types
     public static final int earlyReminder = 101;
     public static final int actualReminder = 100;
+    public static final int morning = 201;
 
     public String uniqueCode(){
         Date presentTime_Date = Calendar.getInstance().getTime();
@@ -32,4 +33,6 @@ public class Constants {
     final public static int NOTES_TAB = 1;
     final public static int REMINDER_TAB = 2;
     final public static int TODO_TAB = 3;
+
+
 }

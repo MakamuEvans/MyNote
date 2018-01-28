@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
+import com.orm.query.Select;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.text.SimpleDateFormat;
@@ -137,11 +138,14 @@ public class ToDo1 extends Fragment {
                 todo.save();
 
                 //update todo recycler
-                String dt = new Gson().toJson(todo);
-                Intent intent = new Intent();
-                intent.setAction(EventsFragment.NewReceiver.SYNC_ACTION);
-                intent.putExtra("todo", dt);
-                getActivity().sendBroadcast(intent);
+                if (Select.from(Todo.class).count() > 1){
+                    String dt = new Gson().toJson(todo);
+                    Intent intent = new Intent();
+                    intent.setAction(EventsFragment.NewReceiver.SYNC_ACTION);
+                    intent.putExtra("todo", dt);
+                    getActivity().sendBroadcast(intent);
+                }
+
 
                 Bundle bundle = new Bundle();
                 bundle.putString("id", String.valueOf(todo.getId()));

@@ -22,7 +22,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             app:adSize="BANNER"
-            app:adUnitId="@string/banner_ad_unit_id"/>
+            app:adUnitId="@string/banner_notesFooter"/>
 
 
         <android.support.v7.widget.RecyclerView

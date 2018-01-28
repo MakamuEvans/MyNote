@@ -294,7 +294,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             app:adSize="BANNER"
-            app:adUnitId="@string/banner_ad_unit_id">
+            app:adUnitId="@string/banner_newRemonder">
         </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>

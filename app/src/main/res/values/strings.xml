@@ -5,6 +5,16 @@
     <string name="banner_ad_unit_idd">ca-app-pub-3940256099942544/6300978111</string>
 
 
+
+    <string name="banner_home1">ca-app-pub-8923248379841058/7281292137</string>
+    <string name="banner_home2">ca-app-pub-8923248379841058/6024050784</string>
+    <string name="banner_newRemonder">ca-app-pub-8923248379841058/8082403766</string>
+    <string name="banner_newTodo">ca-app-pub-8923248379841058/3014744069</string>
+    <string name="banner_notesFooter">ca-app-pub-8923248379841058/7967548221</string>
+    <string name="banner_reminderFooter">ca-app-pub-8923248379841058/1966096710</string>
+    <string name="banner_todoFooter">ca-app-pub-8923248379841058/6351353847</string>
+
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
