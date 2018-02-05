@@ -5,7 +5,6 @@
     <string name="banner_ad_unit_idd">ca-app-pub-3940256099942544/6300978111</string>
 
 
-
     <string name="banner_home1">ca-app-pub-8923248379841058/7281292137</string>
     <string name="banner_home2">ca-app-pub-8923248379841058/6024050784</string>
     <string name="banner_newRemonder">ca-app-pub-8923248379841058/8082403766</string>
@@ -219,6 +218,17 @@
         <item>1</item>
         <item>0</item>
         <item>-1</item>
+    </string-array>
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->

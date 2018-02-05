@@ -69,6 +69,34 @@ public class NotificationBase extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
+        String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
+        Log.e("Theme", theme);
+        if (theme == "tomato")
+            setTheme(R.style.AppTheme_NoActionBar);
+        if (theme == "tangarine")
+            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
+        if (theme.equalsIgnoreCase("banana"))
+            setTheme(R.style.AppTheme_NoActionBar_Banana);
+        if (theme.equalsIgnoreCase("basil"))
+            setTheme(R.style.AppTheme_NoActionBar_Basil);
+        if (theme.equalsIgnoreCase("sage"))
+            setTheme(R.style.AppTheme_NoActionBar_Sage);
+        if (theme.equalsIgnoreCase("peacock"))
+            setTheme(R.style.AppTheme_NoActionBar_Peacock);
+        if (theme.equalsIgnoreCase("blueberry"))
+            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
+        if (theme.equalsIgnoreCase("lavender"))
+            setTheme(R.style.AppTheme_NoActionBar_Lavender);
+        if (theme.equalsIgnoreCase("grape"))
+            setTheme(R.style.AppTheme_NoActionBar_Grape);
+        if (theme.equalsIgnoreCase("flamingo"))
+            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
+        if (theme.equalsIgnoreCase("graphite"))
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+
+
         //allow on lock screen
         Window window;
         window = this.getWindow();
@@ -76,7 +104,7 @@ public class NotificationBase extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        //SharedPreferences preferences = getSharedPreferences("myPref", 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("notificationOpen", true);
         editor.commit();

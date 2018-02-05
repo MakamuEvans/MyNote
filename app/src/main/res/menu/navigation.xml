@@ -5,7 +5,8 @@
     <item
         android:title="Share"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_share"/>
+        android:id="@+id/theme_picker"
+        android:icon="@mipmap/ic_color"/>
 
     <item
         android:title="New"

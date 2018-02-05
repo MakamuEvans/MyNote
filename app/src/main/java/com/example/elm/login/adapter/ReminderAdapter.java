@@ -129,40 +129,23 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         Calendar now = Calendar.getInstance();
                         if (reminder.getRepeat() == null) {
                             if (calendar.getTimeInMillis() > now.getTimeInMillis()) {
-                               /* intent.putExtra("calender", calendar.getTimeInMillis());
-                                intent.putExtra("nId", 100);
-                                intent.putExtra("aId", reminder.getId());
-                                intent.putExtra("title", reminder.getTitle());
-                                intent.putExtra("content", reminder.getDescription());
+                                intent.putExtra("alarmId", reminder.getId());
                                 intent.putExtra("create", true);
-                                v.getContext().startService(intent);*/
+                                v.getContext().startService(intent);
                                 //update db
                                 reminder.setStatus(true);
                                 reminder.save();
                                 //update ui
                                 updateReminder(reminder);
-                                Log.e("haha", "hahaha");
                             } else {
                                 MDToast.makeText(v.getContext(), "The Alarm is in a past date", MDToast.LENGTH_SHORT, MDToast.TYPE_INFO).show();
                                 //Toast.makeText(v.getContext(), "The Alarm is in a past date", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                           /* Calendar calendar1 = Calendar.getInstance();
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
-                            calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
-
-                            if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()) {
-                                calendar.add(Calendar.DAY_OF_YEAR, 1);
-                            }
-                            intent.putExtra("calender", calendar.getTimeInMillis());
-                            intent.putExtra("nId", 100);
-                            intent.putExtra("aId", reminder.getId());
-                            intent.putExtra("title", reminder.getTitle());
-                            intent.putExtra("content", reminder.getDescription());
+                            intent.putExtra("alarmId", reminder.getId());
                             intent.putExtra("create", true);
                             v.getContext().startService(intent);
-                            //update db*/
+                            //update db
                             reminder.setStatus(true);
                             reminder.save();
                             //update ui
@@ -172,10 +155,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                     } else {
                         //deactivate alarm
-                       /* Intent intent = new Intent(v.getContext(), AlarmCrud.class);
+                        Intent intent = new Intent(v.getContext(), AlarmCrud.class);
                         intent.putExtra("create", false);
-                        intent.putExtra("aId", reminder.getId());
-                        v.getContext().startService(intent);*/
+                        intent.putExtra("alarmId", reminder.getId());
+                        v.getContext().startService(intent);
                         //update db
                         reminder.setStatus(false);
                         reminder.save();
@@ -212,7 +195,33 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             myViewHolder holder = (myViewHolder) viewHolder;
             Reminder reminder = allReminders.get(position);
             holder.title.setText(reminder.getTitle());
-            holder.time.setText(reminder.getTime());
+
+            Log.e("time", reminder.getTime());
+
+            String convert = "MMM dd yyyy HH:mm";
+            String date_format = "dd MMM yyyy";
+            String time_format = "HH:mm";
+            final SimpleDateFormat date_simpleDateFormat = new SimpleDateFormat(date_format, Locale.ENGLISH);
+            final SimpleDateFormat time_simpleDateFormat = new SimpleDateFormat(time_format, Locale.ENGLISH);
+            final SimpleDateFormat convert_simpleDateFormat = new SimpleDateFormat(convert, Locale.ENGLISH);
+
+            Date date1 = null;
+            try {
+                if (reminder.getRepeat() == null){
+                    date1 = convert_simpleDateFormat.parse(reminder.getTime());
+                }else {
+                    date1 = convert_simpleDateFormat.parse(reminder.getTime());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (reminder.getRepeat() == null){
+              holder.time.setText(date_simpleDateFormat.format(date1)+" "+time_simpleDateFormat.format(date1));
+            }else {
+               holder.time.setText(time_simpleDateFormat.format(date1));
+            }
+
             holder.card_text.setVisibility(View.GONE);
             holder.repeat_days.setText(reminder.getRepeat());
             if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).count() > 0){

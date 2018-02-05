@@ -3,6 +3,7 @@ package com.example.elm.login;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elm.login.model.Category;
 import com.example.elm.login.model.Note;
 import com.google.gson.Gson;
 import com.valdesekamdem.library.mdtoast.MDToast;
@@ -30,13 +32,40 @@ import layout.NotesFragment;
 
 public class FullNote extends AppCompatActivity {
     private Long note_id = null;
-    private TextView updated_on;
+    private TextView updated_on,full_category;
     private RichEditor richEditor;
     Note note1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
+        String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
+        Log.e("Theme", theme);
+        if (theme == "tomato")
+            setTheme(R.style.AppTheme_NoActionBar);
+        if (theme == "tangarine")
+            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
+        if (theme.equalsIgnoreCase("banana"))
+            setTheme(R.style.AppTheme_NoActionBar_Banana);
+        if (theme.equalsIgnoreCase("basil"))
+            setTheme(R.style.AppTheme_NoActionBar_Basil);
+        if (theme.equalsIgnoreCase("sage"))
+            setTheme(R.style.AppTheme_NoActionBar_Sage);
+        if (theme.equalsIgnoreCase("peacock"))
+            setTheme(R.style.AppTheme_NoActionBar_Peacock);
+        if (theme.equalsIgnoreCase("blueberry"))
+            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
+        if (theme.equalsIgnoreCase("lavender"))
+            setTheme(R.style.AppTheme_NoActionBar_Lavender);
+        if (theme.equalsIgnoreCase("grape"))
+            setTheme(R.style.AppTheme_NoActionBar_Grape);
+        if (theme.equalsIgnoreCase("flamingo"))
+            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
+        if (theme.equalsIgnoreCase("graphite"))
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+
         setContentView(R.layout.activity_full_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,7 +87,13 @@ public class FullNote extends AppCompatActivity {
         richEditor.setHtml(note1.getNote());
 
         updated_on = (TextView) findViewById(R.id.updated_on);
+        full_category = (TextView) findViewById(R.id.full_category);
         updated_on.setText("last updated on: " + note1.getUpdated_at());
+        if (note1.getCategory() != null){
+            Category category = Category.findById(Category.class, note1.getCategory());
+            full_category.setText(category.getTitle());
+        }
+
 
     }
 

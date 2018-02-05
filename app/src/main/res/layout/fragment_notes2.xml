@@ -24,14 +24,45 @@
             app:adSize="BANNER"
             app:adUnitId="@string/banner_notesFooter"/>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/notes_recycler"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp">
+            android:layout_marginBottom="50dp"
+            android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/notes_header"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:id="@+id/fullSpinner">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:id="@+id/huh"
+                    />
+
+            </LinearLayout>
+
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/notes_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/notes_header">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
 </FrameLayout>

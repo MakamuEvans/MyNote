@@ -147,6 +147,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="serif"
                 android:hint="Title"
+                android:layout_below="@+id/add_category"
                 android:inputType="textCapSentences"
                 android:textIsSelectable="true"
                 android:textStyle="bold" />
@@ -160,6 +161,14 @@
                 android:layout_below="@+id/note_title">
 
             </jp.wasabeef.richeditor.RichEditor>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_category"
+                android:text="Add Category"
+                android:layout_margin="10dp"
+               />
 
         </RelativeLayout>
 

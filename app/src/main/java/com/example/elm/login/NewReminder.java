@@ -69,9 +69,37 @@ public class NewReminder extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
+        String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
+        Log.e("Theme", theme);
+        if (theme == "tomato")
+            setTheme(R.style.AppTheme_NoActionBar);
+        if (theme == "tangarine")
+            setTheme(R.style.AppTheme_Tangarine);
+        if (theme.equalsIgnoreCase("banana"))
+            setTheme(R.style.AppTheme_Banana);
+        if (theme.equalsIgnoreCase("basil"))
+            setTheme(R.style.AppTheme_Basil);
+        if (theme.equalsIgnoreCase("sage"))
+            setTheme(R.style.AppTheme_Sage);
+        if (theme.equalsIgnoreCase("peacock"))
+            setTheme(R.style.AppTheme_Peacock);
+        if (theme.equalsIgnoreCase("blueberry"))
+            setTheme(R.style.AppTheme_BlueBerry);
+        if (theme.equalsIgnoreCase("lavender"))
+            setTheme(R.style.AppTheme_Lavender);
+        if (theme.equalsIgnoreCase("grape"))
+            setTheme(R.style.AppTheme_Grape);
+        if (theme.equalsIgnoreCase("flamingo"))
+            setTheme(R.style.AppTheme_Flamingo);
+        if (theme.equalsIgnoreCase("graphite"))
+            setTheme(R.style.AppTheme_Graphite);
+
+
         setContentView(R.layout.activity_new_reminder);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        setTitle("New Reminder");
         //
         adView = (AdView) findViewById(R.id.ReminderadView);
         adView.setVisibility(View.GONE);
@@ -380,41 +408,12 @@ public class NewReminder extends AppCompatActivity {
         //get date depending on ReminderType
         if (!repeating){
             date_string = simpleDateFormat.format(dateTime.getDate());
-            date = simpleDateFormat.parse(simpleDateFormat.format(dateTime.getDate()));
+           // date = simpleDateFormat.parse(simpleDateFormat.format(dateTime.getDate()));
         }else {
-            date_string = simpleDateFormat2.format(time_picker.getDate());
-            date = simpleDateFormat.parse(simpleDateFormat.format(time_picker.getDate()));
-        }
-        String description = null;
-
-        //Sort out description
-        if (reminderDescription.getText().toString().equals(null)) {
-            description = "Its Time!. Hello from myNote";
-        } else {
-            description = reminderDescription.getText().toString();
+            date_string = simpleDateFormat.format(time_picker.getDate());
+           // date = simpleDateFormat.parse(simpleDateFormat.format(time_picker.getDate()));
         }
 
-
-        Calendar calendar = Calendar.getInstance();
-        int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(date)));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(date)));
-
-        if (!repeating){
-            calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(date)));
-            calendar.set(Calendar.MONTH, month0);
-            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(date)));
-        }else {
-            Calendar calendar1 = Calendar.getInstance();
-            Calendar calendar2 = Calendar.getInstance();
-            calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
-            calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
-
-            if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
-                calendar.add(Calendar.DAY_OF_YEAR, 1);
-                Log.e("newTime", String.valueOf(calendar.getTime()));
-            }
-        }
 
         //early reminder requested?
         String prior = reminderEarly.getText().toString();
@@ -436,22 +435,25 @@ public class NewReminder extends AppCompatActivity {
                 true,
                 false,
                 repeatDates(),
+                0,
                 dateFormat.format(today),
                 dateFormat.format(today));
         newReminder.save();
 
         if (priorSet){
-            prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString(), newReminder.getId());
+            AlarmReminder alarmReminder = new AlarmReminder(
+                    newReminder.getId(),
+                    reminderEarly.getText().toString(),
+                    0,
+                    false
+            );
+            alarmReminder.save();
+            //prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString(), newReminder.getId());
         }
 
         //create alarm -->from a service
         Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
-        intent.putExtra("calender", calendar.getTimeInMillis());
-        intent.putExtra("nId", Constants.actualReminder);
-        intent.putExtra("repeat", repeating);
-        intent.putExtra("aId", newReminder.getId());
-        intent.putExtra("title", reminderName.getText().toString());
-        intent.putExtra("content", description);
+        intent.putExtra("alarmId", newReminder.getId());
         intent.putExtra("create", true);
         startService(intent);
 
@@ -469,93 +471,5 @@ public class NewReminder extends AppCompatActivity {
         intent2.putExtra("page", Constants.REMINDER_TAB);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);
-    }
-
-    public String priorReminder(String prior, String title, Long id) throws ParseException {
-        Log.e("Atherere", "Prior called");
-        SingleDateAndTimePicker dateTime = (SingleDateAndTimePicker) findViewById(R.id.date_picker);
-        SingleDateAndTimePicker time_picker = (SingleDateAndTimePicker) findViewById(R.id.time_picker);
-
-        String format = "MMM dd yyyy HH:mm";
-        String format2 = "HH:mm";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(format2, Locale.ENGLISH);
-        String date_string;
-        Date date;
-        if (!repeating){
-            date_string = simpleDateFormat.format(dateTime.getDate());
-            date = simpleDateFormat.parse(simpleDateFormat.format(dateTime.getDate()));
-        }else {
-            date_string = simpleDateFormat2.format(time_picker.getDate());
-            date = simpleDateFormat.parse(simpleDateFormat.format(time_picker.getDate()));
-        }
-        int value = Integer.parseInt(prior.replaceAll("[^0-9]", ""));
-
-
-        Calendar calendar = Calendar.getInstance();
-        int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
-        Log.e("month", String.valueOf(month0));
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(date)));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(date)));
-
-        if (!repeating){
-            calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(date)));
-            calendar.set(Calendar.MONTH, month0);
-            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(date)));
-        }else {
-            Calendar calendar1 = Calendar.getInstance();
-            Calendar calendar2 = Calendar.getInstance();
-            calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
-            calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
-
-            if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
-                calendar.add(Calendar.DAY_OF_YEAR, 1);
-            }
-        }
-        String time = null;
-        if (value == 5) {
-            calendar.add(calendar.MINUTE, -5);
-            time = "Five Minutes";
-            Log.e("extra?", "yes");
-        }
-        if (value == 10) {
-            calendar.add(calendar.MINUTE, -10);
-            time = "Ten Minutes";
-        }
-        if (value == 30) {
-            calendar.add(calendar.MINUTE, -30);
-            time = "Thirty Minutes";
-        }
-        if (value == 1) {
-            calendar.add(calendar.MINUTE, -60);
-            time = "One Hour";
-        }
-        if (value == 2) {
-            calendar.add(calendar.MINUTE, -120);
-            time = "Two Hours";
-        }
-        Log.e("calendar", String.valueOf(calendar.get(Calendar.MINUTE)));
-
-        //save reminder
-        AlarmReminder alarmReminder = new AlarmReminder(
-                id,
-                prior,
-                false
-        );
-        alarmReminder.save();
-
-        //prepare reminder
-        Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
-        intent.putExtra("calender", calendar.getTimeInMillis());
-        intent.putExtra("nId", Constants.earlyReminder);
-        intent.putExtra("aId", alarmReminder.getId());
-        intent.putExtra("repeat", repeating);
-        intent.putExtra("title", title);
-        intent.putExtra("content", "Ready? You have  a Reminder in the next " + time);
-        intent.putExtra("create", true);
-        startService(intent);
-
-        Log.e("Atherere", "done");
-        return prior;
     }
 }

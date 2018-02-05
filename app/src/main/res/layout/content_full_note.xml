@@ -14,16 +14,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="last updated on:"
-            android:textSize="20px"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:textStyle="italic"
-            android:id="@+id/updated_on"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="20px"
+                android:paddingLeft="5dp"
+                android:background="?attr/colorPrimary"
+                android:textColor="@android:color/white"
+                android:id="@+id/full_category"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="last updated on:"
+                android:textSize="20px"
+                android:background="?attr/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textStyle="italic"
+                android:id="@+id/updated_on"/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

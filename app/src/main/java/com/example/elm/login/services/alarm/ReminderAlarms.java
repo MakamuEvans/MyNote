@@ -70,7 +70,12 @@ public class ReminderAlarms extends BroadcastReceiver {
             //handle alarms differently for api 19 and above due to OS changes
             if (Build.VERSION.SDK_INT >= 19) {
                 if (repeat) {
-                    actualRepeats(alarmId, context);
+
+                    Intent intent4 = new Intent(context, AlarmCrud.class);
+                    intent4.putExtra("alarmId", alarmId);
+                    intent4.putExtra("create", true);
+                    context.startService(intent4);
+                    //actualRepeats(alarmId, context);
                 }
             }
             Reminder reminder;
@@ -245,15 +250,7 @@ public class ReminderAlarms extends BroadcastReceiver {
         Log.e(TAG, calendar.toString());
 
         //create alarm -->from a service
-        Intent intent = new Intent(context, AlarmCrud.class);
-        intent.putExtra("calender", calendar.getTimeInMillis());
-        intent.putExtra("nId", Constants.actualReminder);
-        intent.putExtra("repeat", repeated);
-        intent.putExtra("aId", alarmId);
-        intent.putExtra("title", reminder.getTitle());
-        intent.putExtra("content", description);
-        intent.putExtra("create", true);
-        context.startService(intent);
+
 
     }
 

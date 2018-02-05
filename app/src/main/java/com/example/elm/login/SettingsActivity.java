@@ -4,7 +4,9 @@ package com.example.elm.login;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -170,17 +173,53 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
             setupActionBar();
             getFragmentManager().beginTransaction().replace(android.R.id.content,
                     new GeneralPreferenceFragment()).commit();
 
         }
 
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
+
+
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
+        String themee = getSharedPreferences("myPref", 0).getString("theme", "Default");
+        Log.e("Theme", themee);
+        if (themee == "tomato")
+        theme.applyStyle(R.style.AppTheme, true);
+        if (themee == "tangarine")
+            theme.applyStyle(R.style.AppTheme_Tangarine, true);
+
+        if (themee.equalsIgnoreCase("banana"))
+            theme.applyStyle(R.style.AppTheme_Banana, true);
+        if (themee.equalsIgnoreCase("basil"))
+            theme.applyStyle(R.style.AppTheme_Basil, true);
+        if (themee.equalsIgnoreCase("sage"))
+            theme.applyStyle(R.style.AppTheme_Sage, true);
+        if (themee.equalsIgnoreCase("peacock"))
+            theme.applyStyle(R.style.AppTheme_Peacock, true);
+        if (themee.equalsIgnoreCase("blueberry"))
+            theme.applyStyle(R.style.AppTheme_BlueBerry, true);
+        if (themee.equalsIgnoreCase("lavender"))
+            theme.applyStyle(R.style.AppTheme_Lavender, true);
+        if (themee.equalsIgnoreCase("grape"))
+            theme.applyStyle(R.style.AppTheme_Grape, true);
+        if (themee.equalsIgnoreCase("flamingo"))
+            theme.applyStyle(R.style.AppTheme_Flamingo, true);
+        if (themee.equalsIgnoreCase("graphite"))
+            theme.applyStyle(R.style.AppTheme_Graphite, true);
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         public static class GeneralPreferenceFragment extends PreferenceFragment {
             @Override
             public void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
+
                 addPreferencesFromResource(R.xml.pref_general);
 
             }

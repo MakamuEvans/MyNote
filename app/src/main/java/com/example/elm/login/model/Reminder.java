@@ -18,13 +18,15 @@ public class Reminder extends SugarRecord {
     private Boolean status;
     private Boolean active;
     private String repeat;
+
+    private Integer identifier;
     private String created_at;
     private String updated_at;
 
     public Reminder() {
     }
 
-    public Reminder(String title, String time, Boolean prior, String description, Boolean status, Boolean active, String repeat, String created_at, String updated_at) {
+    public Reminder(String title, String time, Boolean prior, String description, Boolean status, Boolean active, String repeat, Integer identifier, String created_at, String updated_at) {
         this.title = title;
         this.time = time;
         this.prior = prior;
@@ -32,23 +34,8 @@ public class Reminder extends SugarRecord {
         this.status = status;
         this.active = active;
         this.repeat = repeat;
+        this.identifier = identifier;
         this.created_at = created_at;
-        this.updated_at = updated_at;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 
@@ -92,14 +79,6 @@ public class Reminder extends SugarRecord {
         this.status = status;
     }
 
-    public String getRepeat() {
-        return repeat;
-    }
-
-    public void setRepeat(String repeat) {
-        this.repeat = repeat;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -108,17 +87,36 @@ public class Reminder extends SugarRecord {
         this.active = active;
     }
 
-    @Override
-    public String toString() {
-        return "Reminder{" +
-                "title='" + title + '\'' +
-                ", time='" + time + '\'' +
-                ", prior=" + prior +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                ", active=" + active +
-                ", repeat='" + repeat + '\'' +
-                '}';
+    public String getRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(String repeat) {
+        this.repeat = repeat;
+    }
+
+    public Integer getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(Integer identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 }
 

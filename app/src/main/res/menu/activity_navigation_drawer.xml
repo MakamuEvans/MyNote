@@ -18,6 +18,10 @@
             android:id="@+id/nav_todo"
             android:icon="@mipmap/ic_action_todo_white"
             android:title="ToDO" />
+
+        <item
+            android:id="@+id/nav_categories"
+            android:title="Manage Categories"/>
     </group>
 
     <item android:title="Communicate">

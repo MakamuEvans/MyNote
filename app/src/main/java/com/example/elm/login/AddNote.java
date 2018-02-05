@@ -2,9 +2,13 @@ package com.example.elm.login;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -25,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elm.login.model.Category;
 import com.example.elm.login.model.Note;
 import com.example.elm.login.model.User;
 import com.example.elm.login.network.NetworkUtil;
@@ -38,14 +43,17 @@ import java.util.Date;
 import java.util.List;
 
 import jp.wasabeef.richeditor.RichEditor;
+import layout.AddMilestone;
 import layout.NotesFragment;
+import layout.ToDo2;
 
 public class AddNote extends AppCompatActivity {
     public static final String ACTION_RESP = "com.example.elm.login.services.note.Upload";
     private EditText title, note;
     private ImageView imageView, imagePlace, strike_through;
-    private TextView save, update;
+    private TextView save, update, add_category;
     private RichEditor richEditor;
+    private Long category = null;
     private Boolean savedStatus = false;
     private Long note_id;
     private Boolean breakStatus = false;
@@ -59,10 +67,40 @@ public class AddNote extends AppCompatActivity {
     private Boolean editListener =false;
     private Boolean editmode = false;
     private View view1;
+    private CategoryReceiver categoryReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences preferences = getSharedPreferences("myPref", 0);
+        //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
+        String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
+        Log.e("Theme", theme);
+        if (theme == "tomato")
+            setTheme(R.style.AppTheme_NoActionBar);
+        if (theme == "tangarine")
+            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
+        if (theme.equalsIgnoreCase("banana"))
+            setTheme(R.style.AppTheme_NoActionBar_Banana);
+        if (theme.equalsIgnoreCase("basil"))
+            setTheme(R.style.AppTheme_NoActionBar_Basil);
+        if (theme.equalsIgnoreCase("sage"))
+            setTheme(R.style.AppTheme_NoActionBar_Sage);
+        if (theme.equalsIgnoreCase("peacock"))
+            setTheme(R.style.AppTheme_NoActionBar_Peacock);
+        if (theme.equalsIgnoreCase("blueberry"))
+            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
+        if (theme.equalsIgnoreCase("lavender"))
+            setTheme(R.style.AppTheme_NoActionBar_Lavender);
+        if (theme.equalsIgnoreCase("grape"))
+            setTheme(R.style.AppTheme_NoActionBar_Grape);
+        if (theme.equalsIgnoreCase("flamingo"))
+            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
+        if (theme.equalsIgnoreCase("graphite"))
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+
+
         setContentView(R.layout.activity_add_note);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -74,10 +112,26 @@ public class AddNote extends AppCompatActivity {
         richEditor.setPadding(10,10,10,10);
         richEditor.setPlaceholder("Touch to add notes");
 
+
+        //register receivers
+        IntentFilter intentFilter = new IntentFilter(CategoryReceiver.ACTIION_REP);
+        categoryReceiver = new AddNote.CategoryReceiver();
+        registerReceiver(categoryReceiver,intentFilter);
+
+
         title = (EditText) findViewById(R.id.note_title);
         //note = (EditText) findViewById(R.id.note_data);
         save = (TextView) findViewById(R.id.save_note);
         update = (TextView) findViewById(R.id.update_note);
+        add_category = (TextView) findViewById(R.id.add_category);
+
+        add_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addcategory();
+                Log.e("ctaegory", "clicked");
+            }
+        });
 
         update.setVisibility(View.INVISIBLE);
 
@@ -92,6 +146,9 @@ public class AddNote extends AppCompatActivity {
                 Note note1 = Note.findById(Note.class, note_id);
                 title.setText(note1.getTitle());
                 richEditor.setHtml(note1.getNote());
+                if (note1.getCategory() != null){
+                    setCategory(note1.getCategory());
+                }
                 if (note1.getNote() != null){
                     if (note1.getNote().contains("<img src=")){
                         imageStatus = false;
@@ -207,6 +264,12 @@ public class AddNote extends AppCompatActivity {
 
     }
 
+    private void addcategory() {
+        AddCategory addCategory = new AddCategory();
+
+        addCategory.show(getSupportFragmentManager(), "Dialog");
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -276,6 +339,7 @@ public class AddNote extends AppCompatActivity {
                 null,
                 title.getText().toString(),
                 noteData,
+                category,
                 null,
                 dateFormat.format(date),
                 dateFormat.format(date),
@@ -329,6 +393,7 @@ public class AddNote extends AppCompatActivity {
         Note note1 = Note.findById(Note.class, note_id);
         note1.setTitle(title.getText().toString());
         note1.setNote(noteData);
+        note1.setCategory(category);
         note1.setUpdated_at(dateFormat.format(date));
         //note1.setUpdateflag(true);
         note1.save();
@@ -462,6 +527,24 @@ public class AddNote extends AppCompatActivity {
 
             richEditor.insertImage(imagePath + "\" style=\"width:80%;", "Image");
             cursor.close();
+        }
+    }
+
+    private  void setCategory(Long categoryId){
+        category = categoryId;
+        Category category = Category.findById(Category.class, categoryId);
+        String title = category.getTitle();
+        add_category.setText(title);
+    }
+
+    public class CategoryReceiver extends BroadcastReceiver {
+        public static final String ACTIION_REP = "getCategory";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Log.e("Haa", "TaskReceiver Called");
+            Bundle bundle = intent.getExtras();
+            Long title = bundle.getLong("title");
+            setCategory(title);
         }
     }
 }

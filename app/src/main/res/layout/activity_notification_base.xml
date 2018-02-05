@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back_ground"
+    android:background="?attr/colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
@@ -18,7 +18,7 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -29,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/gradient"
+                android:padding="10dp"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
 
@@ -61,14 +62,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:orientation="vertical">
 
             <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
                 android:id="@+id/hicvp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".7"
+                android:layout_weight=".6"
                 app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
                 app:icvp_scroll_duration="250"
                 app:icvp_center_page_scale_offset="30dp"
@@ -80,40 +81,38 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:id="@+id/reminder_action"
-                android:visibility="gone"
                 android:layout_height="0dp"
-                android:layout_weight=".3"
+                android:layout_weight=".4"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight=".5">
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content">
 
                     <Button
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="wrap_content"
                         android:text="Snooze"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/snooze_alarm"
-                        android:layout_margin="5dp"
-                        android:textSize="20sp"
                         android:background="@drawable/snooze" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight=".5">
+                    android:layout_width="200dp"
+                    android:layout_height="70dp">
 
                     <Button
                         android:layout_width="match_parent"
                         android:textSize="20sp"
                         android:id="@+id/close_alarm"
                         android:layout_margin="5dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/paste"
+                        android:layout_height="60dp"
+                        android:background="@drawable/gradient"
+                        android:textColor="@color/colorWhite"
                         android:text="Close" />
 
                 </LinearLayout>

@@ -9,15 +9,17 @@ import com.orm.SugarRecord;
 public class AlarmReminder extends SugarRecord {
     private Long reminderid;
     private String time;
+    private Integer identifier;
     private boolean active;
 
     public AlarmReminder() {
     }
 
-    public AlarmReminder(Long reminderid, String time, boolean status) {
+    public AlarmReminder(Long reminderid, String time, int identifier, boolean active) {
         this.reminderid = reminderid;
         this.time = time;
-        this.active = status;
+        this.identifier = identifier;
+        this.active = active;
     }
 
     public Long getReminderid() {
@@ -36,11 +38,19 @@ public class AlarmReminder extends SugarRecord {
         this.time = time;
     }
 
+    public int getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(int identifier) {
+        this.identifier = identifier;
+    }
+
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean status) {
-        this.active = status;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

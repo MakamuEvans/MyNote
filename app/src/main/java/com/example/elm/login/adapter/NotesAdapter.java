@@ -24,6 +24,7 @@ import com.example.elm.login.AddNote;
 import com.example.elm.login.FullNote;
 import com.example.elm.login.Navigation;
 import com.example.elm.login.R;
+import com.example.elm.login.model.Category;
 import com.example.elm.login.model.Note;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -97,6 +98,12 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             Note notes = allnotes.get(position);
             holder1.title.setText(notes.getTitle());
             holder1.dated.setText(notes.getUpdated_at());
+            if (notes.getCategory() == null){
+                holder1.category.setVisibility(View.GONE);
+            }else {
+                Category category = Category.findById(Category.class, notes.getCategory());
+                holder1.category.setText(category.getTitle());
+            }
             String htmlText = notes.getNote();
             if (htmlText != null){
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -153,7 +160,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder{
-        public TextView title, note, dated;
+        public TextView title, note, dated,category;
         public ImageView imageView,fav, del;
 
         public myViewHolder(View itemView) {
@@ -161,6 +168,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             title = (TextView) itemView.findViewById(R.id.card_title);
             note = (TextView) itemView.findViewById(R.id.card_notes);
             dated = (TextView) itemView.findViewById(R.id.card_dated);
+            category = (TextView) itemView.findViewById(R.id.notes_category);
             imageView = (ImageView) itemView.findViewById(R.id.uploadstatus);
             fav = (ImageView) itemView.findViewById(R.id.card_fav);
             del = (ImageView) itemView.findViewById(R.id.card_del);

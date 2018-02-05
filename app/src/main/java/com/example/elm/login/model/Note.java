@@ -10,6 +10,7 @@ public class Note extends SugarRecord {
     private String noteid;
     private String title;
     private String note;
+    private Long category;
     private String status;
     private String created_at;
     private String updated_at;
@@ -25,10 +26,11 @@ public class Note extends SugarRecord {
     public Note() {
     }
 
-    public Note(String noteid, String title, String note, String status, String created_at, String updated_at, Boolean favourite, Boolean favaouriteflag, Boolean uploadflag, Boolean updateflag, Boolean deleteflag, String image, String imageurl) {
+    public Note(String noteid, String title, String note, Long category, String status, String created_at, String updated_at, Boolean favourite, Boolean favaouriteflag, Boolean uploadflag, Boolean updateflag, Boolean deleteflag, String image, String imageurl) {
         this.noteid = noteid;
         this.title = title;
         this.note = note;
+        this.category = category;
         this.status = status;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -39,14 +41,6 @@ public class Note extends SugarRecord {
         this.deleteflag = deleteflag;
         this.image = image;
         this.imageurl = imageurl;
-    }
-
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
     }
 
     public String getNoteid() {
@@ -73,6 +67,14 @@ public class Note extends SugarRecord {
         this.note = note;
     }
 
+    public Long getCategory() {
+        return category;
+    }
+
+    public void setCategory(Long category) {
+        this.category = category;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -87,6 +89,14 @@ public class Note extends SugarRecord {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    public String getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(String updated_at) {
+        this.updated_at = updated_at;
     }
 
     public Boolean getFavourite() {
@@ -143,23 +153,5 @@ public class Note extends SugarRecord {
 
     public void setImageurl(String imageurl) {
         this.imageurl = imageurl;
-    }
-
-    @Override
-    public String toString() {
-        return "Note{" +
-                "noteid='" + noteid + '\'' +
-                ", title='" + title + '\'' +
-                ", note='" + note + '\'' +
-                ", status='" + status + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", favourite=" + favourite +
-                ", favaouriteflag=" + favaouriteflag +
-                ", uploadflag=" + uploadflag +
-                ", updateflag=" + updateflag +
-                ", deleteflag=" + deleteflag +
-                ", image='" + image + '\'' +
-                ", imageurl='" + imageurl + '\'' +
-                '}';
     }
 }

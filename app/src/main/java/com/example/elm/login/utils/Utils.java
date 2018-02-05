@@ -36,7 +36,7 @@ public class Utils {
             if (reminder.getRepeat() == null){
                 date1 = convert_simpleDateFormat.parse(reminder.getTime());
             }else {
-                date1 = time_simpleDateFormat.parse(reminder.getTime());
+                date1 = convert_simpleDateFormat.parse(reminder.getTime());
             }
         } catch (ParseException e) {
             e.printStackTrace();

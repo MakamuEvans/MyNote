@@ -13,10 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.elm.login.AddNote;
 import com.example.elm.login.R;
 import com.example.elm.login.adapter.NotesAdapter;
+import com.example.elm.login.model.Category;
 import com.example.elm.login.model.Note;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -89,6 +93,7 @@ public class NotesFragment extends Fragment {
     private SyncReceiver syncReceiver;
     private  DeleteReceiver deleteReceiver;
     private AdView adView;
+    private Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -140,6 +145,57 @@ public class NotesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(notesAdapter);
 
+        notesAdapter.swapAll(notes);
+
+        final List<String> categories = new ArrayList<>();
+        List<Category> data = new ArrayList<>();
+        data = Category.listAll(Category.class);
+
+        categories.add("-All Notes-");
+        for (Category category: data){
+            categories.add(category.getTitle());
+        }
+        spinner = (Spinner) view.findViewById(R.id.fullSpinner);
+        spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categories));
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = categories.get(i);
+                if (selected.equals("-All Notes-")){
+                    notes = Select.from(Note.class)
+                            .where(Condition.prop("deleteflag").eq(0))
+                            .orderBy("Id DESC")
+                            .list();
+
+                 //   notesAdapter = new NotesAdapter(notes, getActivity().getApplicationContext());
+                }else {
+                    Category category = Select.from(Category.class)
+                            .where(Condition.prop("title").eq(selected))
+                            .first();
+                    notes = Select.from(Note.class)
+                            .where(Condition.prop("deleteflag").eq(0))
+                            .where(Condition.prop("category").eq(category.getId()))
+                            .orderBy("Id DESC")
+                            .list();
+
+                  //  notesAdapter = new NotesAdapter(notes, getActivity().getApplicationContext());
+                }
+                if (notesAdapter != null){
+                    notesAdapter.swapAll(notes);
+                }
+                //recyclerView.setAdapter(notesAdapter);
+                //recyclerView.swapAdapter(notesAdapter, false);
+               /* NotesAdapter notesAdapter = null;
+                notesAdapter.swapAll(notes);*/
+                //recyclerView.notify();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         return  view;
         //return inflater.inflate(R.layout.fragment_notes2, container, false);

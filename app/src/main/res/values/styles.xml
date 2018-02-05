@@ -8,8 +8,182 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:typeface">serif</item>
     </style>
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Tangarine" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryTangarine</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkTangarine</item>
+        <item name="colorAccent">@color/colorAccentTangarine</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Tangarine" parent="AppTheme.Tangarine">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Tangarine" parent="AppTheme.Tangarine">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Banana" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryBanana</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBanana</item>
+        <item name="colorAccent">@color/colorAccentBanana</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Banana" parent="AppTheme.Banana">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Banana" parent="AppTheme.Banana">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Basil" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryBasil</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBasil</item>
+        <item name="colorAccent">@color/colorAccentBasil</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Basil" parent="AppTheme.Basil">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Basil" parent="AppTheme.Basil">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Sage" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimarySage</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkSage</item>
+        <item name="colorAccent">@color/colorAccentSage</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Sage" parent="AppTheme.Sage">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Sage" parent="AppTheme.Sage">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Peacock" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryPeacock</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkPeacock</item>
+        <item name="colorAccent">@color/colorAccentPeacock</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Peacock" parent="AppTheme.Peacock">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Peacock" parent="AppTheme.Peacock">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.BlueBerry" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryBlueBerry</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBlueBerry</item>
+        <item name="colorAccent">@color/colorAccentBlueBerry</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.BlueBerry" parent="AppTheme.BlueBerry">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.BlueBerry" parent="AppTheme.BlueBerry">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Lavender" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryLavender</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkLavender</item>
+        <item name="colorAccent">@color/colorAccentLavender</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Lavender" parent="AppTheme.Lavender">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Lavender" parent="AppTheme.Lavender">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Grape" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryGrape</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkGrape</item>
+        <item name="colorAccent">@color/colorAccentGrape</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Grape" parent="AppTheme.Grape">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Grape" parent="AppTheme.Grape">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Flamingo" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryFlamingo</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkFlamingo</item>
+        <item name="colorAccent">@color/colorAccentFlamingo</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Flamingo" parent="AppTheme.Flamingo">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Flamingo" parent="AppTheme.Flamingo">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.Graphite" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryGraphite</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkGraphite</item>
+        <item name="colorAccent">@color/colorAccentGraphite</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Graphite" parent="AppTheme.Graphite">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SplashTheme.Graphite" parent="AppTheme.Graphite">
+        <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
@@ -41,10 +215,7 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

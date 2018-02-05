@@ -69,14 +69,14 @@
                             android:layout_margin="10dp"
                             android:text="Add"
                             android:id="@+id/new_task"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="?attr/colorPrimary" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="0dp"
-                        android:background="@color/colorPrimary" />
+                        android:background="?attr/colorPrimary" />
 
                     <ScrollView
                         android:layout_width="match_parent"
