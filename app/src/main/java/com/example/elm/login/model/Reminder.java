@@ -18,7 +18,7 @@ public class Reminder extends SugarRecord {
     private Boolean status;
     private Boolean active;
     private String repeat;
-
+    private String todo;
     private Integer identifier;
     private String created_at;
     private String updated_at;
@@ -26,7 +26,7 @@ public class Reminder extends SugarRecord {
     public Reminder() {
     }
 
-    public Reminder(String title, String time, Boolean prior, String description, Boolean status, Boolean active, String repeat, Integer identifier, String created_at, String updated_at) {
+    public Reminder(String title, String time, Boolean prior, String description, Boolean status, Boolean active, String repeat, String todo, Integer identifier, String created_at, String updated_at) {
         this.title = title;
         this.time = time;
         this.prior = prior;
@@ -34,6 +34,7 @@ public class Reminder extends SugarRecord {
         this.status = status;
         this.active = active;
         this.repeat = repeat;
+        this.todo = todo;
         this.identifier = identifier;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -93,6 +94,14 @@ public class Reminder extends SugarRecord {
 
     public void setRepeat(String repeat) {
         this.repeat = repeat;
+    }
+
+    public String getTodo() {
+        return todo;
+    }
+
+    public void setTodo(String todo) {
+        this.todo = todo;
     }
 
     public Integer getIdentifier() {

@@ -72,7 +72,7 @@ public class NewToDo extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.new_todo, menu);
-       menu.findItem(R.id.advanced).setVisible(false);
+       menu.findItem(R.id.todo_timer).setVisible(false);
 
         return true;
     }

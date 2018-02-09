@@ -28,6 +28,7 @@ import com.example.elm.login.adapter.NotificationsAdapter;
 import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.services.alarm.AlarmCrud;
+import com.example.elm.login.services.alarm.PlaySound;
 import com.example.elm.login.services.alarm.SnoozeCounter;
 import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
 import com.orm.query.Condition;
@@ -57,6 +58,7 @@ public class NotificationBase extends AppCompatActivity {
     private LinearLayout reminder_action;
     private int alartTime, snoozeTime;
     Boolean vibrate;
+    Boolean quit = false;
 
     @Override
     protected void onStart() {
@@ -167,22 +169,46 @@ public class NotificationBase extends AppCompatActivity {
         close_b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                close();
-                destroy();
+                //close(); //call service instead
+                stopService(new Intent(NotificationBase.this, PlaySound.class));
+                quit = true;
+                stopSound();
+                cancelCountDown();
+                Intent intent = new Intent(NotificationBase.this, PlaySound.class);
+                intent.putExtra("quit", true);
+                intent.putExtra("nType", notification);
+                startService(intent);
+                finish();
             }
         });
 
         pause_media.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopService(new Intent(NotificationBase.this, PlaySound.class));
+                quit = true;
+                cancelCountDown();
                 stopSound();
+                Intent intent = new Intent(NotificationBase.this, PlaySound.class);
+                intent.putExtra("quit", false);
+                startService(intent);
+                finish();
             }
         });
+
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                close();
-                destroy();
+                //close(); //call service instead
+                stopService(new Intent(NotificationBase.this, PlaySound.class));
+                quit = true;
+                stopSound();
+                cancelCountDown();
+                Intent intent = new Intent(NotificationBase.this, PlaySound.class);
+                intent.putExtra("quit", true);
+                intent.putExtra("nType", notification);
+                startService(intent);
+                finish();
             }
         });
 
@@ -198,6 +224,26 @@ public class NotificationBase extends AppCompatActivity {
             playSound(this, ringtone);
 
     }
+
+    @Override
+    protected void onPause() {
+        Log.e("paused", "paused");
+        /*stopSound();
+        cancelCountDown();*/
+        if (!quit){
+            cancelCountDown();
+            stopSound();
+            Intent intent = new Intent(NotificationBase.this, PlaySound.class);
+            intent.putExtra("quit", false);
+            intent.putExtra("nType", notification);
+            startService(intent);
+            //finish();
+        }
+
+        super.onPause();
+    }
+
+
 
     private void snooze() {
     }
@@ -224,8 +270,8 @@ public class NotificationBase extends AppCompatActivity {
     }
 
     private void soundController(final Uri uri) {
-        Intent intent = new Intent(NotificationBase.this, SnoozeCounter.class);
-        startService(intent);
+       /* Intent intent = new Intent(NotificationBase.this, SnoozeCounter.class);
+        startService(intent);*/
 
         interval = new CountDownTimer(snoozeTime * 60000, 1000) {
 

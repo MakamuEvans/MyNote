@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.elm.login.NewReminder;
+import com.example.elm.login.ToDoDetails;
 import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.utils.Constants;
@@ -57,7 +58,8 @@ public class AlarmCrud extends Service {
         Log.e("Dated", dated);
 
         //create or cancel
-        if (create) { //create
+        if (create) {
+            //create
             String format = "MMM dd yyyy HH:mm";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
             Date date = null;
@@ -92,9 +94,21 @@ public class AlarmCrud extends Service {
                 calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
                 calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
 
+                //set dates to today
+                Date currentTime = Calendar.getInstance().getTime();
+
+
                 if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
+                    int month1 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(currentTime)) - 1;
+                    calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(currentTime)));
+                    calendar.set(Calendar.MONTH, month1);
+                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(currentTime)));
+
+
+
                     calendar.add(Calendar.DAY_OF_YEAR, 1);
                     Log.e("newTime", String.valueOf(calendar.getTime()));
+                    Log.e("newTime", String.valueOf(month1));
                 }
             }
 
@@ -104,7 +118,8 @@ public class AlarmCrud extends Service {
                     Constants.actualReminder,
                     calendar.getTimeInMillis(),
                     reminderId,
-                    repeat
+                    repeat,
+                    reminder.getTodo()
             );
 
             if (reminder.getPrior()){
@@ -142,7 +157,8 @@ public class AlarmCrud extends Service {
                         Constants.earlyReminder,
                         calendar.getTimeInMillis(),
                         earlyReminder.getId(),
-                        repeat
+                        repeat,
+                        null
                 );
             }
         } else { //cancel
@@ -158,22 +174,35 @@ public class AlarmCrud extends Service {
         Log.e(TAG, "onDestroy Called");
     }
 
-    public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat) {
+    public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat, String todoId) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddSSS");
         Random r = new Random();
         int random = (r.nextInt(999) + 9);
         String format = simpleDateFormat.format(new Date());
         int alarmTracker = Integer.parseInt(nId+aId.toString()+format);
         alarmTracker = alarmTracker - random;
+        Intent  intent;
+        if (todoId == null || todoId.equalsIgnoreCase("")){
+            Log.e("AtherereC", title+content+nId+aId);
+            intent = new Intent("DISPLAY_NOTIFICATION");
+            intent.putExtra("title", title);
+            intent.putExtra("repeat", repeat);
+            intent.putExtra("content", content);
+            intent.putExtra("notificationId", nId);
+            intent.putExtra("alarmId", aId);
+            intent.putExtra("alarmTracker", alarmTracker);
+        }else {
+            Log.e("AtherereC", title+content+nId+aId);
+            intent = new Intent("DISPLAY_NOTIFICATION");
+            intent.putExtra("title", title);
+            intent.putExtra("repeat", repeat);
+            intent.putExtra("content", content);
+            intent.putExtra("notificationId", Constants.todoReminder);
+            intent.putExtra("alarmId", aId);
+            intent.putExtra("alarmTracker", alarmTracker);
+        }
 
-        Log.e("AtherereC", title+content+nId+aId);
-        Intent intent = new Intent("DISPLAY_NOTIFICATION");
-        intent.putExtra("title", title);
-        intent.putExtra("repeat", repeat);
-        intent.putExtra("content", content);
-        intent.putExtra("notificationId", nId);
-        intent.putExtra("alarmId", aId);
-        intent.putExtra("alarmTracker", alarmTracker);
+
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), alarmTracker, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -198,19 +227,28 @@ public class AlarmCrud extends Service {
             }
         }
 
+        Log.e("newTimesd1", String.valueOf(alarmTracker));
         if (nId == Constants.earlyReminder){
             AlarmReminder alarmReminder = AlarmReminder.findById(AlarmReminder.class, aId);
             alarmReminder.setIdentifier(alarmTracker);
             alarmReminder.save();
-        }else {
+        }else if (nId == Constants.actualReminder){
             Reminder reminder = Reminder.findById(Reminder.class, aId);
+            Log.e("newTimeReminder0", String.valueOf(reminder.getIdentifier()));
             reminder.setIdentifier(alarmTracker);
+            reminder.save();
+
+            Log.e("newTimeReminder1", String.valueOf(reminder.getIdentifier()));
             reminder.save();
         }
     }
 
     public void cancelAlarm(Long aId) {
-        Reminder reminder = Reminder.findById(Reminder.class, aId);
+        //Reminder reminder = Reminder.findById(Reminder.class, aId);
+        Reminder reminder = Select.from(Reminder.class)
+                .where(Condition.prop("id").eq(aId))
+                .first();
+        Log.e("newTimec1", String.valueOf(reminder.getIdentifier()));
 
         Intent intent = new Intent("DISPLAY_NOTIFICATION");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -226,6 +264,9 @@ public class AlarmCrud extends Service {
             AlarmReminder alarmReminder = Select.from(AlarmReminder.class)
                     .where(Condition.prop("reminderid").eq(aId))
                     .first();
+
+            Log.e("newTimec2", String.valueOf(alarmReminder.getIdentifier()));
+
 
             Intent intent2 = new Intent("DISPLAY_NOTIFICATION");
             PendingIntent pendingIntent2 = PendingIntent.getBroadcast(

@@ -180,9 +180,16 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".ManageCategories" />
+
+        <service
+            android:name=".services.alarm.PlaySound"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

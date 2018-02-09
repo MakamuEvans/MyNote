@@ -249,7 +249,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.dated.setText(before);
             }
 
-            if (reminder.getDescription().equals("")) {
+            if (reminder.getDescription().equals("") || reminder.getDescription() == null) {
                 holder.card_text.setText("No description provided");
             } else {
                 holder.card_text.setText(reminder.getDescription());

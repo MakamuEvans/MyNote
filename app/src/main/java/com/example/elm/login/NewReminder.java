@@ -435,6 +435,7 @@ public class NewReminder extends AppCompatActivity {
                 true,
                 false,
                 repeatDates(),
+                "",
                 0,
                 dateFormat.format(today),
                 dateFormat.format(today));

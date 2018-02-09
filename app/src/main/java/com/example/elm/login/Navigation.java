@@ -246,7 +246,31 @@ public class Navigation extends AppCompatActivity
             newToDo();
         }
         if (id == R.id.theme_picker) {
-            mSelectedColor = ContextCompat.getColor(this, R.color.flamingo);
+            SharedPreferences preferences = getSharedPreferences("myPref", 0);
+            String theme = getSharedPreferences("myPref", 0).getString("theme", "none");
+
+            if (theme.equalsIgnoreCase("tomato"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.tomato);
+            if (theme.equalsIgnoreCase("tangarine"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.tangerine);
+            if (theme.equalsIgnoreCase("banana"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.banana);
+            if (theme.equalsIgnoreCase("basil"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.basil);
+            if (theme.equalsIgnoreCase("sage"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.sage);
+            if (theme.equalsIgnoreCase("peacock"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.flamingo);
+            if (theme.equalsIgnoreCase("blueberry"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.grape);
+            if (theme.equalsIgnoreCase("lavender"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.lavender);
+            if (theme.equalsIgnoreCase("grape"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.blueberry);
+            if (theme.equalsIgnoreCase("flamingo"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.peacock);
+            if (theme.equalsIgnoreCase("graphite"))
+                mSelectedColor = ContextCompat.getColor(this, R.color.graphite);
 
             int[] mColors = getResources().getIntArray(R.array.default_rainbow);
 
@@ -355,6 +379,9 @@ public class Navigation extends AppCompatActivity
             i.setData(Uri.parse(url));
             startActivity(i);
             return true;
+        } else if (id == R.id.nav_categories){
+            Intent intent = new Intent(Navigation.this, ManageCategories.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

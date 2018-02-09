@@ -22,6 +22,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.lang.reflect.Type;
@@ -117,6 +118,7 @@ public class ReminderFragment extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.reminder_recycler);
         reminders = Select.from(Reminder.class)
+                .where(Condition.prop("todo").eq(""))
                 .orderBy("Id DESC")
                 .list();
         reminderAdapter = new ReminderAdapter(reminders);

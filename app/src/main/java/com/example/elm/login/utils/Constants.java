@@ -20,6 +20,7 @@ public class Constants {
     //notification types
     public static final int earlyReminder = 101;
     public static final int actualReminder = 100;
+    public static final int todoReminder = 102;
     public static final int morning = 201;
 
     public String uniqueCode(){

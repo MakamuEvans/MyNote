@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#d50000</color>
-    <color name="colorPrimaryDark">#b71744</color>
+    <color name="colorPrimaryDark">#b40000</color>
     <color name="colorAccent">#d50000</color>
 
     <color name="colorPrimaryTomato">#d50000</color>
     <color name="colorPrimaryDarkTomato">#b71744</color>
-    <color name="colorAccentTomato">#f4511e</color>
+    <color name="colorAccentTomato">#d50000</color>
 
     <color name="colorPrimaryTangarine">#f4511e</color>
-    <color name="colorPrimaryDarkTangarine">#e23600</color>
-    <color name="colorAccentTangarine">#ed4272</color>
+    <color name="colorPrimaryDarkTangarine">#d6471b</color>
+    <color name="colorAccentTangarine">#f4511e</color>
 
     <color name="colorPrimaryBanana">#f6bf26</color>
     <color name="colorPrimaryDarkBanana">#f9b700</color>
     <color name="colorAccentBanana">#f6bf26</color>
 
     <color name="colorPrimaryBasil">#0b8043</color>
-    <color name="colorPrimaryDarkBasil">#01f274</color>
+    <color name="colorPrimaryDarkBasil">#0a6c39</color>
     <color name="colorAccentBasil">#0b8043</color>
 
     <color name="colorPrimarySage">#33b679</color>
-    <color name="colorPrimaryDarkSage">#00f181</color>
+    <color name="colorPrimaryDarkSage">#2d9f6a</color>
     <color name="colorAccentSage">#33b679</color>
 
     <color name="colorPrimaryFlamingo">#039be5</color>
@@ -32,9 +32,9 @@
     <color name="colorPrimaryDarkGrape">#0f2289</color>
     <color name="colorAccentGrape">#3f51b5</color>
 
-    <color name="colorPrimaryLavender">#7986cb</color>
+    <color name="colorPrimaryLavender">#6d7cc9</color>
     <color name="colorPrimaryDarkLavender">#3346ab</color>
-    <color name="colorAccentLavender">#7986cb</color>
+    <color name="colorAccentLavender">#6d7cc9</color>
 
     <color name="colorPrimaryBlueBerry">#8e24aa</color>
     <color name="colorPrimaryDarkBlueBerry">#800a9f</color>

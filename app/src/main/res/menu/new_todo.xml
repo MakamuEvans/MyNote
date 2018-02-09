@@ -5,12 +5,7 @@
     <item
         android:title="Advanced"
         app:showAsAction="always"
-        android:id="@+id/advanced" >
-        <menu>
-            <item android:id="@+id/todo_timer"
-                android:title="Add Reminder"/>
-
-        </menu>
-    </item>
+        android:icon="@mipmap/ic_action_alarm_white"
+        android:id="@+id/todo_timer"/>
 
 </menu>

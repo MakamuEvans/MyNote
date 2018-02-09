@@ -28,7 +28,9 @@ public class ResetAlarms extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        alarms = Reminder.listAll(Reminder.class);
+        alarms = Select.from(Reminder.class)
+                .where(Condition.prop("status").eq(1))
+                .list();
 
         for (Reminder reminder: alarms){
             Intent intent1 = new Intent(context, AlarmCrud.class);

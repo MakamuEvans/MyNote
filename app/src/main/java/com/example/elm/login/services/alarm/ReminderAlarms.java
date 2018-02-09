@@ -24,6 +24,7 @@ import com.example.elm.login.Navigation;
 import com.example.elm.login.NewReminder;
 import com.example.elm.login.NotificationBase;
 import com.example.elm.login.R;
+import com.example.elm.login.ToDoDetails;
 import com.example.elm.login.model.AlarmReminder;
 import com.example.elm.login.model.Reminder;
 import com.example.elm.login.utils.Constants;
@@ -37,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import layout.ReminderFragment;
 
@@ -110,10 +112,7 @@ public class ReminderAlarms extends BroadcastReceiver {
 
                     reminder.setStatus(false);
                     reminder.save();
-                }else {
-                    cancelAlarm(alarmTracker, context);
                 }
-
             }
 
             //clear from notification
@@ -123,7 +122,7 @@ public class ReminderAlarms extends BroadcastReceiver {
                 alarmReminder.save();
                 reminderAlarms(reminder.getTitle(), context);
             }
-        } else {
+        } else if (nId == Constants.earlyReminder){
             //early reminder
             AlarmReminder alarmReminder = AlarmReminder.findById(AlarmReminder.class, alarmId);
 
@@ -135,9 +134,14 @@ public class ReminderAlarms extends BroadcastReceiver {
                     alarmReminder.save();
                     reminderAlarms(nTitle, context);
                 }
-            }else {
-                cancelAlarm(alarmTracker, context);
             }
+        } else if (nId == Constants.todoReminder){
+            Reminder reminder = Reminder.findById(Reminder.class, alarmId);
+            reminder.setStatus(false);
+            reminder.save();
+            todoReminder(reminder.getTitle(), context, alarmId);
+        }else {
+            cancelAlarm(alarmTracker, context);
         }
     }
 
@@ -193,6 +197,54 @@ public class ReminderAlarms extends BroadcastReceiver {
             mNotificationManager.notify(101, builder.build());
         }
 
+    }
+
+    public void todoReminder(String nTitle, Context context, Long alarmId){
+        Reminder reminder = Reminder.findById(Reminder.class, alarmId);
+        Long id = Long.valueOf(reminder.getTodo());
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddSSS");
+        Random r = new Random();
+        int random = (r.nextInt(999) + 9);
+        String format = simpleDateFormat.format(new Date());
+        int alarmTracker = Integer.parseInt(alarmId+format);
+        alarmTracker = alarmTracker - random;
+        //set action responses
+        Intent resultIntent = new Intent(context, ToDoDetails.class);
+        resultIntent.putExtra("id", id);
+        resultIntent.putExtra("reminder", alarmTracker);
+        Intent openReminder = new Intent(context, ToDoDetails.class);
+        resultIntent.putExtra("id", id);
+        resultIntent.putExtra("reminder", alarmTracker);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //prepare notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setSmallIcon(R.mipmap.logo)
+                .setContentTitle(nTitle)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(ToDoDetails.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            builder.addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent);
+            // builder.addAction(R.mipmap.ic_action_close, "Got it!", null);
+            builder.setContentText("Hey, Its time for your ToDo");
+            builder.setContentIntent(resultPendingIntent);
+            mNotificationManager.notify(alarmTracker, builder.build());
     }
 
     //handle actual reminders

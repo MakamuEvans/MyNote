@@ -149,6 +149,7 @@ public class ToDo1 extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("id", String.valueOf(todo.getId()));
+                bundle.putString("title", todo.getTitle());
                 ToDo2 toDo2 = new ToDo2();
                 toDo2.setArguments(bundle);
                 android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

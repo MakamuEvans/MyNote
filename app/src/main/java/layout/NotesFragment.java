@@ -149,9 +149,12 @@ public class NotesFragment extends Fragment {
 
         final List<String> categories = new ArrayList<>();
         List<Category> data = new ArrayList<>();
-        data = Category.listAll(Category.class);
+        data = Select.from(Category.class)
+                .orderBy("title DESC")
+                .list();
 
         categories.add("-All Notes-");
+        categories.add("Favourites");
         for (Category category: data){
             categories.add(category.getTitle());
         }
@@ -162,13 +165,16 @@ public class NotesFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected = categories.get(i);
-                if (selected.equals("-All Notes-")){
+                if (selected.equals("-All Notes-")) {
                     notes = Select.from(Note.class)
                             .where(Condition.prop("deleteflag").eq(0))
                             .orderBy("Id DESC")
                             .list();
-
-                 //   notesAdapter = new NotesAdapter(notes, getActivity().getApplicationContext());
+                }else if (selected.equals("Favourites")){
+                    notes = Select.from(Note.class)
+                            .where(Condition.prop("favourite").eq(1))
+                            .orderBy("Id DESC")
+                            .list();
                 }else {
                     Category category = Select.from(Category.class)
                             .where(Condition.prop("title").eq(selected))

@@ -1,25 +1,35 @@
 package com.example.elm.login;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.elm.login.adapter.MilestoneAdapter;
 import com.example.elm.login.model.Milestones;
 import com.example.elm.login.model.Note;
+import com.example.elm.login.model.Reminder;
 import com.example.elm.login.model.Todo;
+import com.example.elm.login.services.alarm.AlarmCrud;
+import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orm.query.Condition;
@@ -28,8 +38,11 @@ import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import layout.AddMilestone;
 import layout.EventsFragment;
@@ -41,8 +54,10 @@ public class ToDoDetails extends AppCompatActivity {
     private newPercentage percentage;
     private newMilestoneReceiver milestoneReceiver;
     private milestoneRemover milestoneRemover;
-    public TextView new_task;
+    public TextView new_task, reminder_date;
+    LinearLayout reminder_layout;
     Long id;
+    Reminder reminder = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +95,57 @@ public class ToDoDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getExtras().getLong("id");
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+            if (bundle.containsKey("reminder")){
+                int tracker = intent.getExtras().getInt("reminder");
+                NotificationManager mNotificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.cancel(tracker);
+            }
+        }
+
+        reminder_date = (TextView) findViewById(R.id.reminder_date);
+        reminder_layout = (LinearLayout) findViewById(R.id.reminder_layout);
+
+        reminder_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TypedValue typedValue = new TypedValue();
+                Resources.Theme theme = getTheme();
+                theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+                @ColorInt int color = typedValue.data;
+                new SingleDateAndTimePickerDialog.Builder(ToDoDetails.this)
+                        //.bottomSheet()
+                        //.curved()
+                        //.minutesStep(15)
+
+                        //.displayHours(false)
+                        //.displayMinutes(false)
+
+                        //.todayText("aujourd'hui")
+                        .mainColor(color)
+                        .mustBeOnFuture()
+
+                        .displayListener(new SingleDateAndTimePickerDialog.DisplayListener() {
+                            @Override
+                            public void onDisplayed(SingleDateAndTimePicker picker) {
+                                //retrieve the SingleDateAndTimePicker
+                            }
+                        })
+
+                        .title("Set Reminder")
+                        .listener(new SingleDateAndTimePickerDialog.Listener() {
+                            @Override
+                            public void onDateSelected(Date date) {
+                                setReminder(date);
+                            }
+                        }).display();
+            }
+        });
+
+        displayTime();
+
         Todo todo = Todo.findById(Todo.class, id);
         Log.e("Long", String.valueOf(id));
         IntentFilter intentFilter = new IntentFilter(newPercentage.SYNC_ACTION);
@@ -128,6 +194,67 @@ public class ToDoDetails extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(milestoneAdapter);
     }
+
+    private void displayTime() {
+        int count = (int) Select.from(Reminder.class)
+                .where(Condition.prop("todo").eq(id))
+                .count();
+        if (count > 0){
+            reminder = Select.from(Reminder.class)
+                    .where(Condition.prop("todo").eq(id))
+                    .first();
+            reminder_layout.setVisibility(View.VISIBLE);
+            reminder_date.setText(reminder.getTime());
+        }
+    }
+
+    private void setReminder(Date date) {
+        //date format
+        String format = "MMM dd yyyy HH:mm";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        String date_string;
+        date_string = simpleDateFormat.format(date);
+
+        if (reminder != null){
+            reminder.setTime(date_string);
+            reminder.save();
+        }
+
+        //cancel previous alarm
+        Intent intent2 = new Intent(ToDoDetails.this, AlarmCrud.class);
+        intent2.putExtra("create", false);
+        intent2.putExtra("alarmId", reminder.getId());
+        startService(intent2);
+       /* Reminder reminder = new Reminder(
+                title,
+                date_string,
+                false,
+                "",
+                true,
+                false,
+                null,
+                todoId,
+                0,
+                null,
+                null
+        );
+        reminder.save();*/
+
+        //create alarm -->from a service
+        Intent intent = new Intent(ToDoDetails.this, AlarmCrud.class);
+        intent.putExtra("alarmId", reminder.getId());
+        intent.putExtra("create", true);
+        startService(intent);
+
+        displayTime();
+
+        //Toast
+
+
+
+        Log.e("dated", String.valueOf(date));
+    }
+
 
     public void progress(Long id){
         Long total = Select.from(Milestones.class)
