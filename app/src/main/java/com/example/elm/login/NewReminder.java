@@ -2,6 +2,7 @@ package com.example.elm.login;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -56,10 +57,12 @@ import layout.ReminderFragment;
 
 public class NewReminder extends AppCompatActivity {
 
-    TextView selectedDate, reminderName, reminderEarly, reminderDescription;
+    TextView selectedDate, reminderName, reminderEarly, reminderDescription, puzzle_name_activity;
     private EarlyReceiver earlyReceiver;
     private TitleReceiver titleReceiver;
+    private PuzzleReceiver puzzleReceiver;
     private Boolean repeating =false;
+    private String puzzle = "None";
     private View view;
     private AdView adView;
     private Spinner spinner;
@@ -131,6 +134,9 @@ public class NewReminder extends AppCompatActivity {
         tsunday = (TextView) findViewById(R.id.repeat_sunday);
         repeatingAlarm();
 
+        puzzle_name_activity = (TextView) findViewById(R.id.puzzle_name_activity);
+        puzzle_name_activity.setText(puzzle);
+
         //register receivers
         IntentFilter intentFilter = new IntentFilter(earlyReceiver.ACTIION_REP);
         earlyReceiver = new EarlyReceiver();
@@ -139,6 +145,10 @@ public class NewReminder extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(TitleReceiver.ACTIION_REP);
         titleReceiver = new TitleReceiver();
         registerReceiver(titleReceiver, filter);
+
+        IntentFilter filter1 = new IntentFilter(PuzzleReceiver.ACTIION_REP);
+        puzzleReceiver = new PuzzleReceiver();
+        registerReceiver(puzzleReceiver, filter1);
 
         String format = "MMM dd yyyy HH:mm";
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
@@ -152,6 +162,7 @@ public class NewReminder extends AppCompatActivity {
         time_picker.setDisplayDays(false);
         time_picker.setMustBeOnFuture(false);
         time_picker.setStepMinutes(1);
+        time_picker.setIsAmPm(false);
         dateTime.setMustBeOnFuture(true);
 
         final RelativeLayout repeat_mode = (RelativeLayout) findViewById(R.id.repeat_mode);
@@ -182,6 +193,14 @@ public class NewReminder extends AppCompatActivity {
 
         RelativeLayout title_layout = (RelativeLayout) findViewById(R.id.title_layout);
         RelativeLayout early_layout = (RelativeLayout) findViewById(R.id.early_layout);
+        RelativeLayout puzzle_layout = (RelativeLayout) findViewById(R.id.puzzle_layout);
+        puzzle_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewReminder.this, SelectPuzzle.class);
+                startActivity(intent);
+            }
+        });
         title_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -312,6 +331,19 @@ public class NewReminder extends AppCompatActivity {
         }
     }
 
+    public class PuzzleReceiver extends BroadcastReceiver {
+        public static final String ACTIION_REP = "add_puzzle";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            String title = bundle.getString("title");
+            puzzle = title;
+            puzzle_name_activity.setText(puzzle);
+            //onComplete(title);
+        }
+    }
+
     public class EarlyReceiver extends BroadcastReceiver {
         public static final String ACTIION_REP = "add_reminder";
 
@@ -432,6 +464,7 @@ public class NewReminder extends AppCompatActivity {
                 date_string,
                 priorSet,
                 reminderDescription.getText().toString(),
+                puzzle,
                 true,
                 false,
                 repeatDates(),
@@ -459,7 +492,7 @@ public class NewReminder extends AppCompatActivity {
         startService(intent);
 
         //Toast.makeText(getBaseContext(), "Reminder set to  " + date_string, Toast.LENGTH_LONG).show();
-        MDToast.makeText(getBaseContext(), "Reminder set to  "+ date_string, MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+        MDToast.makeText(getBaseContext(), "Reminder set", MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
 
         //update ui and launch relevant fragment
         String dt = new Gson().toJson(newReminder);

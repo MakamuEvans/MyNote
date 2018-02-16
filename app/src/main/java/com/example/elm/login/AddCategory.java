@@ -91,6 +91,7 @@ public class AddCategory extends DialogFragment {
         List<Category> data = new ArrayList<>();
         data = Category.listAll(Category.class);
 
+        categories.add("Select Category");
         for (Category category: data){
             categories.add(category.getTitle());
         }
@@ -106,7 +107,7 @@ public class AddCategory extends DialogFragment {
 
                         if (title.getText().toString().isEmpty()){
                             if (spinner.getSelectedItem().toString().equalsIgnoreCase("Select Category")){
-                                MDToast.makeText(getActivity(), "No Category Selected",MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                                MDToast.makeText(getActivity(), "Category Unchanged",MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                             }else {
                                 //fnd its id in Category table and push back to previous activity
                                 String s_title = spinner.getSelectedItem().toString();

@@ -32,9 +32,10 @@ import layout.NotesFragment;
 
 public class FullNote extends AppCompatActivity {
     private Long note_id = null;
-    private TextView updated_on,full_category;
+    private TextView updated_on, full_category;
     private RichEditor richEditor;
     Note note1;
+    int fontSize = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +83,15 @@ public class FullNote extends AppCompatActivity {
             setTitle(note1.getTitle());
         }
         richEditor = (RichEditor) findViewById(R.id.notes_editor);
-       // richEditor.setEditorBackgroundColor(Color.RED);
+        // richEditor.setEditorBackgroundColor(Color.RED);
         richEditor.setInputEnabled(false);
         richEditor.setHtml(note1.getNote());
+        richEditor.setEditorFontSize(fontSize);
 
         updated_on = (TextView) findViewById(R.id.updated_on);
         full_category = (TextView) findViewById(R.id.full_category);
         updated_on.setText("last updated on: " + note1.getUpdated_at());
-        if (note1.getCategory() != null){
+        if (note1.getCategory() != null) {
             Category category = Category.findById(Category.class, note1.getCategory());
             full_category.setText(category.getTitle());
         }
@@ -194,6 +196,16 @@ public class FullNote extends AppCompatActivity {
                 Intent intent1 = new Intent(FullNote.this, AddNote.class);
                 intent1.putExtra("noteId", note_id);
                 startActivity(intent1);
+                return true;
+            case R.id.action_out:
+                if (fontSize <= 25)
+                    fontSize++;
+                richEditor.setEditorFontSize(fontSize);
+                return true;
+            case R.id.action_in:
+                if (fontSize >= 10)
+                    fontSize--;
+                richEditor.setEditorFontSize(fontSize);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -263,6 +263,7 @@ public class ToDo2 extends Fragment {
                 date_string,
                 false,
                 "",
+                "null",
                 true,
                 false,
                 null,

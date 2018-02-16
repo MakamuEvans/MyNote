@@ -191,6 +191,7 @@ public class Navigation extends AppCompatActivity
 
     public void newNote() {
         Intent intent = new Intent(Navigation.this, AddNote.class);
+
         startActivity(intent);
     }
 

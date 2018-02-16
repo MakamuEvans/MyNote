@@ -286,9 +286,9 @@ public class AddNote extends AppCompatActivity {
         if (!editListener){
             AddNote.super.onBackPressed();
         }else {
-            new AlertDialog.Builder(AddNote.this, R.style.MyAlertDialogTheme)
+            new AlertDialog.Builder(AddNote.this)
                     .setTitle("You made changes!")
-                    .setMessage("Click on Save to avoid losing your data")
+                    .setMessage("Click on Save to avoid losing your Note")
                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -308,7 +308,6 @@ public class AddNote extends AppCompatActivity {
                     .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                         }
                     })
                     .create()

@@ -69,13 +69,23 @@
                     android:maxLines="2"
                     android:id="@+id/card_notes"
                     android:text="" />
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_margin="5dp"
-                    android:padding="5dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/thick_corner"
-                    android:id="@+id/notes_category"/>
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/category_layer"
+                    android:orientation="vertical">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="7dp"
+                        android:background="?attr/colorPrimary"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:id="@+id/notes_category"/>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"

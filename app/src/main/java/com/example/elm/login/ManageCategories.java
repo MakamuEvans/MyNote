@@ -3,9 +3,27 @@ package com.example.elm.login;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
+
+import com.example.elm.login.adapter.CategoriesAdapter;
+import com.example.elm.login.adapter.NotesAdapter;
+import com.example.elm.login.model.Category;
+import com.example.elm.login.model.Note;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManageCategories extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private CategoriesAdapter adapter;
+    public List<Category> allCategories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +57,25 @@ public class ManageCategories extends AppCompatActivity {
 
         setContentView(R.layout.activity_manage_categories);
         setTitle("Manage Categories");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        recyclerView = (RecyclerView) findViewById(R.id.categories_recycler);
+        allCategories = Category.listAll(Category.class);
+
+        adapter = new CategoriesAdapter(allCategories);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

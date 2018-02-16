@@ -40,10 +40,10 @@
 
         <meta-data
             android:name="DATABASE"
-            android:value="mynote.db" />
+            android:value="mycheck.db" />
         <meta-data
             android:name="VERSION"
-            android:value="11" />
+            android:value="2" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -54,7 +54,6 @@
         <activity
             android:name=".AddNote"
             android:configChanges="orientation"
-            android:noHistory="true"
             android:theme="@style/AppTheme.Nothing"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".NoteCard" />
@@ -104,13 +103,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NewReminder"
-            android:noHistory="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".NotificationBase"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.Nothing" />
         <activity
             android:name=".LockScreenAlarm"
@@ -188,6 +187,13 @@
 
         <service
             android:name=".services.alarm.PlaySound"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".SelectPuzzle" />
+
+        <service
+            android:name=".services.alarm.SoundService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

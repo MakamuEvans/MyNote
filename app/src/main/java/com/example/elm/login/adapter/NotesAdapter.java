@@ -99,8 +99,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder1.title.setText(notes.getTitle());
             holder1.dated.setText(notes.getUpdated_at());
             if (notes.getCategory() == null){
-                holder1.category.setVisibility(View.GONE);
+                holder1.category_layer.setVisibility(View.GONE);
             }else {
+                holder1.category_layer.setVisibility(View.VISIBLE);
                 Category category = Category.findById(Category.class, notes.getCategory());
                 holder1.category.setText(category.getTitle());
             }
@@ -162,6 +163,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class myViewHolder extends RecyclerView.ViewHolder{
         public TextView title, note, dated,category;
         public ImageView imageView,fav, del;
+        public LinearLayout category_layer;
 
         public myViewHolder(View itemView) {
             super(itemView);
@@ -172,6 +174,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             imageView = (ImageView) itemView.findViewById(R.id.uploadstatus);
             fav = (ImageView) itemView.findViewById(R.id.card_fav);
             del = (ImageView) itemView.findViewById(R.id.card_del);
+            category_layer = (LinearLayout) itemView.findViewById(R.id.category_layer);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

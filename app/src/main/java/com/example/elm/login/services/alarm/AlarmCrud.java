@@ -64,8 +64,6 @@ public class AlarmCrud extends Service {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
             Date date = null;
 
-            //get date depending on ReminderType
-
                // date_string = simpleDateFormat2.format(time_picker.getDate());
                 try {
                     if (reminder.getRepeat() == null){
@@ -78,11 +76,12 @@ public class AlarmCrud extends Service {
                     e.printStackTrace();
                 }
 
-
             Calendar calendar = Calendar.getInstance();
             int month0 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(date)) - 1;
             calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(date)));
             calendar.set(Calendar.MINUTE, Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(date)));
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
 
             if (reminder.getRepeat() == null){
                 calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(date)));
@@ -99,12 +98,14 @@ public class AlarmCrud extends Service {
 
 
                 if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
-                    int month1 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(currentTime)) - 1;
+                    int month1 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(currentTime))-1;
                     calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(currentTime)));
                     calendar.set(Calendar.MONTH, month1);
                     calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(currentTime)));
 
 
+                    Log.e("yea", String.valueOf(month1));
+                    Log.e("yea", String.valueOf(Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(currentTime))));
 
                     calendar.add(Calendar.DAY_OF_YEAR, 1);
                     Log.e("newTime", String.valueOf(calendar.getTime()));
@@ -175,6 +176,7 @@ public class AlarmCrud extends Service {
     }
 
     public void createAlarm(String title, String content, int nId, Long calender, Long aId, Boolean repeat, String todoId) {
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddSSS");
         Random r = new Random();
         int random = (r.nextInt(999) + 9);

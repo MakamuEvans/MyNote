@@ -15,6 +15,7 @@ public class Reminder extends SugarRecord {
     private String time;
     private Boolean prior;
     private String description;
+    private String puzzle;
     private Boolean status;
     private Boolean active;
     private String repeat;
@@ -26,11 +27,12 @@ public class Reminder extends SugarRecord {
     public Reminder() {
     }
 
-    public Reminder(String title, String time, Boolean prior, String description, Boolean status, Boolean active, String repeat, String todo, Integer identifier, String created_at, String updated_at) {
+    public Reminder(String title, String time, Boolean prior, String description, String puzzle, Boolean status, Boolean active, String repeat, String todo, Integer identifier, String created_at, String updated_at) {
         this.title = title;
         this.time = time;
         this.prior = prior;
         this.description = description;
+        this.puzzle = puzzle;
         this.status = status;
         this.active = active;
         this.repeat = repeat;
@@ -70,6 +72,14 @@ public class Reminder extends SugarRecord {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPuzzle() {
+        return puzzle;
+    }
+
+    public void setPuzzle(String puzzle) {
+        this.puzzle = puzzle;
     }
 
     public Boolean getStatus() {
@@ -126,6 +136,24 @@ public class Reminder extends SugarRecord {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    @Override
+    public String toString() {
+        return "Reminder{" +
+                "title='" + title + '\'' +
+                ", time='" + time + '\'' +
+                ", prior=" + prior +
+                ", description='" + description + '\'' +
+                ", puzzle='" + puzzle + '\'' +
+                ", status=" + status +
+                ", active=" + active +
+                ", repeat='" + repeat + '\'' +
+                ", todo='" + todo + '\'' +
+                ", identifier=" + identifier +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                '}';
     }
 }
 
