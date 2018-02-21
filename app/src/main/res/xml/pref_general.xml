@@ -41,7 +41,7 @@
         android:entries="@array/pref_ring_duration"
         android:entryValues="@array/pref_ring_duration_values"
         android:key="ring_duration"
-        android:summary="Alarms will sound for %s before Auto stopping"
+        android:summary="Alarms will sound for %s before Auto snoozing"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_ring_duration" />
@@ -51,7 +51,7 @@
         android:entries="@array/pref_snooze_duration"
         android:entryValues="@array/pref_snooze_duration_values"
         android:key="snooze_duration"
-        android:summary="Alarm will wait for %s before re-activating (for Auto stopped Alarms)"
+        android:summary="Alarm will wait for %s before re-activating."
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_snooze_duration" />

@@ -4,17 +4,17 @@ android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.example.elm.login"
+        applicationId "com.elm.mycheck.login"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "2.0"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -51,6 +51,7 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.1.0'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'org.xdty.preference:color-picker:0.0.5'
+    compile 'com.github.vihtarb:tooltip:0.1.9'
     testCompile 'junit:junit:4.12'
 }
 

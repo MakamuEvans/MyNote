@@ -66,7 +66,7 @@
                         android:text="NEXT"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="?attr/colorPrimary"
                         android:textStyle="bold" />
 

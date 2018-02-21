@@ -3,21 +3,16 @@ package layout;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.elm.login.NewReminder;
-import com.example.elm.login.R;
-import com.example.elm.login.ReminderName;
+import com.elm.mycheck.login.NewReminder;
+import com.elm.mycheck.login.R;
 
 /**
  * A simple {@link Fragment} subclass.

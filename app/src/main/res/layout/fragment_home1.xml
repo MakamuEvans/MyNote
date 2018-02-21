@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.elm.login.Home1">
+    tools:context="com.elm.mycheck.login.Home1">
 
     <!-- TODO: Update blank fragment layout -->
     <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView

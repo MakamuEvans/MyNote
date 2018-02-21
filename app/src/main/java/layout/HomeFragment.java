@@ -1,6 +1,5 @@
 package layout;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,11 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.elm.login.AddNote;
-import com.example.elm.login.Navigation;
-import com.example.elm.login.R;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
+import com.elm.mycheck.login.R;
 import com.google.android.gms.ads.AdView;
 
 /**

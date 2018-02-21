@@ -14,9 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.elm.login.R;
-import com.example.elm.login.adapter.TodoAdapter;
-import com.example.elm.login.model.Todo;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.adapter.TodoAdapter;
+import com.elm.mycheck.login.model.Todo;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -125,6 +125,13 @@ public class EventsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(todoAdapter);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (newReceiver != null)
+            getActivity().unregisterReceiver(newReceiver);
+        super.onDestroy();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

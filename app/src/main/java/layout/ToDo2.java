@@ -1,6 +1,5 @@
 package layout;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,17 +21,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.elm.login.Navigation;
-import com.example.elm.login.NewReminder;
-import com.example.elm.login.R;
-import com.example.elm.login.ReminderName;
-import com.example.elm.login.SettingsActivity;
-import com.example.elm.login.ToDoDetails;
-import com.example.elm.login.adapter.MilestoneAdapter;
-import com.example.elm.login.model.Milestones;
-import com.example.elm.login.model.Reminder;
-import com.example.elm.login.services.alarm.AlarmCrud;
-import com.example.elm.login.utils.Utils;
+import com.elm.mycheck.login.Navigation;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.ToDoDetails;
+import com.elm.mycheck.login.adapter.MilestoneAdapter;
+import com.elm.mycheck.login.model.Milestones;
+import com.elm.mycheck.login.model.Reminder;
+import com.elm.mycheck.login.services.alarm.AlarmCrud;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
 import com.google.gson.Gson;

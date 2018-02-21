@@ -13,10 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.elm.login.R;
-import com.example.elm.login.adapter.ReminderAdapter;
-import com.example.elm.login.model.Note;
-import com.example.elm.login.model.Reminder;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.adapter.ReminderAdapter;
+import com.elm.mycheck.login.model.Reminder;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -126,6 +125,13 @@ public class ReminderFragment extends Fragment {
         recyclerView.setAdapter(reminderAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (reminderBroadcast != null)
+            getActivity().unregisterReceiver(reminderBroadcast);
+        super.onDestroy();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

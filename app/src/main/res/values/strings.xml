@@ -26,30 +26,39 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="active_touch">
+        With this, You wll be presented with 9 boxes and one of them will be active at any given time. You Have to touch the Active box, repeating the sequence for 30 active boxes. An Active box has a life span of 5 seconds or the whole puzzle resets and you will be forced to RESTART
+    </string>
+    <string name="retype">
+        With this, You wll be presented with a typed text. You have to retype the CASE-SENSITIVE text EXACTLY, keeping in mind special characters, for the Alarm to stop.
+    </string>
+    <string name="sequence">
+        With this, You wll be shown Four Shapes in random order. You will have to Select the same Shapes in the Order you were presented them with, for the Alarm to Stop.
+    </string>
 
     <string name="app_slogan">Organize your Tomorrow, Today!</string>
 
     <string name="tutorial_header">
         \n\n
-        First, myAssistant is divided into three sections \n
-        1. myNotes \n
-        2. myReminders \n
-        3. myTodo \n
+        myCheck is divided into three Modules \n
+        1. myNote(s) \n
+        2. myReminder(s) \n
+        3. myTodo(s) \n
     </string>
 
     <string name="tutorial_note">
         \n
         With myNote, you can \n \n
-        1. Write your Notes on the GO! and save them. \n
-        2. Format your Notes to your preference. \n
-        3. Track all your Notes. \n
+        1. Write your Notes on the GO!. \n
+        2. Categorize your Notes to keep them Organized \n
+        3. Optional Online Backup Coming Soon. \n
     </string>
 
     <string name="tutorial_alarm">
         \n
         With myReminders, you can \n \n
-        1. Create and set Reminders so you never miss an important moment. \n
-        2. Create Repeating Alarms, ensuring you are up on time.
+        1. Create and set Reminders so you never miss that important moment in your life. \n
+        2. Heavy Sleeper? We got you covered with our Puzzled Alarms
     </string>
 
     <string name="tutorial_todo">

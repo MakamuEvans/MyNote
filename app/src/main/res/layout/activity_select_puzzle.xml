@@ -13,9 +13,10 @@
             android:layout_width="match_parent"
             android:layout_margin="10dp"
             android:textStyle="bold"
+            android:paddingLeft="40dp"
             android:textColor="@android:color/white"
             android:layout_height="wrap_content"
-            android:text="Note that the Alarm WILL REMAIN ON for 60 Minutes until you solve a Puzzle. You can Select a different Puzzle during an Alarm"/>
+            android:text="Note that the Alarm will REMAIN ON for 60 Minutes, until you solve a Puzzle. SNOOZE feature will also be disabled"/>
 
 
     </LinearLayout>
@@ -49,14 +50,13 @@
                         android:textColor="?attr/colorPrimary"
                         android:textSize="20dp"
                         android:textStyle="bold"
-                        android:text="Solve a Puzzle"/>
+                        android:text="Active Touch"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="With this, You wll be presented with 9 boxes and one of them will be active at any given time. You Have to touch the Active box, repeating the sequence for 20 active boxes. An Active boz has a life span of 5 seconds or the whole puzzle resets and tou have to restart "/>
-
+                        android:text="@string/active_touch"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -114,8 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="With this, You wll be presented with a typed text. You have to retype the text exactly as it appears for the alarm to stop. "/>
-
+                        android:text="@string/retype"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -174,8 +173,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="With this, You wll be shown Four Shapes in random order. You will have to Select the same Images in the Order you were presented them with, for the Alarm to Stop."/>
-
+                        android:text="@string/sequence"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

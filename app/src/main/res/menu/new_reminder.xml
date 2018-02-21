@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         app:showAsAction="always"
-        android:title="SET"
+        android:title="SAVE"
         android:id="@+id/set_reminder_setting"/>
 </menu>
