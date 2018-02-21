@@ -52,7 +52,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="serif"
                             android:text="Latest Reminder"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="20dp"
                             android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="8dp" />
                 </RelativeLayout>
 
@@ -83,7 +83,7 @@
                             android:layout_height="wrap_content"
                             android:maxLines="2"
                             android:text=""
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="?attr/colorPrimary" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="7dp"
-            android:background="@color/colorPrimary" />
+            android:background="?attr/colorPrimary" />
 
     </LinearLayout>
 

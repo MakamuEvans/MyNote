@@ -18,6 +18,10 @@
             android:id="@+id/nav_todo"
             android:icon="@mipmap/ic_action_todo_white"
             android:title="ToDO" />
+
+        <item
+            android:id="@+id/nav_categories"
+            android:title="Manage Categories"/>
     </group>
 
     <item android:title="Communicate">
@@ -28,7 +32,7 @@
                 android:title="Share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/settings"
                 android:title="Preferences" />
             <item
                 android:id="@+id/nav_rate"

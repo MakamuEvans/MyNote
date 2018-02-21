@@ -2,25 +2,29 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.example.elm.login"
+        applicationId "com.elm.mycheck.login"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-ads:11.0.4'
+    implementation 'com.google.firebase:firebase-core:11.0.4'
+    implementation 'com.google.firebase:firebase-crash:11.0.4'
+    implementation 'com.google.firebase:firebase-messaging:11.0.4'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -42,7 +46,21 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
     compile 'com.github.florent37:singledateandtimepicker:1.1.5'
+    compile 'se.emilsjolander:StickyScrollViewItems:1.1.0'
     compile 'com.valdesekamdem.library:md-toast:0.9.0'
     compile 'com.android.support:support-vector-drawable:25.1.0'
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    compile 'org.xdty.preference:color-picker:0.0.5'
+    compile 'com.github.vihtarb:tooltip:0.1.9'
     testCompile 'junit:junit:4.12'
 }
+
+
+
+
+
+
+
+
+
+apply plugin: 'com.google.gms.google-services'

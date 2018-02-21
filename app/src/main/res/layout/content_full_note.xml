@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/read_theme"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.elm.login.FullNote"
+    tools:context="com.elm.mycheck.login.FullNote"
     tools:showIn="@layout/activity_full_note">
 
     <LinearLayout
@@ -13,16 +14,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="last updated on:"
-            android:textSize="20px"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            android:textStyle="italic"
-            android:id="@+id/updated_on"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="20px"
+                android:paddingLeft="5dp"
+                android:background="?attr/colorPrimary"
+                android:textColor="@android:color/white"
+                android:id="@+id/full_category"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="last updated on:"
+                android:textSize="20px"
+                android:background="?attr/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textStyle="italic"
+                android:id="@+id/updated_on"/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +56,8 @@
                 <jp.wasabeef.richeditor.RichEditor
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/notes_editor" />
+                    android:id="@+id/notes_editor"
+                    android:background="@color/read_theme"/>
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </LinearLayout>

@@ -4,29 +4,41 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.elm.login.Navigation;
-import com.example.elm.login.R;
-import com.example.elm.login.ReminderName;
-import com.example.elm.login.adapter.MilestoneAdapter;
-import com.example.elm.login.model.Milestones;
-import com.example.elm.login.utils.Utils;
+import com.elm.mycheck.login.Navigation;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.ToDoDetails;
+import com.elm.mycheck.login.adapter.MilestoneAdapter;
+import com.elm.mycheck.login.model.Milestones;
+import com.elm.mycheck.login.model.Reminder;
+import com.elm.mycheck.login.services.alarm.AlarmCrud;
+import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog;
+import com.google.gson.Gson;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +48,7 @@ import java.util.List;
  * Use the {@link ToDo2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ToDo2 extends Fragment{
+public class ToDo2 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -73,17 +85,19 @@ public class ToDo2 extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    String todoId;
+    String todoId, title;
     RecyclerView recyclerView;
     public List<Milestones> milestones = new ArrayList<>();
-    public MilestoneAdapter milestoneAdapter;
-    private  TaskReceiver taskReceiver;
+    public static MilestoneAdapter milestoneAdapter;
+    private TaskReceiver taskReceiver;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,10 +105,11 @@ public class ToDo2 extends Fragment{
         View view = inflater.inflate(R.layout.fragment_to_do2, container, false);
         LinearLayout add_task = (LinearLayout) view.findViewById(R.id.add_task);
         todoId = getArguments().getString("id");
+        title = getArguments().getString("title");
 
         IntentFilter intentFilter = new IntentFilter(TaskReceiver.ACTIION_REP);
-        taskReceiver= new TaskReceiver();
-        getActivity().registerReceiver(taskReceiver, intentFilter);
+        taskReceiver = new TaskReceiver();
+        // getActivity().registerReceiver(taskReceiver, intentFilter);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler);
         milestones = Milestones.listAll(Milestones.class);
@@ -123,6 +138,11 @@ public class ToDo2 extends Fragment{
             @Override
             public void onClick(View v) {
                 AddMilestone addMilestone = new AddMilestone();
+
+                Bundle args = new Bundle();
+                args.putString("task_id", todoId);
+                addMilestone.setArguments(args);
+
                 addMilestone.show(getActivity().getFragmentManager(), "Dialog");
             }
         });
@@ -153,10 +173,16 @@ public class ToDo2 extends Fragment{
         mListener = null;
     }
 
-    public void onCompleted(String title) {
-        Milestones milestones = new Milestones(todoId,title,null,false);
+    public static void onCompleted(String title, String todoID, Context context) {
+        Milestones milestones = new Milestones(todoID, title, null, false);
         milestones.save();
-        if (milestoneAdapter!=null){
+
+        String data = new Gson().toJson(milestones);
+        Intent intent = new Intent(ToDoDetails.newMilestoneReceiver.ACTIION_REP);
+        intent.putExtra("milestone", data);
+        context.sendBroadcast(intent);
+
+        if (milestoneAdapter != null) {
             milestoneAdapter.insert(milestones);
         }
 
@@ -177,13 +203,101 @@ public class ToDo2 extends Fragment{
         void onFragmentInteraction(Uri uri);
     }
 
-    public class TaskReceiver extends BroadcastReceiver {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getActivity().getTheme();
+        theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        @ColorInt int color = typedValue.data;
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.todo_timer) {
+            new SingleDateAndTimePickerDialog.Builder(getActivity())
+                    //.bottomSheet()
+                    //.curved()
+                    //.minutesStep(15)
+
+                    //.displayHours(false)
+                    //.displayMinutes(false)
+
+                    //.todayText("aujourd'hui")
+                    .mainColor(color)
+                    .mustBeOnFuture()
+
+                    .displayListener(new SingleDateAndTimePickerDialog.DisplayListener() {
+                        @Override
+                        public void onDisplayed(SingleDateAndTimePicker picker) {
+                            //retrieve the SingleDateAndTimePicker
+                        }
+                    })
+
+                    .title("Set Reminder")
+                    .listener(new SingleDateAndTimePickerDialog.Listener() {
+                        @Override
+                        public void onDateSelected(Date date) {
+                            setReminder(date);
+                        }
+                    }).display();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setReminder(Date date) {
+        //date format
+        String format = "MMM dd yyyy HH:mm";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        String date_string;
+        date_string = simpleDateFormat.format(date);
+
+        Reminder reminder = new Reminder(
+                title,
+                date_string,
+                false,
+                "",
+                "null",
+                true,
+                false,
+                null,
+                todoId,
+                0,
+                null,
+                null
+        );
+        reminder.save();
+
+        //create alarm -->from a service
+        Intent intent = new Intent(getActivity(), AlarmCrud.class);
+        intent.putExtra("alarmId", reminder.getId());
+        intent.putExtra("create", true);
+        getActivity().startService(intent);
+
+        //Toast
+
+
+
+        Log.e("dated", String.valueOf(date));
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.todo_timer).setVisible(true);
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    public static class TaskReceiver extends BroadcastReceiver {
         public static final String ACTIION_REP = "add_new_task";
+
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("Haa", "TaskReceiver Called");
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
-            onCompleted(title);
+            String noteID = bundle.getString("noteId");
+            onCompleted(title, noteID, context);
         }
     }
 }

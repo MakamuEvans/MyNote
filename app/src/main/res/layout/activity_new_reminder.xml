@@ -5,62 +5,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.elm.login.NewReminder">
+    tools:context="com.elm.mycheck.login.NewReminder">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/head"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:id="@+id/titl"
+                android:background="?attr/colorPrimary"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alarm Date"
+                    android:textColor="@color/colorWhite"
+                    android:layout_alignParentLeft="true"
+                    android:textStyle="bold"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="Alarm Type"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16dp"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="?attr/colorPrimary"
+                android:layout_below="@id/titl"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_action_today"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/start_date"
+                        />
+
+                </LinearLayout>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:id="@+id/alarm_type"
+                    android:background="@android:color/white"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/str_reminder_type"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/head"
             android:paddingBottom="50dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="7dp"
-                tools:layout_editor_absoluteY="0dp"
-                tools:layout_editor_absoluteX="8dp">
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@mipmap/ic_action_today"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:id="@+id/start_date"
-                            />
-
-                    </LinearLayout>
-
-                    <Spinner
-                        android:layout_width="wrap_content"
-                        android:id="@+id/alarm_type"
-                        android:layout_height="wrap_content"
-                        android:entries="@array/str_reminder_type"
-                        android:layout_alignParentRight="true"/>
-                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="7dp"
-                    android:background="@color/colorPrimary"/>
+                    android:background="?attr/colorPrimary"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -87,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="7dp"
-                    android:background="@color/colorPrimary"/>
+                    android:background="?attr/colorPrimary"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,11 +136,42 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/puzzle_layout"
+                        android:layout_margin="7dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
+                            android:text="Solve Puzzle before Alarm stops" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:textStyle="italic"
+                            android:text="None"
+                            android:id="@+id/puzzle_name_activity"
+                            android:textColor="?attr/colorPrimary"/>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="7dp"
+                        android:background="?attr/colorPrimary"/>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/title_layout"
                         android:layout_margin="7dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
                             android:text="Reminder title" />
 
                         <TextView
@@ -110,15 +179,16 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="None"
+                            android:textStyle="italic"
                             android:id="@+id/reminder_name_activity"
-                            android:textColor="@color/colorPrimary"/>
+                            android:textColor="?attr/colorPrimary"/>
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="7dp"
-                        android:background="@color/colorPrimary"/>
+                        android:background="?attr/colorPrimary"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -134,12 +204,12 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Repeat Mode" />
+                                android:text="Week Days" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Click on repeat dates"
+                                android:text="Touch on repeat dates"
                                 android:layout_marginLeft="10dp"
                                 android:textSize="10dp"/>
                         </LinearLayout>
@@ -162,7 +232,7 @@
                                 android:layout_width="2dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
-                                android:background="@color/colorPrimary"/>
+                                android:background="?attr/colorPrimary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_margin="5dp"
@@ -175,7 +245,7 @@
                                 android:layout_width="2dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
-                                android:background="@color/colorPrimary"/>
+                                android:background="?attr/colorPrimary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_margin="5dp"
@@ -188,7 +258,7 @@
                                 android:layout_width="2dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
-                                android:background="@color/colorPrimary"/>
+                                android:background="?attr/colorPrimary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_margin="5dp"
@@ -201,7 +271,7 @@
                                 android:layout_width="2dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
-                                android:background="@color/colorPrimary"/>
+                                android:background="?attr/colorPrimary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_margin="5dp"
@@ -214,7 +284,7 @@
                                 android:layout_width="2dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
-                                android:background="@color/colorPrimary"/>
+                                android:background="?attr/colorPrimary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_margin="5dp"
@@ -227,7 +297,7 @@
                                 android:layout_width="2dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="10dp"
-                                android:background="@color/colorPrimary"/>
+                                android:background="?attr/colorPrimary"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_margin="5dp"
@@ -244,7 +314,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="7dp"
-                        android:background="@color/colorPrimary"/>
+                        android:background="?attr/colorPrimary"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -254,6 +324,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:textStyle="bold"
                             android:text="Early reminder?" />
 
                         <TextView
@@ -261,8 +333,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="None"
+                            android:textStyle="italic"
                             android:id="@+id/reminder_early_activity"
-                            android:textColor="@color/colorPrimary"/>
+                            android:textColor="?attr/colorPrimary"/>
                     </RelativeLayout>
 
                     <EditText
@@ -279,20 +352,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="7dp"
-                        android:background="@color/colorPrimary"/>
+                        android:background="?attr/colorPrimary"/>
                 </LinearLayout>
 
 
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:layout_width="match_parent"
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ReminderadView"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Reminder"
-            android:onClick="setReminder"
-            android:background="@drawable/default_input_text"
-            android:layout_alignParentBottom="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_newRemonder">
+        </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>
 

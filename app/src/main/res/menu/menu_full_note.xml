@@ -1,19 +1,40 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.elm.login.FullNote">
+    tools:context="com.elm.mycheck.login.FullNote">
+    <item
+        android:id="@+id/action_share"
+        android:orderInCategory="90"
+        android:title="Share"
+        android:icon="@android:drawable/ic_menu_share"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_favourite"
         android:orderInCategory="90"
         android:title="Favourite"
         android:icon="@mipmap/ic_action_favorite_border"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:icon="@android:drawable/ic_menu_delete"
         android:orderInCategory="110"
         android:id="@+id/action_delete"
-        android:title="delete"
+        android:title="Delete"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:title="In"
+        android:icon="@mipmap/zom_in"
+        android:id="@+id/action_in"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="Out"
+        android:icon="@mipmap/zoom_out"
+        android:id="@+id/action_out"
+        android:orderInCategory="100"
         app:showAsAction="always"/>
 
     <item

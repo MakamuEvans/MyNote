@@ -13,11 +13,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-import com.example.elm.login.AddNote;
-import com.example.elm.login.R;
-import com.example.elm.login.adapter.NotesAdapter;
-import com.example.elm.login.model.Note;
+import com.elm.mycheck.login.AddNote;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.adapter.NotesAdapter;
+import com.elm.mycheck.login.model.Category;
+import com.elm.mycheck.login.model.Note;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orm.query.Condition;
@@ -84,13 +91,34 @@ public class NotesFragment extends Fragment {
 
     private UploadReceiver receiver;
     private SyncReceiver syncReceiver;
-    private  DeleteReceiver deleteReceiver;
+    private DeleteReceiver deleteReceiver;
+    private AdView adView;
+    private Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notes2, container, false);
+
+        adView = (AdView) view.findViewById(R.id.NotesadView);
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                adView.setVisibility(View.GONE);
+            }
+        });
 
         //register broadcast receiver
         IntentFilter filter = new IntentFilter(AddNote.ACTION_RESP);
@@ -112,14 +140,82 @@ public class NotesFragment extends Fragment {
                 .orderBy("Id DESC")
                 .list();
 
-        notesAdapter = new NotesAdapter(notes);
+        notesAdapter = new NotesAdapter(notes, getActivity().getApplicationContext());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(notesAdapter);
 
+        notesAdapter.swapAll(notes);
 
-        return  view;
+        final List<String> categories = new ArrayList<>();
+        List<Category> data = new ArrayList<>();
+        data = Select.from(Category.class)
+                .orderBy("title DESC")
+                .list();
+
+        categories.add("-All Notes-");
+        categories.add("Favourites");
+        for (Category category : data) {
+            categories.add(category.getTitle());
+        }
+        spinner = (Spinner) view.findViewById(R.id.fullSpinner);
+        spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categories));
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = categories.get(i);
+                if (selected.equals("-All Notes-")) {
+                    notes = Select.from(Note.class)
+                            .where(Condition.prop("deleteflag").eq(0))
+                            .orderBy("Id DESC")
+                            .list();
+                } else if (selected.equals("Favourites")) {
+                    notes = Select.from(Note.class)
+                            .where(Condition.prop("favourite").eq(1))
+                            .orderBy("Id DESC")
+                            .list();
+                } else {
+                    Category category = Select.from(Category.class)
+                            .where(Condition.prop("title").eq(selected))
+                            .first();
+                    notes = Select.from(Note.class)
+                            .where(Condition.prop("deleteflag").eq(0))
+                            .where(Condition.prop("category").eq(category.getId()))
+                            .orderBy("Id DESC")
+                            .list();
+
+                    //  notesAdapter = new NotesAdapter(notes, getActivity().getApplicationContext());
+                }
+                if (notesAdapter != null) {
+                    notesAdapter.swapAll(notes);
+                }
+                //recyclerView.setAdapter(notesAdapter);
+                //recyclerView.swapAdapter(notesAdapter, false);
+               /* NotesAdapter notesAdapter = null;
+                notesAdapter.swapAll(notes);*/
+                //recyclerView.notify();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        return view;
         //return inflater.inflate(R.layout.fragment_notes2, container, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (receiver != null)
+            getActivity().unregisterReceiver(receiver);
+        if (syncReceiver != null)
+            getActivity().unregisterReceiver(syncReceiver);
+        if (deleteReceiver != null)
+            getActivity().unregisterReceiver(deleteReceiver);
+        super.onDestroy();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -171,22 +267,22 @@ public class NotesFragment extends Fragment {
      * redraw the recycler -view --all of it
      */
 
-    public void addNew(Note note){
-        if (notesAdapter!=null){
+    public void addNew(Note note) {
+        if (notesAdapter != null) {
             notesAdapter.newData(note, null);
             recyclerView.smoothScrollToPosition(0);
 
         }
     }
 
-    public void update(Note note){
-        if (notesAdapter!=null){
+    public void update(Note note) {
+        if (notesAdapter != null) {
             notesAdapter.updateItem(note);
         }
     }
 
-    public void deleteNote(Note note){
-        if (notesAdapter!=null){
+    public void deleteNote(Note note) {
+        if (notesAdapter != null) {
             notesAdapter.deleteNote(note);
         }
     }
@@ -194,29 +290,31 @@ public class NotesFragment extends Fragment {
     /**
      * receive broadcasts
      */
-    public class UploadReceiver extends BroadcastReceiver{
+    public class UploadReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("vane", "vane");
             Bundle bundle = intent.getExtras();
             String newNote = bundle.getString("note");
             Gson gson = new Gson();
-            Type type = new TypeToken<Note>(){
+            Type type = new TypeToken<Note>() {
             }.getType();
             Note note = gson.fromJson(newNote, type);
             addNew(note);
 
         }
     }
-    public class SyncReceiver extends BroadcastReceiver{
+
+    public class SyncReceiver extends BroadcastReceiver {
         public static final String SYNC_ACTION = "sync_action";
+
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("received_sync", "yes");
             Bundle bundle = intent.getExtras();
             String newNote = bundle.getString("note");
             Gson gson = new Gson();
-            Type type = new TypeToken<Note>(){
+            Type type = new TypeToken<Note>() {
             }.getType();
             Note note = gson.fromJson(newNote, type);
             update(note);
@@ -224,15 +322,15 @@ public class NotesFragment extends Fragment {
         }
     }
 
-    public class DeleteReceiver extends  BroadcastReceiver{
-        public static final  String SYNC_ACTION = "delete_action";
+    public class DeleteReceiver extends BroadcastReceiver {
+        public static final String SYNC_ACTION = "delete_action";
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             String newNote = bundle.getString("note");
             Gson gson = new Gson();
-            Type type = new TypeToken<Note>(){
+            Type type = new TypeToken<Note>() {
             }.getType();
             Note note = gson.fromJson(newNote, type);
             deleteNote(note);

@@ -3,19 +3,15 @@ package layout;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.elm.login.R;
+import com.elm.mycheck.login.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +68,8 @@ public class AddMilestone extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_add_milestone, null);
 
+        final String noteId = getArguments().getString("task_id");
+
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Add Task")
                 .setView(view)
@@ -81,6 +79,7 @@ public class AddMilestone extends DialogFragment {
                         TextView title = (TextView) view.findViewById(R.id.milestone_title);
                         Intent intent = new Intent(ToDo2.TaskReceiver.ACTIION_REP);
                         intent.putExtra("title", title.getText().toString());
+                        intent.putExtra("noteId", noteId);
                         getActivity().sendBroadcast(intent);
                     }
                 })

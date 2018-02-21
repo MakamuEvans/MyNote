@@ -1,10 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ed4272</color>
-    <color name="colorPrimaryDark">#b71744</color>
-    <color name="colorAccent">#ed4272</color>
+    <color name="colorPrimary">#ca2b2b</color>
+    <color name="colorPrimaryDark">#8f1d1d</color>
+    <color name="colorAccent">#ca2b2b</color>
+
+    <color name="colorPrimaryTomato">#d50000</color>
+    <color name="colorPrimaryDarkTomato">#b71744</color>
+    <color name="colorAccentTomato">#d50000</color>
+
+    <color name="colorPrimaryTangarine">#f4511e</color>
+    <color name="colorPrimaryDarkTangarine">#d6471b</color>
+    <color name="colorAccentTangarine">#f4511e</color>
+
+    <color name="colorPrimaryBanana">#f6bf26</color>
+    <color name="colorPrimaryDarkBanana">#f9b700</color>
+    <color name="colorAccentBanana">#f6bf26</color>
+
+    <color name="colorPrimaryBasil">#0b8043</color>
+    <color name="colorPrimaryDarkBasil">#0a6c39</color>
+    <color name="colorAccentBasil">#0b8043</color>
+
+    <color name="colorPrimarySage">#33b679</color>
+    <color name="colorPrimaryDarkSage">#2d9f6a</color>
+    <color name="colorAccentSage">#33b679</color>
+
+    <color name="colorPrimaryFlamingo">#039be5</color>
+    <color name="colorPrimaryDarkFlamingo">#0077b1</color>
+    <color name="colorAccentFlamingo">#039be5</color>
+
+    <color name="colorPrimaryGrape">#3f51b5</color>
+    <color name="colorPrimaryDarkGrape">#0f2289</color>
+    <color name="colorAccentGrape">#3f51b5</color>
+
+    <color name="colorPrimaryLavender">#6d7cc9</color>
+    <color name="colorPrimaryDarkLavender">#3346ab</color>
+    <color name="colorAccentLavender">#6d7cc9</color>
+
+    <color name="colorPrimaryBlueBerry">#8e24aa</color>
+    <color name="colorPrimaryDarkBlueBerry">#800a9f</color>
+    <color name="colorAccentBlueBerry">#8e24aa</color>
+
+    <color name="colorPrimaryPeacock">#e67c73</color>
+    <color name="colorPrimaryDarkPeacock">#c1655e</color>
+    <color name="colorAccentPeacock">#e67c73</color>
+
+    <color name="colorPrimaryGraphite">#282626</color>
+    <color name="colorPrimaryDarkGraphite">#3b3b3b</color>
+    <color name="colorAccentGraphite">#282626</color>
+
 
     <color name="colorJumbotron">#684e55</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="read_theme">#FFF1E5</color>
 </resources>

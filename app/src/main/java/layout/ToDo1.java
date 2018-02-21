@@ -1,21 +1,26 @@
 package layout;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.elm.login.R;
-import com.example.elm.login.model.Todo;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.model.Todo;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
+import com.orm.query.Select;
+import com.valdesekamdem.library.mdtoast.MDToast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,36 +73,80 @@ public class ToDo1 extends Fragment {
         }
     }
 
+    private AdView adView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_to_do1, container, false);
+
+        adView = (AdView) view.findViewById(R.id.Todo1adView);
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                adView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+        });
+
         TextView next= (TextView) view.findViewById(R.id.todo_next);
+        TextView cancel= (TextView) view.findViewById(R.id.todo_cancel);
         final EditText title = (EditText) view.findViewById(R.id.todo_title);
         final EditText description = (EditText) view.findViewById(R.id.todo_description);
+
+        //current date
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        final Date date = new Date();
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (title.getText().toString().isEmpty()){
-                    Toast.makeText(getContext(), "The Title should be filled", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "The Title should be filled", Toast.LENGTH_SHORT).show();
+                    MDToast.makeText(getContext(),"Title can not be blank!",MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                     return;
                 }
-                Todo todo = new Todo(title.getText().toString(),
+                Todo todo = new Todo(
+                        title.getText().toString(),
                         description.getText().toString(),
                         null,
-                        "0");
+                        "0",
+                        dateFormat.format(date),
+                        dateFormat.format(date)
+                        );
                 todo.save();
 
                 //update todo recycler
-                String dt = new Gson().toJson(todo);
-                Intent intent = new Intent();
-                intent.setAction(EventsFragment.NewReceiver.SYNC_ACTION);
-                intent.putExtra("todo", dt);
-                getActivity().sendBroadcast(intent);
+                if (Select.from(Todo.class).count() > 1){
+                    String dt = new Gson().toJson(todo);
+                    Intent intent = new Intent();
+                    intent.setAction(EventsFragment.NewReceiver.SYNC_ACTION);
+                    intent.putExtra("todo", dt);
+                    getActivity().sendBroadcast(intent);
+                }
+
 
                 Bundle bundle = new Bundle();
                 bundle.putString("id", String.valueOf(todo.getId()));
+                bundle.putString("title", todo.getTitle());
                 ToDo2 toDo2 = new ToDo2();
                 toDo2.setArguments(bundle);
                 android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

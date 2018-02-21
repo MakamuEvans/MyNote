@@ -13,12 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.elm.login.R;
-import com.example.elm.login.adapter.ReminderAdapter;
-import com.example.elm.login.model.Note;
-import com.example.elm.login.model.Reminder;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.adapter.ReminderAdapter;
+import com.elm.mycheck.login.model.Reminder;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.lang.reflect.Type;
@@ -80,6 +83,7 @@ public class ReminderFragment extends Fragment {
     }
 
     private ReminderBroadcast reminderBroadcast;
+    private AdView adView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,12 +92,32 @@ public class ReminderFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_reminder, container, false);
         View view=inflater.inflate(R.layout.fragment_reminder,container, false);
 
+        adView = (AdView) view.findViewById(R.id.ReminderadView);
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                adView.setVisibility(View.GONE);
+            }
+        });
+
         IntentFilter intentFilter = new IntentFilter(ReminderBroadcast.NEW_RECEIVER);
         reminderBroadcast = new ReminderBroadcast();
         getActivity().registerReceiver(reminderBroadcast, intentFilter);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.reminder_recycler);
         reminders = Select.from(Reminder.class)
+                .where(Condition.prop("todo").eq(""))
                 .orderBy("Id DESC")
                 .list();
         reminderAdapter = new ReminderAdapter(reminders);
@@ -101,6 +125,13 @@ public class ReminderFragment extends Fragment {
         recyclerView.setAdapter(reminderAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (reminderBroadcast != null)
+            getActivity().unregisterReceiver(reminderBroadcast);
+        super.onDestroy();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

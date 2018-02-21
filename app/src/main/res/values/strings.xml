@@ -1,5 +1,18 @@
 <resources>
-    <string name="app_name">myAssistant</string>
+    <string name="app_name">myCheck</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_idd">ca-app-pub-3940256099942544/6300978111</string>
+
+
+    <string name="banner_home1">ca-app-pub-8923248379841058/7281292137</string>
+    <string name="banner_home2">ca-app-pub-8923248379841058/6024050784</string>
+    <string name="banner_newRemonder">ca-app-pub-8923248379841058/8082403766</string>
+    <string name="banner_newTodo">ca-app-pub-8923248379841058/3014744069</string>
+    <string name="banner_notesFooter">ca-app-pub-8923248379841058/7967548221</string>
+    <string name="banner_reminderFooter">ca-app-pub-8923248379841058/1966096710</string>
+    <string name="banner_todoFooter">ca-app-pub-8923248379841058/6351353847</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -13,36 +26,46 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="active_touch">
+        With this, You wll be presented with 9 boxes and one of them will be active at any given time. You Have to touch the Active box, repeating the sequence for 30 active boxes. An Active box has a life span of 5 seconds or the whole puzzle resets and you will be forced to RESTART
+    </string>
+    <string name="retype">
+        With this, You wll be presented with a typed text. You have to retype the CASE-SENSITIVE text EXACTLY, keeping in mind special characters, for the Alarm to stop.
+    </string>
+    <string name="sequence">
+        With this, You wll be shown Four Shapes in random order. You will have to Select the same Shapes in the Order you were presented them with, for the Alarm to Stop.
+    </string>
 
     <string name="app_slogan">Organize your Tomorrow, Today!</string>
 
     <string name="tutorial_header">
         \n\n
-        First, myAssistant is divided into three sections \n
-        1. myNotes \n
-        2. myReminders \n
-        3. myTodo \n
+        myCheck is divided into three Modules \n
+        1. myNote(s) \n
+        2. myReminder(s) \n
+        3. myTodo(s) \n
     </string>
 
     <string name="tutorial_note">
         \n
-        With myNote, you can \n
-        1. Write your simple notes and save them. \n
-        2. Ability to append images to your notes. \n
-        3. Configure on-line backup of your notes. \n
+        With myNote, you can \n \n
+        1. Write your Notes on the GO!. \n
+        2. Categorize your Notes to keep them Organized \n
+        3. Optional Online Backup Coming Soon. \n
     </string>
 
     <string name="tutorial_alarm">
         \n
-        With myReminders, you can \n
-        1. Create and set alarms. \n
+        With myReminders, you can \n \n
+        1. Create and set Reminders so you never miss that important moment in your life. \n
+        2. Heavy Sleeper? We got you covered with our Puzzled Alarms
     </string>
 
     <string name="tutorial_todo">
         \n
-        With myToDo, you can \n
+        With myToDo, you can \n \n
         1. Create ToDo activities \n
-        2. Add tasks to e each ToDo activity. \n
+        2. Add tasks to each ToDo activity. \n
         3. Track all the tasks and lets keep tab on your progress. \n
     </string>
 
@@ -192,7 +215,7 @@
     </string>
 
     <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_default_display_name">Buddy</string>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -206,25 +229,65 @@
         <item>-1</item>
     </string-array>
 
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
+    <string name="pref_title_ring_duration">Ring Duration</string>
+    <string name="pref_title_snooze_duration">Snooze Duration</string>
+    <string name="pref_title_morning">Ideal Morning Hour</string>
+    <string name="pref_title_evening">Ideal Evening Hour</string>
+    <string-array name="pref_ring_duration">
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
     </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
+    <string-array name="pref_timing_morning">
+        <item>0500hrs</item>
+        <item>0600hrs</item>
+        <item>0700hrs</item>
+        <item>0800hrs</item>
+    </string-array>
+    <string-array name="pref_timing_evening">
+        <item>1700hrs</item>
+        <item>1800hrs</item>
+        <item>1900hrs</item>
+        <item>2000hrs</item>
+    </string-array>
+    <string-array name="pref_snooze_duration">
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+    </string-array>
+    <string-array name="pref_ring_duration_values">
         <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="pref_timing_values">
+        <item>5</item>
+        <item>5</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="pref_snooze_duration_values">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
     </string-array>
 
     <string-array name="list_preference_entries">
@@ -253,4 +316,6 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_todo_full">TodoFull</string>
+
+    <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>

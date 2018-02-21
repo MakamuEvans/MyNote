@@ -14,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.elm.login.R;
-import com.example.elm.login.adapter.TodoAdapter;
-import com.example.elm.login.model.Todo;
+import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.adapter.TodoAdapter;
+import com.elm.mycheck.login.model.Todo;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orm.query.Select;
@@ -81,11 +84,32 @@ public class EventsFragment extends Fragment {
     private RecyclerView recyclerView;
     public TodoAdapter todoAdapter;
     private updateTodo updateTodo;
+    private AdView adView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_events, container, false);
+
+        adView = (AdView) view.findViewById(R.id.ToDoadView);
+        adView.setVisibility(View.GONE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                adView.setVisibility(View.GONE);
+            }
+        });
+
         IntentFilter intentFilter = new IntentFilter(NewReceiver.SYNC_ACTION);
         newReceiver = new NewReceiver();
         getActivity().registerReceiver(newReceiver, intentFilter);
@@ -101,6 +125,13 @@ public class EventsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(todoAdapter);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (newReceiver != null)
+            getActivity().unregisterReceiver(newReceiver);
+        super.onDestroy();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ScrollView
+        <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -31,7 +31,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Since its your first time, presumably, Why dont we take a short walk as i explain what i can do for you"/>
+                    android:text="Since its your first time, presumably, Why don't we take a short walk as we get to know what myCheck is all about"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                     android:layout_marginTop="7dp"
                     android:background="@color/colorPrimary"/>
             </LinearLayout>
-        </ScrollView>
+        </com.emilsjolander.components.StickyScrollViewItems.StickyScrollView>
     </LinearLayout>
 
 

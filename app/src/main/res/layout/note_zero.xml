@@ -21,8 +21,17 @@
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:text="@string/tutorial_note"
         android:gravity="center"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Note"
+        android:layout_gravity="center"
+        android:onClick="nN"
+        android:background="@drawable/default_input_text"/>
 
 </LinearLayout>
