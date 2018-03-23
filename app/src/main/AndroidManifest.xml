@@ -191,7 +191,9 @@
         <service
             android:name=".services.alarm.SoundService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".PuzzleDetails"></activity>
     </application>
 
 </manifest>

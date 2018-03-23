@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elm.mycheck.login.model.Category;
@@ -28,6 +31,7 @@ public class FullNote extends AppCompatActivity {
     private RichEditor richEditor;
     Note note1;
     int fontSize = 15;
+    private ImageView in,out,fav,edit,delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +65,17 @@ public class FullNote extends AppCompatActivity {
 
         setContentView(R.layout.activity_full_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+      //  toolbar.setElevation(0);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
 
         Intent intent = getIntent();
         note_id = intent.getExtras().getLong("noteId");
         note1 = Note.findById(Note.class, note_id);
 
+        //init
+        init();
         //set data
         if (note1.getTitle() == null) {
             setTitle("Empty Title");
@@ -89,6 +97,108 @@ public class FullNote extends AppCompatActivity {
         }
 
 
+    }
+
+    private void init() {
+        in = (ImageView) findViewById(R.id.action_zoomin);
+        out = (ImageView) findViewById(R.id.action_zoomout);
+        fav = (ImageView) findViewById(R.id.action_favourite);
+        edit = (ImageView) findViewById(R.id.action_edit);
+        delete = (ImageView) findViewById(R.id.action_delete);
+
+        in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (fontSize >= 10)
+                    fontSize--;
+                richEditor.setEditorFontSize(fontSize);
+            }
+        });
+        out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (fontSize <= 25)
+                    fontSize++;
+                richEditor.setEditorFontSize(fontSize);
+            }
+        });
+        fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Note note1 = Note.findById(Note.class, note_id);
+                note1.setFavaouriteflag(true);
+                Boolean status = !note1.getFavourite() ? true : false;
+                note1.setFavourite(status);
+                note1.save();
+
+                if (status) {
+                    //item.setIcon(R.mipmap.ic_action_favorite_white);
+                    MDToast.makeText(getBaseContext(), note1.getTitle() + " added to favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS).show();
+                } else {
+                   // item.setIcon(R.mipmap.ic_action_favorite_border);
+                    MDToast.makeText(getBaseContext(), note1.getTitle() + " removed from favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                }
+
+                String dt = new Gson().toJson(note1);
+                Intent intent2 = new Intent();
+                intent2.setAction(NotesFragment.SyncReceiver.SYNC_ACTION);
+                intent2.putExtra("note", dt);
+                sendBroadcast(intent2);
+
+                Intent intent = new Intent();
+                intent.setAction("favourite");
+                getBaseContext().sendBroadcast(intent);
+
+            }
+        });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(FullNote.this, AddNote.class);
+                intent1.putExtra("noteId", note_id);
+                startActivity(intent1);
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Note note = Note.findById(Note.class, note_id);
+
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Are you sure?")
+                        .setMessage("You are about to delete Note " + note.getTitle())
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Note note = Note.findById(Note.class, note_id);
+                                note.setDeleteflag(true);
+                                note.save();
+
+                                String data = new Gson().toJson(note);
+                                Intent intent4 = new Intent();
+                                intent4.setAction(NotesFragment.DeleteReceiver.SYNC_ACTION);
+                                intent4.putExtra("note", data);
+                                sendBroadcast(intent4);
+
+                                Intent intent3 = new Intent();
+                                intent3.setAction("delete");
+                                getBaseContext().sendBroadcast(intent3);
+
+                                finish();
+
+
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -206,14 +316,14 @@ public class FullNote extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_full_note, menu);
+        /*getMenuInflater().inflate(R.menu.menu_full_note, menu);
         Note note1 = Note.findById(Note.class, note_id);
 
         if (note1.getFavourite()) {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_white);
         } else {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_border);
-        }
+        }*/
         return true;
     }
 }

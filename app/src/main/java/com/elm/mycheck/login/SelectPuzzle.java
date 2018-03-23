@@ -44,7 +44,7 @@ public class SelectPuzzle extends AppCompatActivity {
         setContentView(R.layout.activity_select_puzzle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Select Puzzle");
-        getSupportActionBar().setElevation(0);
+        //getSupportActionBar().setElevation(0);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SelectPuzzle extends AppCompatActivity {
     }
 
     public void demoPuzzle(View view){
-        Intent intent = new Intent(SelectPuzzle.this, NotificationBase.class);
+        Intent intent = new Intent(SelectPuzzle.this, PuzzleDetails.class);
         intent.putExtra("demoPuzzle", 1);
         startActivity(intent);
     }

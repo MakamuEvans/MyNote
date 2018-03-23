@@ -125,7 +125,7 @@ public class NewReminder extends AppCompatActivity {
         reminderEarly = (TextView) findViewById(R.id.reminder_early_activity);
         reminderDescription = (EditText) findViewById(R.id.reminder_description);
 
-        reminderDescription.setFocusable(false);
+       // reminderDescription.setFocusable(false);
 
 
         //initialize repeaters
