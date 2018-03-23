@@ -44,7 +44,7 @@ public class SelectPuzzle extends AppCompatActivity {
         setContentView(R.layout.activity_select_puzzle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Select Puzzle");
-        getSupportActionBar().setElevation(0);
+        //getSupportActionBar().setElevation(0);
     }
 
     @Override

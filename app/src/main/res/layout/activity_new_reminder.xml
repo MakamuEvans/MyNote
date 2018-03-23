@@ -14,12 +14,63 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:id="@+id/head"
+            android:padding="10dp"
+            android:background="?attr/colorPrimary"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:textSize="20dp"
+                        android:background="@drawable/gradient"
+                        android:id="@+id/start_date"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                       android:layout_gravity="center"
+                        android:text="Alarm Type"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14dp"
+                        android:textStyle="bold"/>
+
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:id="@+id/alarm_type"
+                        android:background="@android:color/white"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/str_reminder_type"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:padding="10dp"
                 android:id="@+id/titl"
+                android:visibility="gone"
                 android:background="?attr/colorPrimary"
                 android:layout_height="wrap_content">
 
@@ -47,6 +98,7 @@
                 android:layout_width="match_parent"
                 android:background="?attr/colorPrimary"
                 android:layout_below="@id/titl"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -60,24 +112,11 @@
                         android:layout_height="wrap_content"
                         android:src="@mipmap/ic_action_today"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorWhite"
-                        android:layout_marginLeft="10dp"
-                        android:id="@+id/start_date"
-                        />
+
 
                 </LinearLayout>
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:id="@+id/alarm_type"
-                    android:background="@android:color/white"
-                    android:layout_marginRight="10dp"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/str_reminder_type"
-                    android:layout_alignParentRight="true"/>
+
             </RelativeLayout>
 
         </RelativeLayout>
@@ -100,260 +139,264 @@
                     android:layout_marginTop="7dp"
                     android:background="?attr/colorPrimary"/>
 
-                <RelativeLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
+                    android:layout_margin="10dp"
+                    app:cardElevation="5dp"
                     android:layout_height="wrap_content">
-
-                    <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:layout_margin="3dp"
-                        android:background="@drawable/layout_border"
-                        app:picker_visibleItemCount="5"
-                        android:id="@+id/date_picker"/>
-
-                    <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:layout_margin="3dp"
-                        android:background="@drawable/layout_border"
-                        app:picker_visibleItemCount="5"
-                        android:id="@+id/time_picker"/>
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="7dp"
-                    android:background="?attr/colorPrimary"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="vertical">
-
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/puzzle_layout"
-                        android:layout_margin="7dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textStyle="bold"
-                            android:text="Solve Puzzle before Alarm stops" />
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:textStyle="italic"
-                            android:text="None"
-                            android:id="@+id/puzzle_name_activity"
-                            android:textColor="?attr/colorPrimary"/>
+                        <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:layout_margin="3dp"
+                            app:picker_visibleItemCount="5"
+                            android:id="@+id/date_picker"/>
+
+                        <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:layout_margin="3dp"
+                            app:picker_visibleItemCount="5"
+                            android:id="@+id/time_picker"/>
                     </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="7dp"
-                        android:background="?attr/colorPrimary"/>
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/title_layout"
-                        android:layout_margin="7dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textStyle="bold"
-                            android:text="Reminder title" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="None"
-                            android:textStyle="italic"
-                            android:id="@+id/reminder_name_activity"
-                            android:textColor="?attr/colorPrimary"/>
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="7dp"
-                        android:background="?attr/colorPrimary"/>
-
-                    <RelativeLayout
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_margin="10dp"
+                    app:cardElevation="5dp"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/repeat_mode"
-                        android:layout_margin="7dp">
+                        android:layout_margin="5dp"
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:id="@+id/repeat_title">
+                            android:id="@+id/puzzle_layout"
+                            android:layout_margin="7dp">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Week Days" />
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                android:text="Solve Puzzle before Alarm stops" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Touch on repeat dates"
-                                android:layout_marginLeft="10dp"
-                                android:textSize="10dp"/>
-                        </LinearLayout>
+                                android:layout_alignParentRight="true"
+                                android:textStyle="italic"
+                                android:text="None"
+                                android:id="@+id/puzzle_name_activity"
+                                android:textColor="?attr/colorPrimary"/>
+                        </RelativeLayout>
 
-                        <LinearLayout
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="7dp"
+                            android:background="?attr/colorPrimary"/>
+
+
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/repeat_title"
-                            android:orientation="horizontal">
+                            android:id="@+id/title_layout"
+                            android:layout_margin="7dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                android:text="Reminder title" />
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_margin="5dp"
-                                android:textSize="20dp"
-                                android:textStyle="bold"
-                                android:id="@+id/repeat_sunday"
                                 android:layout_height="wrap_content"
-                                android:text="S" />
-                            <View
-                                android:layout_width="2dp"
-                                android:layout_height="match_parent"
-                                android:layout_margin="10dp"
-                                android:background="?attr/colorPrimary"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_margin="5dp"
-                                android:textStyle="bold"
-                                android:id="@+id/repeat_monday"
-                                android:textSize="20dp"
-                                android:layout_height="wrap_content"
-                                android:text="M" />
-                            <View
-                                android:layout_width="2dp"
-                                android:layout_height="match_parent"
-                                android:layout_margin="10dp"
-                                android:background="?attr/colorPrimary"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_margin="5dp"
-                                android:textStyle="bold"
-                                android:textSize="20dp"
-                                android:id="@+id/repeat_tuesday"
-                                android:layout_height="wrap_content"
-                                android:text="T" />
-                            <View
-                                android:layout_width="2dp"
-                                android:layout_height="match_parent"
-                                android:layout_margin="10dp"
-                                android:background="?attr/colorPrimary"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_margin="5dp"
-                                android:textStyle="bold"
-                                android:id="@+id/repeat_wednesday"
-                                android:textSize="20dp"
-                                android:layout_height="wrap_content"
-                                android:text="W" />
-                            <View
-                                android:layout_width="2dp"
-                                android:layout_height="match_parent"
-                                android:layout_margin="10dp"
-                                android:background="?attr/colorPrimary"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_margin="5dp"
-                                android:textStyle="bold"
-                                android:id="@+id/repeat_thursday"
-                                android:textSize="20dp"
-                                android:layout_height="wrap_content"
-                                android:text="T" />
-                            <View
-                                android:layout_width="2dp"
-                                android:layout_height="match_parent"
-                                android:layout_margin="10dp"
-                                android:background="?attr/colorPrimary"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_margin="5dp"
-                                android:textStyle="bold"
-                                android:id="@+id/repeat_friday"
-                                android:textSize="20dp"
-                                android:layout_height="wrap_content"
-                                android:text="F" />
-                            <View
-                                android:layout_width="2dp"
-                                android:layout_height="match_parent"
-                                android:layout_margin="10dp"
-                                android:background="?attr/colorPrimary"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_margin="5dp"
-                                android:textSize="20dp"
-                                android:id="@+id/repeat_saturday"
-                                android:textStyle="bold"
-                                android:layout_height="wrap_content"
-                                android:text="S" />
-                        </LinearLayout>
+                                android:layout_alignParentRight="true"
+                                android:text="None"
+                                android:textStyle="italic"
+                                android:id="@+id/reminder_name_activity"
+                                android:textColor="?attr/colorPrimary"/>
+                        </RelativeLayout>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="7dp"
+                            android:background="?attr/colorPrimary"/>
 
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="7dp"
-                        android:background="?attr/colorPrimary"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/early_layout"
-                        android:layout_margin="7dp">
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textStyle="bold"
-                            android:text="Early reminder?" />
+                            android:id="@+id/repeat_mode"
+                            android:layout_margin="7dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:id="@+id/repeat_title">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Week Days" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Touch on repeat dates"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="10dp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/repeat_title"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/repeat_sunday"
+                                    android:layout_height="wrap_content"
+                                    android:text="S" />
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    android:background="?attr/colorPrimary"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/repeat_monday"
+                                    android:textSize="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="M" />
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    android:background="?attr/colorPrimary"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:textStyle="bold"
+                                    android:textSize="20dp"
+                                    android:id="@+id/repeat_tuesday"
+                                    android:layout_height="wrap_content"
+                                    android:text="T" />
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    android:background="?attr/colorPrimary"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/repeat_wednesday"
+                                    android:textSize="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="W" />
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    android:background="?attr/colorPrimary"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/repeat_thursday"
+                                    android:textSize="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="T" />
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    android:background="?attr/colorPrimary"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:textStyle="bold"
+                                    android:id="@+id/repeat_friday"
+                                    android:textSize="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="F" />
+                                <View
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    android:background="?attr/colorPrimary"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:textSize="20dp"
+                                    android:id="@+id/repeat_saturday"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"
+                                    android:text="S" />
+                            </LinearLayout>
+
+
+                        </RelativeLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="7dp"
+                            android:background="?attr/colorPrimary"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="None"
-                            android:textStyle="italic"
-                            android:id="@+id/reminder_early_activity"
-                            android:textColor="?attr/colorPrimary"/>
-                    </RelativeLayout>
+                            android:id="@+id/early_layout"
+                            android:layout_margin="7dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                android:text="Early reminder?" />
 
-                    <EditText
-                        android:layout_marginTop="10dp"
-                        android:padding="5dp"
-                        android:id="@+id/reminder_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:hint="Notes/Description (Optional)"
-                        android:gravity="top"
-                        android:background="@drawable/round_corner"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="None"
+                                android:textStyle="italic"
+                                android:id="@+id/reminder_early_activity"
+                                android:textColor="?attr/colorPrimary"/>
+                        </RelativeLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="7dp"
-                        android:background="?attr/colorPrimary"/>
-                </LinearLayout>
+                        <EditText
+                            android:layout_marginTop="10dp"
+                            android:padding="5dp"
+                            android:id="@+id/reminder_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:hint="Notes/Description (Optional)"
+                            android:gravity="top"
+                            android:background="@drawable/round_corner"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="7dp"
+                            android:background="?attr/colorPrimary"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
 
 
             </LinearLayout>
