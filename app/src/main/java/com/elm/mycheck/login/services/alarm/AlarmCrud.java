@@ -33,6 +33,7 @@ public class AlarmCrud extends Service {
     private String title, content, dated;
     private Long calender, reminderId;
     private boolean create, repeat;
+    private boolean reset = false;
 
     @Nullable
     @Override
@@ -45,6 +46,7 @@ public class AlarmCrud extends Service {
         Bundle bundle = intent.getExtras();
         reminderId = bundle.getLong("alarmId");
         create = bundle.getBoolean("create");
+        reset = bundle.getBoolean("reset");
 
         Reminder reminder = Reminder.findById(Reminder.class, reminderId);
         title = reminder.getTitle();
@@ -84,29 +86,34 @@ public class AlarmCrud extends Service {
                 calendar.set(Calendar.MONTH, month0);
                 calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(date)));
             }else {
-                Calendar calendar1 = Calendar.getInstance();
-                Calendar calendar2 = Calendar.getInstance();
-                calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
-                calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
+                if (reset){
+                    calendar.add(Calendar.DAY_OF_MONTH, 1);
+                }else {
+                    Calendar calendar1 = Calendar.getInstance();
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar1.set(Calendar.HOUR_OF_DAY, calendar2.get(Calendar.HOUR_OF_DAY));
+                    calendar1.set(Calendar.MINUTE, calendar2.get(Calendar.MINUTE));
 
-                //set dates to today
-                Date currentTime = Calendar.getInstance().getTime();
-
-
-                if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
-                    int month1 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(currentTime))-1;
-                    calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(currentTime)));
-                    calendar.set(Calendar.MONTH, month1);
-                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(currentTime)));
+                    //set dates to today
+                    Date currentTime = Calendar.getInstance().getTime();
 
 
-                    Log.e("yea", String.valueOf(month1));
-                    Log.e("yea", String.valueOf(Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(currentTime))));
+                    if (calendar1.getTimeInMillis() >= calendar.getTimeInMillis()){
+                        int month1 = Integer.parseInt(new SimpleDateFormat("M", Locale.ENGLISH).format(currentTime))-1;
+                        calendar.set(Calendar.YEAR, Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(currentTime)));
+                        calendar.set(Calendar.MONTH, month1);
+                        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(currentTime)));
 
-                    calendar.add(Calendar.DAY_OF_YEAR, 1);
-                    Log.e("newTime", String.valueOf(calendar.getTime()));
-                    Log.e("newTime", String.valueOf(month1));
+
+                        Log.e("yea", String.valueOf(month1));
+                        Log.e("yea", String.valueOf(Integer.parseInt(new SimpleDateFormat("d", Locale.ENGLISH).format(currentTime))));
+
+                        calendar.add(Calendar.DAY_OF_YEAR, 1);
+                        Log.e("newTime", String.valueOf(calendar.getTime()));
+                        Log.e("newTime", String.valueOf(month1));
+                    }
                 }
+
             }
 
             createAlarm(

@@ -64,6 +64,7 @@ public class ReminderAlarms extends BroadcastReceiver {
                     Intent intent4 = new Intent(context, AlarmCrud.class);
                     intent4.putExtra("alarmId", alarmId);
                     intent4.putExtra("create", true);
+                    intent4.putExtra("reset", true);
                     context.startService(intent4);
                     //actualRepeats(alarmId, context);
                 }

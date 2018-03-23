@@ -334,23 +334,8 @@ public class Navigation extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         //lazy to rename these things.....phew!!!!!!!
-        if (id == R.id.nav_home) {
-            Intent intent = new Intent(this, Navigation.class);
-            intent.putExtra("page", 0);
-            startActivity(intent);
-        } else if (id == R.id.nav_notes) {
-            Intent intent = new Intent(this, Navigation.class);
-            intent.putExtra("page", 1);
-            startActivity(intent);
-        } else if (id == R.id.nav_reminders) {
-            Intent intent = new Intent(this, Navigation.class);
-            intent.putExtra("page", 2);
-            startActivity(intent);
-        } else if (id == R.id.nav_todo) {
-            Intent intent = new Intent(this, Navigation.class);
-            intent.putExtra("page", 3);
-            startActivity(intent);
-        } else if (id == R.id.nav_share) {
+
+       if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
             Intent intent = new Intent(Navigation.this, SettingsActivity.class);
