@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-public class SelectPuzzle extends AppCompatActivity {
+public class PuzzleDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +40,13 @@ public class SelectPuzzle extends AppCompatActivity {
         if (theme.equalsIgnoreCase("graphite"))
             setTheme(R.style.AppTheme_Graphite);
 
-        setContentView(R.layout.activity_select_puzzle);
+        setContentView(R.layout.activity_puzzle_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Select Puzzle");
-        //getSupportActionBar().setElevation(0);
+        //setTitle("Select Puzzle");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.puzzle, menu);
         return true;
     }
 
@@ -59,53 +56,8 @@ public class SelectPuzzle extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
-            case R.id.cancel_puzzle:
-                Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
-                intent.putExtra("title", "None");
-                sendBroadcast(intent);
-                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    public void demoRetype(View view){
-        Intent intent = new Intent(SelectPuzzle.this, NotificationBase.class);
-        intent.putExtra("demoRetype", 1);
-        startActivity(intent);
-    }
-
-    public void demoPuzzle(View view){
-        Intent intent = new Intent(SelectPuzzle.this, PuzzleDetails.class);
-        intent.putExtra("demoPuzzle", 1);
-        startActivity(intent);
-    }
-
-    public void demoSequence(View view){
-        Intent intent = new Intent(SelectPuzzle.this, NotificationBase.class);
-        intent.putExtra("demoSequence", 1);
-        startActivity(intent);
-    }
-
-    public void Retype(View view){
-        Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
-        intent.putExtra("title", "retype");
-        sendBroadcast(intent);
-        finish();
-    }
-
-    public void Puzzle(View view){
-        Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
-        intent.putExtra("title", "puzzle");
-        sendBroadcast(intent);
-        finish();
-    }
-
-    public void Sequence(View view){
-        Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
-        intent.putExtra("title", "sequence");
-        sendBroadcast(intent);
-        finish();
-    }
-
 }
