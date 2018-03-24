@@ -50,6 +50,9 @@
 
 
     <color name="colorJumbotron">#684e55</color>
+    <color name="easy">#8c2927</color>
+    <color name="medium">#d11a16</color>
+    <color name="difficult">#fd0500</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="read_theme">#FFF1E5</color>
