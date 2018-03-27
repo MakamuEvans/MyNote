@@ -16,6 +16,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:background="@drawable/book"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 

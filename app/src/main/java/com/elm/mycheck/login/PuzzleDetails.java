@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.emilsjolander.components.StickyScrollViewItems.StickyScrollView;
 
 public class PuzzleDetails extends AppCompatActivity {
+    private StickyScrollView puzzle,retype,sequence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,34 @@ public class PuzzleDetails extends AppCompatActivity {
 
         setContentView(R.layout.activity_puzzle_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String type = null;
+        if (bundle != null) {
+            if (bundle.containsKey("type")) {
+                type = bundle.getString("type");
+            }
+        }
+        puzzle = (StickyScrollView) findViewById(R.id.puzzle_touch);
+        retype = (StickyScrollView) findViewById(R.id.puzzle_retype);
+        sequence = (StickyScrollView) findViewById(R.id.puzzle_sequence);
+        if (type.equals("puzzle")){
+            puzzle.setVisibility(View.VISIBLE);
+            retype.setVisibility(View.GONE);
+            sequence.setVisibility(View.GONE);
+            setTitle("Active Touch");
+        }else if (type.equals("retype")){
+            puzzle.setVisibility(View.GONE);
+            retype.setVisibility(View.VISIBLE);
+            sequence.setVisibility(View.GONE);
+            setTitle("Text Retype");
+        }else {
+            puzzle.setVisibility(View.GONE);
+            retype.setVisibility(View.GONE);
+            sequence.setVisibility(View.VISIBLE);
+            setTitle("Match Sequence");
+        }
         //setTitle("Select Puzzle");
     }
 
@@ -59,5 +91,44 @@ public class PuzzleDetails extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void demo_Retype(View view){
+        Intent intent = new Intent(PuzzleDetails.this, NotificationBase.class);
+        intent.putExtra("demoRetype", 1);
+        startActivity(intent);
+    }
+
+    public void demo_Puzzle(View view){
+        Intent intent = new Intent(PuzzleDetails.this, NotificationBase.class);
+        intent.putExtra("demoPuzzle", "puzzle");
+        startActivity(intent);
+    }
+
+    public void demo_Sequence(View view){
+        Intent intent = new Intent(PuzzleDetails.this, NotificationBase.class);
+        intent.putExtra("demoSequence", 1);
+        startActivity(intent);
+    }
+
+    public void Retype(View view){
+        Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
+        intent.putExtra("title", "retype");
+        sendBroadcast(intent);
+        finish();
+    }
+
+    public void Puzzle(View view){
+        Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
+        intent.putExtra("title", "puzzle");
+        sendBroadcast(intent);
+        finish();
+    }
+
+    public void Sequence(View view){
+        Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
+        intent.putExtra("title", "sequence");
+        sendBroadcast(intent);
+        finish();
     }
 }

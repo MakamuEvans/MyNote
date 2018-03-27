@@ -70,20 +70,22 @@ public class SelectPuzzle extends AppCompatActivity {
     }
 
     public void demoRetype(View view){
-        Intent intent = new Intent(SelectPuzzle.this, NotificationBase.class);
+        Intent intent = new Intent(SelectPuzzle.this, PuzzleDetails.class);
         intent.putExtra("demoRetype", 1);
+        intent.putExtra("type", "retype");
         startActivity(intent);
     }
 
     public void demoPuzzle(View view){
         Intent intent = new Intent(SelectPuzzle.this, PuzzleDetails.class);
-        intent.putExtra("demoPuzzle", 1);
+        intent.putExtra("type", "puzzle");
         startActivity(intent);
     }
 
     public void demoSequence(View view){
-        Intent intent = new Intent(SelectPuzzle.this, NotificationBase.class);
+        Intent intent = new Intent(SelectPuzzle.this, PuzzleDetails.class);
         intent.putExtra("demoSequence", 1);
+        intent.putExtra("type", "sequence");
         startActivity(intent);
     }
 
