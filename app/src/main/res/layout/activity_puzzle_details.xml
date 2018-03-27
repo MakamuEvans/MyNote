@@ -142,6 +142,7 @@
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
                                             android:text="Select Easy"
+                                            android:onClick="puzzleEasy"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
 
@@ -194,6 +195,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
+                                            android:onClick="puzzleMedium"
                                             android:text="Select  Medium"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
@@ -250,7 +252,8 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:text="Select  Easy"
+                                            android:onClick="puzzleDifficult"
+                                            android:text="Select  Difficult"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
 
@@ -296,6 +299,7 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
+                        android:id="@+id/touch_poke"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
@@ -332,6 +336,7 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
+                        android:id="@+id/touch_alt"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
@@ -489,6 +494,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
+                                            android:onClick="retypeEasy"
                                             android:text="Select Easy"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
@@ -540,6 +546,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
+                                            android:onClick="retypeMedium"
                                             android:text="Select  Medium"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
@@ -594,7 +601,8 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:text="Select  Easy"
+                                            android:onClick="retypeDifficult"
+                                            android:text="Select  Difficult"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
 
@@ -640,6 +648,7 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
+                        android:id="@+id/retype_poke"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
@@ -676,6 +685,7 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
+                        android:id="@+id/retype_alt"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
@@ -833,6 +843,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
+                                            android:onClick="sequenceEasy"
                                             android:text="Select Easy"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
@@ -884,6 +895,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
+                                            android:onClick="sequenceMedium"
                                             android:text="Select  Medium"
                                             android:textSize="16dp"
                                             android:background="@drawable/default_input_text"/>
@@ -940,6 +952,7 @@
                                             android:gravity="center"
                                             android:text="Select  Difficult"
                                             android:textSize="16dp"
+                                            android:onClick="sequenceDifficult"
                                             android:background="@drawable/default_input_text"/>
 
 
@@ -984,6 +997,7 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
+                        android:id="@+id/sequence_poke"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout
@@ -1020,6 +1034,7 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
+                        android:id="@+id/sequence_alt"
                         android:layout_height="wrap_content" />
 
                     <LinearLayout

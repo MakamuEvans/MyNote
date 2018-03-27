@@ -99,6 +99,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NewReminder"
+            android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SettingsActivity"

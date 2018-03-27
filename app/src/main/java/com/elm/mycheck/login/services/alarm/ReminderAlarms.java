@@ -119,9 +119,14 @@ public class ReminderAlarms extends BroadcastReceiver {
             Reminder reminder = Reminder.findById(Reminder.class, alarmReminder.getReminderid());
             if (reminder != null){
                 if (reminder.getStatus()) {
-                    alarmReminder.setActive(true);
-                    alarmReminder.save();
-                    reminderAlarms(nTitle, context);
+                    SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+                    Calendar calendar = Calendar.getInstance();
+                    String weekDay = dayFormat.format(calendar.getTime());
+                    if (reminder.getRepeat().contains(weekDay)) {
+                        alarmReminder.setActive(true);
+                        alarmReminder.save();
+                        reminderAlarms(nTitle, context);
+                    }
                 }
             }
         } else if (nId == Constants.todoReminder){

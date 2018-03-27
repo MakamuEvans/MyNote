@@ -57,12 +57,21 @@ public class SelectPuzzle extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent intent = new Intent(SelectPuzzle.this, NewReminder.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 this.finish();
                 return true;
             case R.id.cancel_puzzle:
-                Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
-                intent.putExtra("title", "None");
-                sendBroadcast(intent);
+                Intent intent2 = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
+                intent2.putExtra("title", "None");
+                sendBroadcast(intent2);
+
+                Intent intent3 = new Intent(SelectPuzzle.this, NewReminder.class);
+                intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent3);
                 finish();
             default:
                 return super.onOptionsItemSelected(item);

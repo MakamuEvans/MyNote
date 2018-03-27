@@ -56,8 +56,12 @@ public class NewReminder extends AppCompatActivity {
     private EarlyReceiver earlyReceiver;
     private TitleReceiver titleReceiver;
     private PuzzleReceiver puzzleReceiver;
+    private PokeReceiver pokeReceiver;
+    private AlternateReceiver alternateReceiver;
     private Boolean repeating =false;
     private String puzzle = "None";
+    private String puzzle_level = "[#]";
+    private Boolean poke = false, alternate = false;
     private View view;
     private AdView adView;
     private Spinner spinner;
@@ -153,6 +157,15 @@ public class NewReminder extends AppCompatActivity {
         IntentFilter filter1 = new IntentFilter(PuzzleReceiver.ACTIION_REP);
         puzzleReceiver = new PuzzleReceiver();
         registerReceiver(puzzleReceiver, filter1);
+
+        IntentFilter filter2 = new IntentFilter(PokeReceiver.ACTIION_REP);
+        pokeReceiver = new PokeReceiver();
+        registerReceiver(pokeReceiver, filter2);
+
+        IntentFilter filter3 = new IntentFilter(AlternateReceiver.ACTIION_REP);
+        alternateReceiver = new AlternateReceiver();
+        registerReceiver(alternateReceiver, filter3);
+
 
         String format = "MMM dd yyyy HH:mm";
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
@@ -252,6 +265,10 @@ public class NewReminder extends AppCompatActivity {
             unregisterReceiver(titleReceiver);
         if (puzzleReceiver != null)
             unregisterReceiver(puzzleReceiver);
+        if (pokeReceiver != null)
+            unregisterReceiver(pokeReceiver);
+        if (alternateReceiver != null)
+            unregisterReceiver(alternateReceiver);
         super.onDestroy();
     }
 
@@ -358,6 +375,10 @@ public class NewReminder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent intent2 = new Intent(this, Navigation.class);
+                intent2.putExtra("page", Constants.REMINDER_TAB);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
                 this.finish();
                 return true;
             case R.id.set_reminder_setting:
@@ -382,6 +403,25 @@ public class NewReminder extends AppCompatActivity {
         }
     }
 
+    public class PokeReceiver extends BroadcastReceiver{
+        public static final String ACTIION_REP = "receive_poke";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            poke = bundle.getBoolean("poke");
+        }
+    }
+    public class AlternateReceiver extends BroadcastReceiver{
+        public static final String ACTIION_REP = "receive_alternate";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            alternate = bundle.getBoolean("alternate");
+        }
+    }
+
     public class PuzzleReceiver extends BroadcastReceiver {
         public static final String ACTIION_REP = "add_puzzle";
 
@@ -389,8 +429,10 @@ public class NewReminder extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
+            String level = bundle.getString("level");
             puzzle = title;
-            puzzle_name_activity.setText(puzzle);
+            puzzle_level = level;
+            puzzle_name_activity.setText(puzzle+"["+level+"]");
             //onComplete(title);
         }
     }

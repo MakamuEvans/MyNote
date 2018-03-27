@@ -8,11 +8,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.emilsjolander.components.StickyScrollViewItems.StickyScrollView;
 
 public class PuzzleDetails extends AppCompatActivity {
     private StickyScrollView puzzle,retype,sequence;
+    private CheckBox touch_poke,retype_poke,sequence_poke,touch_alt,retype_alt,sequence_alt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class PuzzleDetails extends AppCompatActivity {
         setContentView(R.layout.activity_puzzle_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String type = null;
         if (bundle != null) {
@@ -75,6 +78,99 @@ public class PuzzleDetails extends AppCompatActivity {
             setTitle("Match Sequence");
         }
         //setTitle("Select Puzzle");
+
+        touch_poke = (CheckBox) findViewById(R.id.touch_poke);
+        retype_poke = (CheckBox) findViewById(R.id.retype_poke);
+        sequence_poke = (CheckBox) findViewById(R.id.sequence_poke);
+        touch_poke.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (touch_poke.isChecked()){
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("poke", true);
+                    sendBroadcast(intent1);
+                }else {
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("poke", false);
+                    sendBroadcast(intent1);
+                }
+            }
+        });
+        retype_poke.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (retype_poke.isChecked()){
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("poke", true);
+                    sendBroadcast(intent1);
+                }else {
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("poke", false);
+                    sendBroadcast(intent1);
+                }
+            }
+        });
+        sequence_poke.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sequence_poke.isChecked()){
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("poke", true);
+                    sendBroadcast(intent1);
+                }else {
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("poke", false);
+                    sendBroadcast(intent1);
+                }
+            }
+        });
+
+
+        touch_alt = (CheckBox) findViewById(R.id.touch_alt);
+        retype_alt = (CheckBox) findViewById(R.id.retype_alt);
+        sequence_alt = (CheckBox) findViewById(R.id.sequence_alt);
+        touch_alt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (touch_alt.isChecked()){
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("alternate", true);
+                    sendBroadcast(intent1);
+                }else {
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("alternate", false);
+                    sendBroadcast(intent1);
+                }
+            }
+        });
+        retype_alt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (retype_alt.isChecked()){
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("alternate", true);
+                    sendBroadcast(intent1);
+                }else {
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("alternate", false);
+                    sendBroadcast(intent1);
+                }
+            }
+        });
+        sequence_alt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sequence_alt.isChecked()){
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("alternate", true);
+                    sendBroadcast(intent1);
+                }else {
+                    Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
+                    intent1.putExtra("alternate", false);
+                    sendBroadcast(intent1);
+                }
+            }
+        });
     }
 
     @Override
@@ -118,10 +214,47 @@ public class PuzzleDetails extends AppCompatActivity {
         finish();
     }
 
-    public void Puzzle(View view){
+    public void puzzleEasy(View view){
+        returnPuzzle("Active touch", "1");
+    }
+    public void puzzleMedium(View view){
+        returnPuzzle("Active touch", "2");
+    }
+    public void puzzleDifficult(View view){
+        returnPuzzle("Active touch", "3");
+    }
+
+    public void retypeEasy(View view){
+        returnPuzzle("Retype", "1");
+    }
+    public void retypeMedium(View view){
+        returnPuzzle("Retype", "2");
+    }
+    public void retypeDifficult(View view){
+        returnPuzzle("Retype", "3");
+    }
+
+    public void sequenceEasy(View view){
+        returnPuzzle("Sequence", "1");
+    }
+    public void sequenceMedium(View view){
+        returnPuzzle("Sequence", "2");
+    }
+    public void sequenceDifficult(View view){
+        returnPuzzle("Sequence", "3");
+    }
+
+
+    private void returnPuzzle(String title, String level){
         Intent intent = new Intent(NewReminder.PuzzleReceiver.ACTIION_REP);
-        intent.putExtra("title", "puzzle");
+        intent.putExtra("title", title);
+        intent.putExtra("level", level);
         sendBroadcast(intent);
+
+        Intent intent1 = new Intent(PuzzleDetails.this, NewReminder.class);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent1);
         finish();
     }
 
@@ -130,5 +263,9 @@ public class PuzzleDetails extends AppCompatActivity {
         intent.putExtra("title", "sequence");
         sendBroadcast(intent);
         finish();
+    }
+
+    public void poke(View view){
+
     }
 }
