@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -61,7 +62,7 @@ public class NewReminder extends AppCompatActivity {
     private Boolean repeating =false;
     private String puzzle = "None";
     private String puzzle_level = "[#]";
-    private Boolean poke = false, alternate = false;
+    private String poke = "No", alternate = "No";
     private View view;
     private AdView adView;
     private Spinner spinner;
@@ -78,30 +79,32 @@ public class NewReminder extends AppCompatActivity {
         if (theme == "tomato")
             setTheme(R.style.AppTheme_NoActionBar);
         if (theme == "tangarine")
-            setTheme(R.style.AppTheme_Tangarine);
+            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
         if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_Banana);
+            setTheme(R.style.AppTheme_NoActionBar_Banana);
         if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_Basil);
+            setTheme(R.style.AppTheme_NoActionBar_Basil);
         if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_Sage);
+            setTheme(R.style.AppTheme_NoActionBar_Sage);
         if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_Peacock);
+            setTheme(R.style.AppTheme_NoActionBar_Peacock);
         if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_BlueBerry);
+            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
         if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_Lavender);
+            setTheme(R.style.AppTheme_NoActionBar_Lavender);
         if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_Grape);
+            setTheme(R.style.AppTheme_NoActionBar_Grape);
         if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_Flamingo);
+            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
         if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_Graphite);
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);
 
 
         setContentView(R.layout.activity_new_reminder);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //  toolbar.setElevation(0);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
         setTitle("New Reminder");
         //
         adView = (AdView) findViewById(R.id.ReminderadView);
@@ -409,7 +412,7 @@ public class NewReminder extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            poke = bundle.getBoolean("poke");
+            poke = bundle.getString("poke");
         }
     }
     public class AlternateReceiver extends BroadcastReceiver{
@@ -418,7 +421,7 @@ public class NewReminder extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            alternate = bundle.getBoolean("alternate");
+            alternate = bundle.getString("alternate");
         }
     }
 
@@ -559,6 +562,10 @@ public class NewReminder extends AppCompatActivity {
                 false,
                 repeatDates(),
                 "",
+                puzzle,
+                puzzle_level,
+                poke,
+                alternate,
                 0,
                 dateFormat.format(today),
                 dateFormat.format(today));
@@ -595,5 +602,6 @@ public class NewReminder extends AppCompatActivity {
         intent2.putExtra("page", Constants.REMINDER_TAB);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);
+        finish();
     }
 }

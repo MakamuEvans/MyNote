@@ -87,11 +87,11 @@ public class PuzzleDetails extends AppCompatActivity {
             public void onClick(View view) {
                 if (touch_poke.isChecked()){
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("poke", true);
+                    intent1.putExtra("poke", "Yes");
                     sendBroadcast(intent1);
                 }else {
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("poke", false);
+                    intent1.putExtra("poke", "No");
                     sendBroadcast(intent1);
                 }
             }
@@ -101,11 +101,11 @@ public class PuzzleDetails extends AppCompatActivity {
             public void onClick(View view) {
                 if (retype_poke.isChecked()){
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("poke", true);
+                    intent1.putExtra("poke", "Yes");
                     sendBroadcast(intent1);
                 }else {
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("poke", false);
+                    intent1.putExtra("poke", "No");
                     sendBroadcast(intent1);
                 }
             }
@@ -115,11 +115,11 @@ public class PuzzleDetails extends AppCompatActivity {
             public void onClick(View view) {
                 if (sequence_poke.isChecked()){
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("poke", true);
+                    intent1.putExtra("poke", "Yes");
                     sendBroadcast(intent1);
                 }else {
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("poke", false);
+                    intent1.putExtra("poke", "No");
                     sendBroadcast(intent1);
                 }
             }
@@ -134,11 +134,11 @@ public class PuzzleDetails extends AppCompatActivity {
             public void onClick(View view) {
                 if (touch_alt.isChecked()){
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("alternate", true);
+                    intent1.putExtra("alternate", "Yes");
                     sendBroadcast(intent1);
                 }else {
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("alternate", false);
+                    intent1.putExtra("alternate", "No");
                     sendBroadcast(intent1);
                 }
             }
@@ -148,11 +148,11 @@ public class PuzzleDetails extends AppCompatActivity {
             public void onClick(View view) {
                 if (retype_alt.isChecked()){
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("alternate", true);
+                    intent1.putExtra("alternate", "Yes");
                     sendBroadcast(intent1);
                 }else {
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("alternate", false);
+                    intent1.putExtra("alternate", "No");
                     sendBroadcast(intent1);
                 }
             }
@@ -162,11 +162,11 @@ public class PuzzleDetails extends AppCompatActivity {
             public void onClick(View view) {
                 if (sequence_alt.isChecked()){
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("alternate", true);
+                    intent1.putExtra("alternate", "Yes");
                     sendBroadcast(intent1);
                 }else {
                     Intent intent1 = new Intent(NewReminder.PokeReceiver.ACTIION_REP);
-                    intent1.putExtra("alternate", false);
+                    intent1.putExtra("alternate", "No");
                     sendBroadcast(intent1);
                 }
             }
