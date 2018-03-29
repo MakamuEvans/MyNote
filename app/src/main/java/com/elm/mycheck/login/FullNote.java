@@ -68,7 +68,7 @@ public class FullNote extends AppCompatActivity {
       //  toolbar.setElevation(0);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setElevation(8);
 
         Intent intent = getIntent();
         note_id = intent.getExtras().getLong("noteId");
@@ -106,6 +106,12 @@ public class FullNote extends AppCompatActivity {
         edit = (ImageView) findViewById(R.id.action_edit);
         delete = (ImageView) findViewById(R.id.action_delete);
 
+        if (note1.getFavaouriteflag()){
+            fav.setImageResource(R.drawable.full_fav);
+        }else {
+            fav.setImageResource(R.drawable.full_unfav);
+        }
+
         in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,10 +138,10 @@ public class FullNote extends AppCompatActivity {
                 note1.save();
 
                 if (status) {
-                    //item.setIcon(R.mipmap.ic_action_favorite_white);
+                    fav.setImageResource(R.drawable.full_fav);
                     MDToast.makeText(getBaseContext(), note1.getTitle() + " added to favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS).show();
                 } else {
-                   // item.setIcon(R.mipmap.ic_action_favorite_border);
+                    fav.setImageResource(R.drawable.full_unfav);
                     MDToast.makeText(getBaseContext(), note1.getTitle() + " removed from favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 }
 
@@ -239,10 +245,10 @@ public class FullNote extends AppCompatActivity {
                 note1.save();
 
                 if (status) {
-                    item.setIcon(R.mipmap.ic_action_favorite_white);
+                    item.setIcon(R.drawable.full_fav);
                     MDToast.makeText(getBaseContext(), note1.getTitle() + " added to favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS).show();
                 } else {
-                    item.setIcon(R.mipmap.ic_action_favorite_border);
+                    item.setIcon(R.drawable.full_unfav);
                     MDToast.makeText(getBaseContext(), note1.getTitle() + " removed from favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 }
 

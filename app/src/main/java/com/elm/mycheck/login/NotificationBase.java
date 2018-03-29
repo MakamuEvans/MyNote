@@ -161,6 +161,7 @@ public class NotificationBase extends AppCompatActivity {
             }
 
             if (bundle.containsKey("demoPuzzle")) {
+                puzzle_level = 20;
                 boxPuzzle();
                 demo_type = "puzzle";
                 demo = true;
@@ -175,6 +176,7 @@ public class NotificationBase extends AppCompatActivity {
                 demo = true;
             }
             if (bundle.containsKey("demoSequence")) {
+                puzzle_level = 4;
                 sequencePuzzle();
                 demo_type = "sequence";
                 demo = true;

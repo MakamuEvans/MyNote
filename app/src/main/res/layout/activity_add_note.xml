@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/read_theme"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:src="@mipmap/ic_close"
+                app:srcCompat="@drawable/cancel"
                 android:textSize="20dp" />
         </LinearLayout>
 
@@ -209,7 +208,6 @@
                 android:id="@+id/notes_editor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/read_theme"
                 android:layout_below="@+id/note_title">
 
             </jp.wasabeef.richeditor.RichEditor>

@@ -108,9 +108,9 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder1.imageView.setImageResource(R.mipmap.ic_cloud_done);
             }
             if (notes.getFavourite()){
-                holder1.fav.setImageResource(R.mipmap.ic_action_pink);
+                holder1.fav.setImageResource(R.drawable.recycler_unfav);
             }else {
-                holder1.fav.setImageResource(R.mipmap.ic_action_favorite_pink);
+                holder1.fav.setImageResource(R.drawable.recycler_fav);
             }
             setFadeAnimation(holder.itemView);
         }
@@ -195,11 +195,11 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     note1.save();
 
                     if (note1.getFavourite()){
-                        fav.setImageResource(R.mipmap.ic_action_pink);
+                        fav.setImageResource(R.drawable.recycler_unfav);
                         MDToast.makeText(v.getContext(),note.getTitle()+" added to favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_SUCCESS ).show();
                         //Toast.makeText(v.getContext(), note.getTitle()+" added to favourite", Toast.LENGTH_SHORT).show();
                     }else {
-                        fav.setImageResource(R.mipmap.ic_action_favorite_pink);
+                        fav.setImageResource(R.drawable.recycler_fav);
                         MDToast.makeText(v.getContext(),note.getTitle()+" removed from favourite", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                         //Toast.makeText(v.getContext(), note.getTitle()+" removed from favourite", Toast.LENGTH_SHORT).show();
                     }

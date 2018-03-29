@@ -138,7 +138,7 @@ public class AddNote extends AppCompatActivity {
             new Tooltip.Builder(add_category)
                     .setText("Categorize your Note")
                     .setCancelable(true)
-                    .setBackgroundColor(getResources().getColor(R.color.colorAccentTomato))
+                    .setBackgroundColor(getResources().getColor(android.R.color.black))
                     .setTextColor(getResources().getColor(R.color.colorWhite))
                     .show();
         }

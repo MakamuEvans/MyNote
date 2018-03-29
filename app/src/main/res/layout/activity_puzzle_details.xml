@@ -8,6 +8,14 @@
     android:layout_marginBottom="10dp"
     tools:context="com.elm.mycheck.login.PuzzleDetails">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
     <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
         android:layout_width="match_parent"
         android:id="@+id/puzzle_touch"
@@ -15,19 +23,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:background="@android:color/darker_gray"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
                     android:layout_width="3dp"
                     android:layout_height="match_parent"
-                    android:background="?attr/colorPrimary"></LinearLayout>
+                    android:background="?attr/colorPrimary" />
                 <TextView
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
@@ -38,7 +45,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="7dp"
+                android:layout_margin="7dp"
                 android:background="?attr/colorPrimary" />
 
             <LinearLayout
@@ -72,8 +79,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:layout_margin="10dp"
                 android:orientation="horizontal">
 
                 <FrameLayout
@@ -135,7 +140,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="The total Number of Active boxes that you willneedto touch before alarm stops" />
+                                            android:text="The total Number of Active boxes that you will need to touch before alarm stops" />
 
                                         <TextView
                                             android:layout_width="match_parent"
@@ -189,7 +194,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="The total Number of Active boxes that you willneedto touch before alarm stops" />
+                                            android:text="The total Number of Active boxes that you will need to touch before alarm stops" />
 
                                         <TextView
                                             android:layout_width="match_parent"
@@ -245,7 +250,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="The total Number of Active boxes that you willneedto touch before alarm stops" />
+                                            android:text="The total Number of Active boxes that you will need to touch before alarm stops" />
 
 
                                         <TextView
@@ -277,12 +282,12 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="7dp"
+                android:layout_margin="7dp"
                 android:background="?attr/colorPrimary" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:paddingBottom="10dp"
                 android:orientation="vertical">
 
@@ -317,7 +322,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="11dp"
-                            android:text="After 5 minutes of a successful alarm stop, a pop up will appera, of which a user needs to clear within two minutes or the Alarm goes off again"/>
+                            android:text="After 5 minutes of a successful alarm stop, a pop up will appear, of which a user needs to clear within two minutes or the Alarm goes off again"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -331,6 +336,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -372,19 +378,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
                     android:layout_width="3dp"
                     android:layout_height="match_parent"
-                    android:background="?attr/colorPrimary"></LinearLayout>
+                    android:background="?attr/colorPrimary" />
                 <TextView
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
@@ -394,7 +399,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="7dp"
+                android:layout_margin="7dp"
                 android:background="?attr/colorPrimary" />
 
             <LinearLayout
@@ -427,8 +432,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:layout_margin="10dp"
                 android:orientation="horizontal">
 
                 <FrameLayout
@@ -626,12 +629,12 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="7dp"
+                android:layout_margin="7dp"
                 android:background="?attr/colorPrimary" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:paddingBottom="10dp"
                 android:orientation="vertical">
 
@@ -666,7 +669,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="11dp"
-                            android:text="After 5 minutes of a successful alarm stop, a pop up will appera, of which a user needs to clear within two minutes or the Alarm goes off again"/>
+                            android:text="After 5 minutes of a successful alarm stop, a pop up will appear, of which a user needs to clear within two minutes or the Alarm goes off again"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -681,6 +684,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -721,19 +725,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
-                    android:layout_width="2dp"
+                    android:layout_width="3dp"
                     android:layout_height="match_parent"
-                    android:background="?attr/colorPrimary"></LinearLayout>
+                    android:background="?attr/colorPrimary" />
                 <TextView
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
@@ -744,7 +747,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="7dp"
+                android:layout_margin="7dp"
                 android:background="?attr/colorPrimary" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -776,8 +779,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:layout_margin="10dp"
                 android:orientation="horizontal">
 
                 <FrameLayout
@@ -789,7 +790,6 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:visibility="gone"
-                        android:layout_margin="5dp"
                         android:src="@drawable/notes"/>
 
                     <HorizontalScrollView
@@ -975,12 +975,12 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="7dp"
+                android:layout_margin="7dp"
                 android:background="?attr/colorPrimary" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:paddingBottom="10dp"
                 android:orientation="vertical">
 
@@ -1015,7 +1015,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="11dp"
-                            android:text="After 5 minutes of a successful alarm stop, a pop up will appera, of which a user needs to clear within two minutes or the Alarm goes off again"/>
+                            android:text="After 5 minutes of a successful alarm stop, a pop up will appear, of which a user needs to clear within two minutes or the Alarm goes off again"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -1029,6 +1029,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 

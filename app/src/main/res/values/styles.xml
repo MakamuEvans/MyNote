@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
@@ -23,7 +22,6 @@
         <item name="colorPrimary">@color/colorPrimaryTangarine</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkTangarine</item>
         <item name="colorAccent">@color/colorAccentTangarine</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Tangarine" parent="AppTheme.Tangarine">
         <item name="windowActionBar">false</item>
@@ -40,7 +38,6 @@
         <item name="colorPrimary">@color/colorPrimaryBanana</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkBanana</item>
         <item name="colorAccent">@color/colorAccentBanana</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Banana" parent="AppTheme.Banana">
         <item name="windowActionBar">false</item>
@@ -57,7 +54,6 @@
         <item name="colorPrimary">@color/colorPrimaryBasil</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkBasil</item>
         <item name="colorAccent">@color/colorAccentBasil</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Basil" parent="AppTheme.Basil">
         <item name="windowActionBar">false</item>
@@ -74,7 +70,6 @@
         <item name="colorPrimary">@color/colorPrimarySage</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkSage</item>
         <item name="colorAccent">@color/colorAccentSage</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Sage" parent="AppTheme.Sage">
         <item name="windowActionBar">false</item>
@@ -91,7 +86,6 @@
         <item name="colorPrimary">@color/colorPrimaryPeacock</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkPeacock</item>
         <item name="colorAccent">@color/colorAccentPeacock</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Peacock" parent="AppTheme.Peacock">
         <item name="windowActionBar">false</item>
@@ -108,7 +102,6 @@
         <item name="colorPrimary">@color/colorPrimaryBlueBerry</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkBlueBerry</item>
         <item name="colorAccent">@color/colorAccentBlueBerry</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.BlueBerry" parent="AppTheme.BlueBerry">
         <item name="windowActionBar">false</item>
@@ -125,7 +118,6 @@
         <item name="colorPrimary">@color/colorPrimaryLavender</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkLavender</item>
         <item name="colorAccent">@color/colorAccentLavender</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Lavender" parent="AppTheme.Lavender">
         <item name="windowActionBar">false</item>
@@ -142,7 +134,6 @@
         <item name="colorPrimary">@color/colorPrimaryGrape</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkGrape</item>
         <item name="colorAccent">@color/colorAccentGrape</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Grape" parent="AppTheme.Grape">
         <item name="windowActionBar">false</item>
@@ -175,7 +166,6 @@
         <item name="colorPrimary">@color/colorPrimaryGraphite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkGraphite</item>
         <item name="colorAccent">@color/colorAccentGraphite</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="AppTheme.NoActionBar.Graphite" parent="AppTheme.Graphite">
         <item name="windowActionBar">false</item>
@@ -198,7 +188,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">false</item>
-        <item name="android:typeface">sans</item>
     </style>
 
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">

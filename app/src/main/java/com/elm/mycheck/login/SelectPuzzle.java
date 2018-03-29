@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,30 +22,32 @@ public class SelectPuzzle extends AppCompatActivity {
         if (theme == "tomato")
             setTheme(R.style.AppTheme_NoActionBar);
         if (theme == "tangarine")
-            setTheme(R.style.AppTheme_Tangarine);
+            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
         if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_Banana);
+            setTheme(R.style.AppTheme_NoActionBar_Banana);
         if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_Basil);
+            setTheme(R.style.AppTheme_NoActionBar_Basil);
         if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_Sage);
+            setTheme(R.style.AppTheme_NoActionBar_Sage);
         if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_Peacock);
+            setTheme(R.style.AppTheme_NoActionBar_Peacock);
         if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_BlueBerry);
+            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
         if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_Lavender);
+            setTheme(R.style.AppTheme_NoActionBar_Lavender);
         if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_Grape);
+            setTheme(R.style.AppTheme_NoActionBar_Grape);
         if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_Flamingo);
+            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
         if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_Graphite);
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);
 
         setContentView(R.layout.activity_select_puzzle);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Select Puzzle");
-        //getSupportActionBar().setElevation(0);
+        getSupportActionBar().setElevation(8);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.elm.mycheck.login;
 
 import android.*;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -69,6 +70,7 @@ public class NewReminder extends AppCompatActivity {
     private TextView tsunday,tmonday,ttuesday,twednesday,tthursday,tfriday,tsaturday;
     private boolean ssunday=false,smonday=false,stuesday=false,swednesday=false,sthursday=false,sfriday=false,ssaturday=false;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,7 +193,7 @@ public class NewReminder extends AppCompatActivity {
 
         new Tooltip.Builder(spinner)
                 .setText("Click here to modify Alarm Type")
-                .setBackgroundColor(getResources().getColor(R.color.colorAccentTomato))
+                .setBackgroundColor(getResources().getColor(android.R.color.black))
                 .setTextColor(getResources().getColor(R.color.colorWhite))
                 .setCancelable(true)
                 .show();
