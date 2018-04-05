@@ -1010,7 +1010,7 @@ public class NotificationBase extends AppCompatActivity {
     private ImageView image_sequence;
     private int imageCount = 0;
     private int ansCount = 0;
-    private int[] active = new int[4];
+    private int[] active = new int[6];
 
     private void successSequence() {
         stopService(new Intent(NotificationBase.this, PlaySound.class));
@@ -1037,6 +1037,7 @@ public class NotificationBase extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setCardAnimation(s_1);
+                Log.e("AnsCount", String.valueOf(ansCount));
                 if (active[ansCount] == 1) {
                     //success
                     ansCount++;
@@ -1044,7 +1045,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == puzzle_level)
+                    if (ansCount == (puzzle_level-1))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1071,7 +1072,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == puzzle_level)
+                    if (ansCount == (puzzle_level-1))
                         successSequence();
                     //success
                 } else {
@@ -1100,7 +1101,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == puzzle_level)
+                    if (ansCount == (puzzle_level-1))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1128,7 +1129,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == puzzle_level)
+                    if (ansCount == (puzzle_level-1))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1145,7 +1146,7 @@ public class NotificationBase extends AppCompatActivity {
             }
         });
 
-        //shiffle items
+        //shuffle items
         shuffleImage();
     }
 
@@ -1154,7 +1155,6 @@ public class NotificationBase extends AppCompatActivity {
         random = (r.nextInt(4 - 1 + 1) + 1);
 
         imageCount++;
-        Log.e("iczz", String.valueOf(imageCount));
 
         if (sequence_counter != null)
             sequence_counter.cancel();
@@ -1176,7 +1176,9 @@ public class NotificationBase extends AppCompatActivity {
         if (imageCount == 2) active[1] = random;
         if (imageCount == 3) active[2] = random;
         if (imageCount == 4) active[3] = random;
-        Log.e("random", String.valueOf(random));
+        if (imageCount == 5) active[4] = random;
+        if (imageCount == 6) active[5] = random;
+        Log.e("random", String.valueOf(active));
 
         if (random == 1) {
             image_sequence.setImageResource(R.drawable.one);
