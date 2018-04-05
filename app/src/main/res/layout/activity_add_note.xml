@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:id="@+id/action_menu"
+        android:layout_margin="5dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -19,8 +20,9 @@
 
             <ImageView
                 android:id="@+id/close_page"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:clickable="true"
                 app:srcCompat="@drawable/cancel"
                 android:textSize="20dp" />
@@ -91,6 +93,7 @@
 
         <LinearLayout android:orientation="horizontal"
             android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:background="?attr/colorPrimary"
             android:layout_height="wrap_content">
 
