@@ -27,13 +27,13 @@
         completions."
     </string>
     <string name="active_touch">
-        With this, You wll be presented with 9 boxes and one of them will be active at any given time. You Have to touch the Active box, repeating the sequence for 30 active boxes. An Active box has a life span of 5 seconds or the whole puzzle resets and you will be forced to RESTART
+        With this Puzzle, You wll be presented with a set number of boxes (depending on level selected) and one of them will be active at any given time. Your task is to touch the Active box, repeating the sequence for the number of active boxes. An Active box has a life span of 5 seconds or the whole puzzle resets and you will be forced to RESTART
     </string>
     <string name="retype">
-        With this, You wll be presented with a typed text. You have to retype the CASE-SENSITIVE text EXACTLY, keeping in mind special characters, for the Alarm to stop.
+        With this Puzzle, You wll be presented with a typed text. Your Task is to retype the CASE-SENSITIVE text EXACTLY, keeping in mind special characters, for the Alarm to stop.
     </string>
     <string name="sequence">
-        With this, You wll be shown Four Shapes in random order. You will have to Select the same Shapes in the Order you were presented them with, for the Alarm to Stop.
+        With this puzzle, You will be shown a set number of Shapes (according to the level you choose) in random order. Your task is to carefully memorize the sequence in which the shapes are displayed, and then repeating the same sequence. A matched repeat will stop the Alarm, otherwise the process repeats itself.
     </string>
 
     <string name="app_slogan">Organize your Tomorrow, Today!</string>

@@ -119,9 +119,21 @@ public class ReminderAlarms extends BroadcastReceiver {
             Reminder reminder = Reminder.findById(Reminder.class, alarmReminder.getReminderid());
             if (reminder != null){
                 if (reminder.getStatus()) {
-                    alarmReminder.setActive(true);
-                    alarmReminder.save();
-                    reminderAlarms(nTitle, context);
+                    if (reminder.getRepeat() != null){
+                        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+                        Calendar calendar = Calendar.getInstance();
+                        String weekDay = dayFormat.format(calendar.getTime());
+                        if (reminder.getRepeat().contains(weekDay)) {
+                            alarmReminder.setActive(true);
+                            alarmReminder.save();
+                            reminderAlarms(nTitle, context);
+                        }
+                    }else {
+                        alarmReminder.setActive(true);
+                        alarmReminder.save();
+                        reminderAlarms(nTitle, context);
+                    }
+
                 }
             }
         } else if (nId == Constants.todoReminder){
@@ -150,7 +162,7 @@ public class ReminderAlarms extends BroadcastReceiver {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.mipmap.logo)
+        builder.setSmallIcon(R.drawable.my_checkv2)
                 .setContentTitle("myCheck: New Reminder(s)!")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)

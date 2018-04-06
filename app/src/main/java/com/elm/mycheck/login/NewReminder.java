@@ -2,6 +2,7 @@ package com.elm.mycheck.login;
 
 import android.*;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -56,14 +58,19 @@ public class NewReminder extends AppCompatActivity {
     private EarlyReceiver earlyReceiver;
     private TitleReceiver titleReceiver;
     private PuzzleReceiver puzzleReceiver;
+    private PokeReceiver pokeReceiver;
+    private AlternateReceiver alternateReceiver;
     private Boolean repeating =false;
     private String puzzle = "None";
+    private String puzzle_level = "[#]";
+    private String poke = "No", alternate = "No";
     private View view;
     private AdView adView;
     private Spinner spinner;
     private TextView tsunday,tmonday,ttuesday,twednesday,tthursday,tfriday,tsaturday;
     private boolean ssunday=false,smonday=false,stuesday=false,swednesday=false,sthursday=false,sfriday=false,ssaturday=false;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,30 +81,32 @@ public class NewReminder extends AppCompatActivity {
         if (theme == "tomato")
             setTheme(R.style.AppTheme_NoActionBar);
         if (theme == "tangarine")
-            setTheme(R.style.AppTheme_Tangarine);
+            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
         if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_Banana);
+            setTheme(R.style.AppTheme_NoActionBar_Banana);
         if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_Basil);
+            setTheme(R.style.AppTheme_NoActionBar_Basil);
         if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_Sage);
+            setTheme(R.style.AppTheme_NoActionBar_Sage);
         if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_Peacock);
+            setTheme(R.style.AppTheme_NoActionBar_Peacock);
         if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_BlueBerry);
+            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
         if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_Lavender);
+            setTheme(R.style.AppTheme_NoActionBar_Lavender);
         if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_Grape);
+            setTheme(R.style.AppTheme_NoActionBar_Grape);
         if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_Flamingo);
+            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
         if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_Graphite);
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);
 
 
         setContentView(R.layout.activity_new_reminder);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //  toolbar.setElevation(0);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
         setTitle("New Reminder");
         //
         adView = (AdView) findViewById(R.id.ReminderadView);
@@ -154,6 +163,15 @@ public class NewReminder extends AppCompatActivity {
         puzzleReceiver = new PuzzleReceiver();
         registerReceiver(puzzleReceiver, filter1);
 
+        IntentFilter filter2 = new IntentFilter(PokeReceiver.ACTIION_REP);
+        pokeReceiver = new PokeReceiver();
+        registerReceiver(pokeReceiver, filter2);
+
+        IntentFilter filter3 = new IntentFilter(AlternateReceiver.ACTIION_REP);
+        alternateReceiver = new AlternateReceiver();
+        registerReceiver(alternateReceiver, filter3);
+
+
         String format = "MMM dd yyyy HH:mm";
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         String format2 = "HH:mm";
@@ -175,7 +193,7 @@ public class NewReminder extends AppCompatActivity {
 
         new Tooltip.Builder(spinner)
                 .setText("Click here to modify Alarm Type")
-                .setBackgroundColor(getResources().getColor(R.color.colorAccentTomato))
+                .setBackgroundColor(getResources().getColor(android.R.color.black))
                 .setTextColor(getResources().getColor(R.color.colorWhite))
                 .setCancelable(true)
                 .show();
@@ -252,6 +270,10 @@ public class NewReminder extends AppCompatActivity {
             unregisterReceiver(titleReceiver);
         if (puzzleReceiver != null)
             unregisterReceiver(puzzleReceiver);
+        if (pokeReceiver != null)
+            unregisterReceiver(pokeReceiver);
+        if (alternateReceiver != null)
+            unregisterReceiver(alternateReceiver);
         super.onDestroy();
     }
 
@@ -358,6 +380,10 @@ public class NewReminder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent intent2 = new Intent(this, Navigation.class);
+                intent2.putExtra("page", Constants.REMINDER_TAB);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
                 this.finish();
                 return true;
             case R.id.set_reminder_setting:
@@ -382,6 +408,25 @@ public class NewReminder extends AppCompatActivity {
         }
     }
 
+    public class PokeReceiver extends BroadcastReceiver{
+        public static final String ACTIION_REP = "receive_poke";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            poke = bundle.getString("poke");
+        }
+    }
+    public class AlternateReceiver extends BroadcastReceiver{
+        public static final String ACTIION_REP = "receive_alternate";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            alternate = bundle.getString("alternate");
+        }
+    }
+
     public class PuzzleReceiver extends BroadcastReceiver {
         public static final String ACTIION_REP = "add_puzzle";
 
@@ -389,8 +434,10 @@ public class NewReminder extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
+            String level = bundle.getString("level");
             puzzle = title;
-            puzzle_name_activity.setText(puzzle);
+            puzzle_level = level;
+            puzzle_name_activity.setText(puzzle+"["+level+"]");
             //onComplete(title);
         }
     }
@@ -517,6 +564,10 @@ public class NewReminder extends AppCompatActivity {
                 false,
                 repeatDates(),
                 "",
+                puzzle,
+                puzzle_level,
+                poke,
+                alternate,
                 0,
                 dateFormat.format(today),
                 dateFormat.format(today));
@@ -553,5 +604,6 @@ public class NewReminder extends AppCompatActivity {
         intent2.putExtra("page", Constants.REMINDER_TAB);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);
+        finish();
     }
 }

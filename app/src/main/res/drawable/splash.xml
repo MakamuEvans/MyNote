@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/flat_alarm"/>
+            android:src="@drawable/my_checkv2"/>
     </item>
 
 </layer-list>

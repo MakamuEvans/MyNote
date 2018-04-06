@@ -71,6 +71,7 @@ public class NotificationBase extends AppCompatActivity {
     Boolean vibrate, demo;
     boolean snooze = false;
     int snooze_count;
+    private int puzzle_level = 0, count_fail = 0;
     private NotificationManager mNotificationManager;
 
     MediaPlayer mMediaPlayer;
@@ -160,6 +161,7 @@ public class NotificationBase extends AppCompatActivity {
             }
 
             if (bundle.containsKey("demoPuzzle")) {
+                puzzle_level = 20;
                 boxPuzzle();
                 demo_type = "puzzle";
                 demo = true;
@@ -174,6 +176,7 @@ public class NotificationBase extends AppCompatActivity {
                 demo = true;
             }
             if (bundle.containsKey("demoSequence")) {
+                puzzle_level = 4;
                 sequencePuzzle();
                 demo_type = "sequence";
                 demo = true;
@@ -236,6 +239,7 @@ public class NotificationBase extends AppCompatActivity {
                 if (!a_reminder.getPuzzle().equals("None")) {
                     isPuzzle = true;
                     puzzleType = a_reminder.getPuzzle();
+                    puzzle_level = decodePuzzle(a_reminder.getPuzzletype(),a_reminder.getPuzzlelevel());
                 }
             }
         } else {
@@ -277,11 +281,12 @@ public class NotificationBase extends AppCompatActivity {
                 mNotificationManager.cancel(500);
                 if (isPuzzle) {
                     close_button.setVisibility(View.GONE);
-                    if (puzzleType.equals("puzzle"))
+                    Log.e("pt", puzzleType);
+                    if (puzzleType.equals("Active touch"))
                         boxPuzzle();
-                    if (puzzleType.equals("retype"))
+                    if (puzzleType.equals("Retype"))
                         retypePuzzle();
-                    if (puzzleType.equals("sequence"))
+                    if (puzzleType.equals("Sequence"))
                         sequencePuzzle();
                 } else {
                     cancelCountDown();
@@ -384,6 +389,33 @@ public class NotificationBase extends AppCompatActivity {
         stopService(new Intent(NotificationBase.this, SoundService.class));
     }
 
+    private int decodePuzzle(String type, String level){
+        if (type.equalsIgnoreCase("Active touch")){
+            if (level.equalsIgnoreCase("1")){
+                return 20;
+            }else if (level.equalsIgnoreCase("2")){
+                return 30;
+            }else {
+                return 50;
+            }
+        }else if (type.equalsIgnoreCase("Retype")){
+            if (level.equalsIgnoreCase("1")){
+                return 20;
+            }else if (level.equalsIgnoreCase("2")){
+                return 30;
+            }else {
+                return 50;
+            }
+        }else {
+            if (level.equalsIgnoreCase("1")){
+                return 3;
+            }else if (level.equalsIgnoreCase("2")){
+                return 4;
+            }else {
+                return 6;
+            }
+        }
+    }
 
     private void init() {
         //initialize layout
@@ -473,7 +505,7 @@ public class NotificationBase extends AppCompatActivity {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.mipmap.logo)
+        builder.setSmallIcon(R.drawable.my_checkv2)
                 .setContentTitle("Alarm")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)
@@ -559,7 +591,6 @@ public class NotificationBase extends AppCompatActivity {
         }.start();
     }
 
-
     private void cancelCountDown() {
         Log.e(TAG, "cancelCountDown Called");
         if (interval != null) {
@@ -609,7 +640,6 @@ public class NotificationBase extends AppCompatActivity {
         }
     }
 
-
     private void boxPuzzle() {
         //initialize
         info_layout.setVisibility(View.GONE);
@@ -639,13 +669,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -662,13 +693,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+puzzle_level;
                 box_counter_t.setText(count_string);
 
             }
@@ -686,13 +718,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -709,13 +742,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -732,13 +766,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of " +puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -755,13 +790,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -778,13 +814,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -801,13 +838,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -824,13 +862,14 @@ public class NotificationBase extends AppCompatActivity {
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 } else {
                     box_counter = 0;
+                    count_fail++;
                     box_message.setText("Failed");
                     box_message.setTextColor(getResources().getColor(R.color.red));
                     box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                     //warn
                 }
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+ puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -844,7 +883,7 @@ public class NotificationBase extends AppCompatActivity {
         if (box_count_down != null)
             box_count_down.cancel();
 
-        if (box_counter == 20) {
+        if (box_counter == puzzle_level) {
             quit = "no";
             stopAlarm();
             if (!demo)
@@ -919,7 +958,7 @@ public class NotificationBase extends AppCompatActivity {
                 box_message.setTextColor(getResources().getColor(R.color.red));
                 box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
 
-                count_string = box_counter + " of 20";
+                count_string = box_counter + " of "+ puzzle_level;
                 box_counter_t.setText(count_string);
             }
         }.start();
@@ -969,7 +1008,7 @@ public class NotificationBase extends AppCompatActivity {
     private ImageView image_sequence;
     private int imageCount = 0;
     private int ansCount = 0;
-    private int[] active = new int[4];
+    private int[] active = new int[6];
 
     private void successSequence() {
         stopService(new Intent(NotificationBase.this, PlaySound.class));
@@ -989,21 +1028,22 @@ public class NotificationBase extends AppCompatActivity {
         sequence_ans.setVisibility(View.GONE);
         image_sequence = (ImageView) findViewById(R.id.image_sequence);
 
-        String ans_message = ansCount + " of 4";
+        String ans_message = ansCount + " of " + puzzle_level;
         sequence_counterr.setText(ans_message);
 
         s_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setCardAnimation(s_1);
+                Log.e("AnsCount", String.valueOf(ansCount));
                 if (active[ansCount] == 1) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of 4";
+                    String ans_message = ansCount + " of "+ puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == 4)
+                    if (ansCount == (puzzle_level))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1026,11 +1066,11 @@ public class NotificationBase extends AppCompatActivity {
                 setCardAnimation(s_2);
                 if (active[ansCount] == 2) {
                     ansCount++;
-                    String ans_message = ansCount + " of 4";
+                    String ans_message = ansCount + " of "+ puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == 4)
+                    if (ansCount == (puzzle_level))
                         successSequence();
                     //success
                 } else {
@@ -1055,11 +1095,11 @@ public class NotificationBase extends AppCompatActivity {
                 if (active[ansCount] == 3) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of 4";
+                    String ans_message = ansCount + " of "+ puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == 4)
+                    if (ansCount == (puzzle_level))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1083,11 +1123,11 @@ public class NotificationBase extends AppCompatActivity {
                 if (active[ansCount] == 4) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of 4";
+                    String ans_message = ansCount + " of "+ puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == 4)
+                    if (ansCount == (puzzle_level))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1104,7 +1144,7 @@ public class NotificationBase extends AppCompatActivity {
             }
         });
 
-        //shiffle items
+        //shuffle items
         shuffleImage();
     }
 
@@ -1113,12 +1153,11 @@ public class NotificationBase extends AppCompatActivity {
         random = (r.nextInt(4 - 1 + 1) + 1);
 
         imageCount++;
-        Log.e("iczz", String.valueOf(imageCount));
 
         if (sequence_counter != null)
             sequence_counter.cancel();
 
-        if (imageCount > 4) {
+        if (imageCount > puzzle_level) {
             sequence_quiz.setVisibility(View.GONE);
             sequence_ans.setVisibility(View.VISIBLE);
             s_c.setVisibility(View.GONE);
@@ -1127,7 +1166,7 @@ public class NotificationBase extends AppCompatActivity {
             s_c.setVisibility(View.VISIBLE);
         }
 
-        s_c.setText(imageCount + " of 4");
+        s_c.setText(imageCount + " of "+ puzzle_level);
 
 
         //active.
@@ -1135,7 +1174,9 @@ public class NotificationBase extends AppCompatActivity {
         if (imageCount == 2) active[1] = random;
         if (imageCount == 3) active[2] = random;
         if (imageCount == 4) active[3] = random;
-        Log.e("random", String.valueOf(random));
+        if (imageCount == 5) active[4] = random;
+        if (imageCount == 6) active[5] = random;
+        Log.e("random", String.valueOf(active));
 
         if (random == 1) {
             image_sequence.setImageResource(R.drawable.one);

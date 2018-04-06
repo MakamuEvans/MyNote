@@ -16,6 +16,10 @@ public class Reminder extends SugarRecord {
     private Boolean active;
     private String repeat;
     private String todo;
+    private String puzzletype;
+    private String puzzlelevel;
+    private String poke;
+    private String alternatepuzzle;
     private Integer identifier;
     private String created_at;
     private String updated_at;
@@ -23,7 +27,7 @@ public class Reminder extends SugarRecord {
     public Reminder() {
     }
 
-    public Reminder(String title, String time, Boolean prior, String description, String puzzle, Boolean status, Boolean active, String repeat, String todo, Integer identifier, String created_at, String updated_at) {
+    public Reminder(String title, String time, Boolean prior, String description, String puzzle, Boolean status, Boolean active, String repeat, String todo, String puzzletype, String puzzlelevel, String poke, String alternatepuzzle, Integer identifier, String created_at, String updated_at) {
         this.title = title;
         this.time = time;
         this.prior = prior;
@@ -33,6 +37,10 @@ public class Reminder extends SugarRecord {
         this.active = active;
         this.repeat = repeat;
         this.todo = todo;
+        this.puzzletype = puzzletype;
+        this.puzzlelevel = puzzlelevel;
+        this.poke = poke;
+        this.alternatepuzzle = alternatepuzzle;
         this.identifier = identifier;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -110,6 +118,38 @@ public class Reminder extends SugarRecord {
         this.todo = todo;
     }
 
+    public String getPuzzletype() {
+        return puzzletype;
+    }
+
+    public void setPuzzletype(String puzzletype) {
+        this.puzzletype = puzzletype;
+    }
+
+    public String getPuzzlelevel() {
+        return puzzlelevel;
+    }
+
+    public void setPuzzlelevel(String puzzlelevel) {
+        this.puzzlelevel = puzzlelevel;
+    }
+
+    public String getPoke() {
+        return poke;
+    }
+
+    public void setPoke(String poke) {
+        this.poke = poke;
+    }
+
+    public String getAlternatepuzzle() {
+        return alternatepuzzle;
+    }
+
+    public void setAlternatepuzzle(String alternatepuzzle) {
+        this.alternatepuzzle = alternatepuzzle;
+    }
+
     public Integer getIdentifier() {
         return identifier;
     }
@@ -146,6 +186,10 @@ public class Reminder extends SugarRecord {
                 ", active=" + active +
                 ", repeat='" + repeat + '\'' +
                 ", todo='" + todo + '\'' +
+                ", puzzletype='" + puzzletype + '\'' +
+                ", puzzlelevel='" + puzzlelevel + '\'' +
+                ", poke='" + poke + '\'' +
+                ", alternatepuzzle='" + alternatepuzzle + '\'' +
                 ", identifier=" + identifier +
                 ", created_at='" + created_at + '\'' +
                 ", updated_at='" + updated_at + '\'' +

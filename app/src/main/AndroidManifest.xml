@@ -14,7 +14,7 @@
     <application
         android:name=".model.Sugar"
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@drawable/my_checkv2"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
@@ -39,7 +39,7 @@
             android:value="myCheckv1.db" />
         <meta-data
             android:name="VERSION"
-            android:value="2" />
+            android:value="3" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -99,7 +99,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NewReminder"
-            android:windowSoftInputMode="adjustPan" />
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />

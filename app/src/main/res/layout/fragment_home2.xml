@@ -9,8 +9,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_empty_white_box"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Nothing to show"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/tertiary_text_dark"
+                android:text="Click on NEW to add an Item."/>
+
+        </LinearLayout>
+<!--
         <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -19,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:padding="10dp"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView
@@ -57,7 +89,10 @@
                     android:layout_marginTop="7dp"
                     android:background="@color/colorPrimary"/>
             </LinearLayout>
+
+
         </com.emilsjolander.components.StickyScrollViewItems.StickyScrollView>
+-->
     </LinearLayout>
 
 

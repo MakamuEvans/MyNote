@@ -336,6 +336,11 @@ public class Navigation extends AppCompatActivity
         //lazy to rename these things.....phew!!!!!!!
 
        if (id == R.id.nav_share) {
+           Intent share = new Intent(Intent.ACTION_SEND);
+           share.setType("text/plain");
+           share.putExtra(Intent.EXTRA_SUBJECT, "I use myCheck App");
+           share.putExtra(Intent.EXTRA_TEXT, "I use myCheck App to save Notes and have Alarms with Puzzles! Download it now --> https://goo.gl/LNufqP");
+           startActivity(Intent.createChooser(share, "Share via"));
 
         } else if (id == R.id.nav_send) {
             Intent intent = new Intent(Navigation.this, SettingsActivity.class);
@@ -349,7 +354,10 @@ public class Navigation extends AppCompatActivity
         } else if (id == R.id.nav_categories){
             Intent intent = new Intent(Navigation.this, ManageCategories.class);
             startActivity(intent);
-        }
+        }else if (id == R.id.nav_rate){
+           Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=com.elm.mycheck.login"));
+           startActivity(intent);
+       }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
