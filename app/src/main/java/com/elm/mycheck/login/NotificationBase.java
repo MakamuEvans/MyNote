@@ -505,7 +505,7 @@ public class NotificationBase extends AppCompatActivity {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.mipmap.logo)
+        builder.setSmallIcon(R.drawable.my_checkv2)
                 .setContentTitle("Alarm")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)
@@ -591,7 +591,6 @@ public class NotificationBase extends AppCompatActivity {
         }.start();
     }
 
-
     private void cancelCountDown() {
         Log.e(TAG, "cancelCountDown Called");
         if (interval != null) {
@@ -640,7 +639,6 @@ public class NotificationBase extends AppCompatActivity {
                 return super.dispatchKeyEvent(event);
         }
     }
-
 
     private void boxPuzzle() {
         //initialize
@@ -1045,7 +1043,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == (puzzle_level-1))
+                    if (ansCount == (puzzle_level))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1072,7 +1070,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == (puzzle_level-1))
+                    if (ansCount == (puzzle_level))
                         successSequence();
                     //success
                 } else {
@@ -1101,7 +1099,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == (puzzle_level-1))
+                    if (ansCount == (puzzle_level))
                         successSequence();
                 } else {
                     imageCount = 0;
@@ -1129,7 +1127,7 @@ public class NotificationBase extends AppCompatActivity {
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
-                    if (ansCount == (puzzle_level-1))
+                    if (ansCount == (puzzle_level))
                         successSequence();
                 } else {
                     imageCount = 0;
