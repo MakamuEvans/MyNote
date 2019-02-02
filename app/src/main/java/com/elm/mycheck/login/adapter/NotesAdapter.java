@@ -21,10 +21,16 @@ import com.elm.mycheck.login.FullNote;
 import com.elm.mycheck.login.R;
 import com.elm.mycheck.login.model.Category;
 import com.elm.mycheck.login.model.Note;
+import com.github.irshulx.Editor;
+import com.github.irshulx.models.EditorContent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.valdesekamdem.library.mdtoast.MDToast;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.List;
 
@@ -79,6 +85,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //context = holder
+       // holder.itemView.getContext()
         int viewType = getItemViewType(position);
         if (viewType == EMPTY_VIEW || viewType == AD_VIEW){
 
@@ -95,11 +102,19 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder1.category.setText(category.getTitle());
             }
             String htmlText = notes.getNote();
+            //Editor editor = new Editor(context);
+
+
             if (htmlText != null){
+                String content = holder1.editor.getContentAsHTML(htmlText);
+                Log.e("aii", content);
+                Document document = Jsoup.parse(content);
+                Element p = document.select("p").first();
+                String text = p.text();
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    holder1.note.setText(Html.fromHtml(htmlText,Html.FROM_HTML_MODE_LEGACY));
+                    holder1.note.setText(text);
                 } else {
-                    holder1.note.setText(Html.fromHtml(htmlText));
+                    holder1.note.setText(text);
                 }
             }
             if (notes.getUploadflag() || notes.getFavaouriteflag() || notes.getUpdateflag()){
@@ -153,6 +168,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public TextView title, note, dated,category;
         public ImageView imageView,fav, del;
         public LinearLayout category_layer;
+        public Editor editor;
 
         public myViewHolder(View itemView) {
             super(itemView);
@@ -164,6 +180,7 @@ public class NotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             fav = (ImageView) itemView.findViewById(R.id.card_fav);
             del = (ImageView) itemView.findViewById(R.id.card_del);
             category_layer = (LinearLayout) itemView.findViewById(R.id.category_layer);
+            editor = itemView.findViewById(R.id.editor);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

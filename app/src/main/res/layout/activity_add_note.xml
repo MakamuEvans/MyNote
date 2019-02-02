@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/greyish"
     android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:id="@+id/action_menu"
-        android:layout_margin="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -86,7 +90,31 @@
 
         </LinearLayout>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_layout"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/action_menu"
+        android:orientation="vertical">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp">
+            <EditText
+                android:id="@+id/note_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:hint="Title"
+                android:inputType="textCapSentences"
+                android:textIsSelectable="true"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
@@ -194,40 +222,52 @@
 
         </HorizontalScrollView>
     </LinearLayout>
+-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/action_menu"
-        android:layout_marginBottom="50dp"
-        android:padding="10dp">
+        android:layout_below="@+id/title_layout">
 
-
-        <RelativeLayout
+        <HorizontalScrollView android:id="@+id/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#e6e6e6"
+            android:layout_alignParentBottom="true"
+            android:scrollbars="none">
 
-            <EditText
-                android:id="@+id/note_title"
+            <include layout="@layout/editor_toolbar_linearlayout_horizontal" />
+
+
+        </HorizontalScrollView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="serif"
-                android:hint="Title"
-                android:inputType="textCapSentences"
-                android:textIsSelectable="true"
-                android:textStyle="bold" />
-
-
-            <jp.wasabeef.richeditor.RichEditor
-                android:id="@+id/notes_editor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/note_title">
-
-            </jp.wasabeef.richeditor.RichEditor>
-
-
-        </RelativeLayout>
+                app:cardCornerRadius="10dp">
+                <com.github.irshulx.Editor
+                    android:layout_width="match_parent"
+                    android:id="@+id/editor"
+                    app:render_type="Editor"
+                    app:placeholder="Start writing here..."
+                    android:layout_marginTop="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="100dp">
+                </com.github.irshulx.Editor>
+            </android.support.v7.widget.CardView>
+        </ScrollView>
 
     </RelativeLayout>
 

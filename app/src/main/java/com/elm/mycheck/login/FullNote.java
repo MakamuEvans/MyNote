@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import com.elm.mycheck.login.model.Category;
 import com.elm.mycheck.login.model.Note;
+import com.github.irshulx.Editor;
+import com.github.irshulx.models.EditorContent;
 import com.google.gson.Gson;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
@@ -28,7 +30,8 @@ import layout.NotesFragment;
 public class FullNote extends AppCompatActivity {
     private Long note_id = null;
     private TextView updated_on, full_category;
-    private RichEditor richEditor;
+   // private RichEditor richEditor;
+    private Editor editor;
     Note note1;
     int fontSize = 15;
     private ImageView in,out,fav,edit,delete;
@@ -82,11 +85,15 @@ public class FullNote extends AppCompatActivity {
         } else {
             setTitle(note1.getTitle());
         }
-        richEditor = (RichEditor) findViewById(R.id.notes_editor);
+        /*richEditor = (RichEditor) findViewById(R.id.notes_editor);
         // richEditor.setEditorBackgroundColor(Color.RED);
         richEditor.setInputEnabled(false);
         richEditor.setHtml(note1.getNote());
-        richEditor.setEditorFontSize(fontSize);
+        richEditor.setEditorFontSize(fontSize);*/
+
+        editor = findViewById(R.id.editor);
+        EditorContent editorContent = editor.getContentDeserialized(note1.getNote());
+        editor.render(editorContent);
 
         updated_on = (TextView) findViewById(R.id.updated_on);
         full_category = (TextView) findViewById(R.id.full_category);
@@ -117,7 +124,8 @@ public class FullNote extends AppCompatActivity {
             public void onClick(View view) {
                 if (fontSize >= 10)
                     fontSize--;
-                richEditor.setEditorFontSize(fontSize);
+                editor.setH1TextSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
             }
         });
         out.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +133,8 @@ public class FullNote extends AppCompatActivity {
             public void onClick(View view) {
                 if (fontSize <= 25)
                     fontSize++;
-                richEditor.setEditorFontSize(fontSize);
+                editor.setH1TextSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
             }
         });
         fav.setOnClickListener(new View.OnClickListener() {
@@ -218,10 +227,10 @@ public class FullNote extends AppCompatActivity {
         } else {
             setTitle(note1.getTitle());
         }
-        RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
+       /* RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setInputEnabled(false);
-        richEditor.setHtml(note1.getNote());
+        richEditor.setHtml(note1.getNote());*/
     }
 
     @Override
@@ -308,12 +317,12 @@ public class FullNote extends AppCompatActivity {
             case R.id.action_out:
                 if (fontSize <= 25)
                     fontSize++;
-                richEditor.setEditorFontSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
                 return true;
             case R.id.action_in:
                 if (fontSize >= 10)
                     fontSize--;
-                richEditor.setEditorFontSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

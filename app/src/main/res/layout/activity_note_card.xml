@@ -62,6 +62,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
                 android:orientation="vertical">
+                <com.github.irshulx.Editor
+                    android:layout_width="match_parent"
+                    android:id="@+id/editor"
+                    app:render_type="Editor"
+                    app:placeholder="Start writing here..."
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                </com.github.irshulx.Editor>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
