@@ -6,12 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".Homev2">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90px"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            android:background="@drawable/gradient">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight=".2"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_apps_512"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".8"
+                android:layout_height="match_parent">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp" >
+
+        </android.support.v4.view.ViewPager>
+
+    </LinearLayout>
     <eu.long1.spacetablayout.SpaceTabLayout
         android:id="@+id/spaceTabLayout"
         android:layout_width="wrap_content"
@@ -20,10 +50,11 @@
         app:icon_one="@mipmap/ic_action_home_white"
         app:icon_two="@mipmap/ic_action_assignment_white"
         app:icon_three="@mipmap/ic_action_alarm_white"
-        app:tab_color="@color/black_overlay"
-        app:button_color="@color/blush"
+        app:tab_color="@color/colorPrimaryPeacock"
+        app:button_color="@color/colorPrimaryTangarine"
         app:icon_four="@mipmap/ic_action_todo_white"
         app:number_of_tabs="four"
         app:starting_position="one" />
+
 
 </android.support.design.widget.CoordinatorLayout>
