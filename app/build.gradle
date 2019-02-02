@@ -52,6 +52,8 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'org.xdty.preference:color-picker:0.0.5'
     compile 'com.github.vihtarb:tooltip:0.1.9'
+
+
     testCompile 'junit:junit:4.12'
 }
 
