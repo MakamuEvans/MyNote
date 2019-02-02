@@ -436,7 +436,7 @@ public class AddNote extends AppCompatActivity {
 
         //close activity and open relevant one.
         int page = 1;
-        Intent intent2 = new Intent(this, Navigation.class);
+        Intent intent2 = new Intent(this, Homev2.class);
         intent2.putExtra("page", page);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);

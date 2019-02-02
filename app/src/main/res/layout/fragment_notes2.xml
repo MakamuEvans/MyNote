@@ -24,7 +24,8 @@
             app:adSize="BANNER"
             app:adUnitId="@string/banner_notesFooter"/>
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_marginBottom="50dp"
             android:layout_height="wrap_content">
@@ -53,15 +54,22 @@
 
 
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/notes_recycler"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/notes_header">
+                app:cardCornerRadius="10dp"
+                android:layout_margin="10dp"
+                >
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/notes_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/notes_header">
 
-            </android.support.v7.widget.RecyclerView>
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.CardView>
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
     </RelativeLayout>
