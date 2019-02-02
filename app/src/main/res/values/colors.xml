@@ -56,4 +56,5 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="read_theme">#FFF1E5</color>
+    <color name="blush">#C1B2B3</color>
 </resources>
