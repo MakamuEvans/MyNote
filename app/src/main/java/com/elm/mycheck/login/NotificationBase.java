@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.CountDownTimer;
@@ -31,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -86,6 +88,8 @@ public class NotificationBase extends AppCompatActivity {
     private Boolean isPuzzle = false;
     private String puzzleType = null;
 
+    private FrameLayout layout;
+    private AnimationDrawable animationDrawable;
 
     @Override
     protected void onStart() {
@@ -145,6 +149,11 @@ public class NotificationBase extends AppCompatActivity {
         editor.commit();
 
         setContentView(R.layout.activity_notification_base);
+
+        layout = findViewById(R.id.base_notif);
+        animationDrawable = (AnimationDrawable) layout.getBackground();
+        animationDrawable.setEnterFadeDuration(4000);
+        animationDrawable.setExitFadeDuration(2000);
 
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -470,7 +479,8 @@ public class NotificationBase extends AppCompatActivity {
         }
         if (notification)
             finish();
-
+        if (animationDrawable != null && animationDrawable.isRunning())
+            animationDrawable.stop();
         super.onPause();
     }
 
@@ -491,6 +501,9 @@ public class NotificationBase extends AppCompatActivity {
             if (puzzleType.equals("sequence"))
                 sequencePuzzle();*/
         }
+
+        if (animationDrawable != null && !animationDrawable.isRunning())
+            animationDrawable.run();
         super.onResume();
          //h
     }
@@ -541,7 +554,7 @@ public class NotificationBase extends AppCompatActivity {
         startAlarm();
 
         wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
-                PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm"
+                PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm.myTag"
         );
 
         if (alartTime == 30) {
