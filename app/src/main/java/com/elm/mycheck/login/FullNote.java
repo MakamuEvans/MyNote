@@ -8,11 +8,14 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +38,11 @@ public class FullNote extends AppCompatActivity {
     Note note1;
     int fontSize = 15;
     private ImageView in,out,fav,edit,delete;
+
+    //pinch
+    private ScaleGestureDetector scaleGestureDetector;
+    private float scaleFactor = 1.0f;
+    private CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +84,12 @@ public class FullNote extends AppCompatActivity {
         Intent intent = getIntent();
         note_id = intent.getExtras().getLong("noteId");
         note1 = Note.findById(Note.class, note_id);
+
+        //////scaling
+        cardView = findViewById(R.id.card_full);
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+
+
 
         //init
         init();
@@ -214,6 +228,23 @@ public class FullNote extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        scaleGestureDetector.onTouchEvent(event);
+        return  true;
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener{
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor *= scaleGestureDetector.getScaleFactor();
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f));
+            cardView.setScaleX(scaleFactor);
+            cardView.setScaleY(scaleFactor);
+            return  true;
+        }
     }
 
     @Override
