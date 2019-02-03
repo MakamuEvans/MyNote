@@ -109,7 +109,7 @@ public class ToDo2 extends Fragment {
 
         IntentFilter intentFilter = new IntentFilter(TaskReceiver.ACTIION_REP);
         taskReceiver = new TaskReceiver();
-        // getActivity().registerReceiver(taskReceiver, intentFilter);
+        getActivity().registerReceiver(taskReceiver, intentFilter);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler);
         milestones = Milestones.listAll(Milestones.class);
@@ -210,7 +210,7 @@ public class ToDo2 extends Fragment {
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = getActivity().getTheme();
-        theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
         @ColorInt int color = typedValue.data;
 
         //noinspection SimplifiableIfStatement
@@ -297,7 +297,7 @@ public class ToDo2 extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("Haa", "TaskReceiver Called");
+            Log.e("todo", "Milestone received");
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
             String noteID = bundle.getString("noteId");

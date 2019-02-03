@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.elm.mycheck.login.model.AlarmReminder;
 import com.elm.mycheck.login.model.Reminder;
@@ -43,6 +44,7 @@ public class AlarmCrud extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("alarm_service", "service Called");
         Bundle bundle = intent.getExtras();
         reminderId = bundle.getLong("alarmId");
         create = bundle.getBoolean("create");
@@ -224,7 +226,10 @@ public class AlarmCrud extends Service {
             }
         }else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                if (alarmManager != null) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                }else
+                    Log.e("repeating", "WTF");
             }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             }else {
