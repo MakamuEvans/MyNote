@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         app:layout_collapseMode="pin"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -70,11 +70,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="?attr/colorPrimary"
+                            android:textColor="@android:color/black"
                             android:textSize="20dp"
                             android:layout_margin="5dp"
                             android:textStyle="bold"
                             android:text="Active Touch"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorPrimaryDark"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -194,11 +199,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="?attr/colorPrimary"
+                            android:textColor="@android:color/black"
                             android:textSize="20dp"
                             android:layout_margin="5dp"
                             android:textStyle="bold"
                             android:text="Retype Text"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorPrimaryDark"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -316,11 +326,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="?attr/colorPrimary"
+                            android:textColor="@android:color/black"
                             android:textSize="20dp"
                             android:layout_margin="5dp"
                             android:textStyle="bold"
                             android:text="Match Sequence"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorPrimaryDark"/>
 
                         <TextView
                             android:layout_width="match_parent"

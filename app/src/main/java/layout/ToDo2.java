@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.elm.mycheck.login.Navigation;
+import com.elm.mycheck.login.Homev2;
 import com.elm.mycheck.login.R;
 import com.elm.mycheck.login.ToDoDetails;
 import com.elm.mycheck.login.adapter.MilestoneAdapter;
@@ -127,7 +127,7 @@ public class ToDo2 extends Fragment {
             @Override
             public void onClick(View v) {
                 int page = 3;
-                Intent intent = new Intent(getActivity(), Navigation.class);
+                Intent intent = new Intent(getActivity(), Homev2.class);
                 intent.putExtra("page", page);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

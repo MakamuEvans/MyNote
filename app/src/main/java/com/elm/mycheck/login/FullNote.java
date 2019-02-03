@@ -51,28 +51,7 @@ public class FullNote extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
-            setTheme(R.style.AppTheme_NoActionBar);
-        if (theme == "tangarine")
-            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
-        if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_NoActionBar_Banana);
-        if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_NoActionBar_Basil);
-        if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_NoActionBar_Sage);
-        if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_NoActionBar_Peacock);
-        if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
-        if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_NoActionBar_Lavender);
-        if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_NoActionBar_Grape);
-        if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
-        if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
         setContentView(R.layout.activity_full_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -85,10 +64,6 @@ public class FullNote extends AppCompatActivity {
         note_id = intent.getExtras().getLong("noteId");
         note1 = Note.findById(Note.class, note_id);
 
-        //////scaling
-        cardView = findViewById(R.id.card_full);
-        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-
 
 
         //init
@@ -99,11 +74,6 @@ public class FullNote extends AppCompatActivity {
         } else {
             setTitle(note1.getTitle());
         }
-        /*richEditor = (RichEditor) findViewById(R.id.notes_editor);
-        // richEditor.setEditorBackgroundColor(Color.RED);
-        richEditor.setInputEnabled(false);
-        richEditor.setHtml(note1.getNote());
-        richEditor.setEditorFontSize(fontSize);*/
 
         editor = findViewById(R.id.editor);
         EditorContent editorContent = editor.getContentDeserialized(note1.getNote());
@@ -230,22 +200,6 @@ public class FullNote extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        scaleGestureDetector.onTouchEvent(event);
-        return  true;
-    }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener{
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            scaleFactor *= scaleGestureDetector.getScaleFactor();
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f));
-            cardView.setScaleX(scaleFactor);
-            cardView.setScaleY(scaleFactor);
-            return  true;
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -362,14 +316,14 @@ public class FullNote extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /*getMenuInflater().inflate(R.menu.menu_full_note, menu);
+        getMenuInflater().inflate(R.menu.menu_full_note, menu);
         Note note1 = Note.findById(Note.class, note_id);
 
         if (note1.getFavourite()) {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_white);
         } else {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_border);
-        }*/
+        }
         return true;
     }
 }

@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="Latest Notes"
                     android:textStyle="bold"
+                    android:textColor="@android:color/black"
                     android:textSize="20dp"
                     android:fontFamily="serif"
                     android:id="@+id/card_title"/>
@@ -128,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="7dp"
-            android:background="?attr/colorPrimary"/>
+            android:background="?attr/colorPrimaryDark"/>
 
     </LinearLayout>
 

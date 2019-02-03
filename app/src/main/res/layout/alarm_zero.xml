@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_margin="10dp"
     android:layout_gravity="center"
     android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="myReminder"
+        android:text="My Reminder"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="18dp"/>
@@ -34,6 +35,6 @@
         android:onClick="nR"
         android:layout_gravity="center"
         android:padding="5dp"
-        android:background="@drawable/default_input_text"/>
+        android:background="@drawable/default_input_text_round"/>
 
 </LinearLayout>

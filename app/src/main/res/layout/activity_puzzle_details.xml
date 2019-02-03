@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         app:layout_collapseMode="pin"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -38,7 +38,7 @@
                     <LinearLayout
                         android:layout_width="3dp"
                         android:layout_height="match_parent"
-                        android:background="?attr/colorPrimary" />
+                        android:background="?attr/colorAccent" />
                     <TextView
                         android:layout_margin="10dp"
                         android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/gradient_rec">
+                            android:background="@drawable/gradient">
 
                             <ImageView
                                 android:layout_width="100dp"
@@ -150,7 +150,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The total Number of Active boxes that you will need to touch before alarm stops" />
+                                                    android:text="Active Boxes to be touched before alarm stops" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -205,7 +205,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The total Number of Active boxes that you will need to touch before alarm stops" />
+                                                    android:text="Active Boxes to be touched before alarm stops" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -262,7 +262,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The total Number of Active boxes that you will need to touch before alarm stops" />
+                                                    android:text="Active Boxes to be touched before alarm stops" />
 
 
                                                 <TextView
@@ -406,7 +406,7 @@
                 <LinearLayout
                     android:layout_width="3dp"
                     android:layout_height="match_parent"
-                    android:background="?attr/colorPrimary" />
+                    android:background="?attr/colorAccent" />
                 <TextView
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
@@ -459,7 +459,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/gradient_rec">
+                            android:background="@drawable/gradient">
 
                             <ImageView
                                 android:layout_width="100dp"
@@ -759,7 +759,7 @@
                     <LinearLayout
                         android:layout_width="3dp"
                         android:layout_height="match_parent"
-                        android:background="?attr/colorPrimary" />
+                        android:background="?attr/colorAccent" />
                     <TextView
                         android:layout_margin="10dp"
                         android:layout_width="match_parent"
@@ -774,316 +774,322 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
                 android:layout_margin="10dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:text="Select difficulty level below"/>
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="Select difficulty level below"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="or"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="View Demo"
+                                android:onClick="demo_Sequence"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/default_input_text"/>
+                        </LinearLayout>
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="or"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="View Demo"
-                            android:onClick="demo_Sequence"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/default_input_text"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/gradient_rec">
-
-                        <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:visibility="gone"
-                            android:src="@drawable/notes"/>
-
-                        <HorizontalScrollView
+                        <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:background="@drawable/gradient">
+
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:visibility="gone"
+                                android:src="@drawable/notes"/>
+
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="90dp">
+
+                                    <LinearLayout
+                                        android:layout_width="200dp"
+                                        android:layout_height="200dp"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:text="Easy"
+                                            android:textColor="@color/easy"
+                                            android:textStyle="bold"
+                                            android:textSize="20dp"/>
+
+                                        <android.support.v7.widget.CardView
+                                            android:layout_width="200dp"
+                                            android:layout_height="150dp"
+                                            app:cardCornerRadius="10dp"
+                                            android:layout_margin = "5dp"
+                                            android:background="@color/colorError"
+                                            app:cardElevation="10dp">
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:padding="5dp"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="3"
+                                                    android:textSize="40dp"/>
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="The total number of Sequence to match" />
+
+                                                <TextView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:gravity="center"
+                                                    android:onClick="sequenceEasy"
+                                                    android:text="Select Easy"
+                                                    android:textSize="16dp"
+                                                    android:background="@drawable/default_input_text"/>
+
+                                            </LinearLayout>
+
+                                        </android.support.v7.widget.CardView>
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="200dp"
+                                        android:layout_height="200dp"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:text="Medium"
+                                            android:textColor="@color/medium"
+                                            android:textStyle="bold"
+                                            android:textSize="20dp"/>
+
+                                        <android.support.v7.widget.CardView
+                                            android:layout_width="200dp"
+                                            android:layout_height="150dp"
+                                            android:layout_margin="5dp"
+                                            app:cardCornerRadius="10dp"
+                                            android:background="@color/colorError"
+                                            app:cardElevation="10dp">
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:padding="5dp"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="4"
+                                                    android:textSize="40dp"/>
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="The total number of Sequence to match" />
+
+                                                <TextView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:gravity="center"
+                                                    android:onClick="sequenceMedium"
+                                                    android:text="Select  Medium"
+                                                    android:textSize="16dp"
+                                                    android:background="@drawable/default_input_text"/>
+
+
+
+                                            </LinearLayout>
+
+                                        </android.support.v7.widget.CardView>
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="200dp"
+                                        android:layout_height="200dp"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:text="Difficult"
+                                            android:textColor="@color/difficult"
+                                            android:textStyle="bold"
+                                            android:textSize="20dp"/>
+
+                                        <android.support.v7.widget.CardView
+                                            android:layout_width="200dp"
+                                            android:layout_height="150dp"
+                                            android:layout_margin="5dp"
+                                            app:cardCornerRadius="10dp"
+                                            android:background="@color/colorError"
+                                            app:cardElevation="10dp">
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:padding="5dp"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="6"
+                                                    android:textSize="40dp"/>
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="The total number of Sequence to match" />
+
+
+                                                <TextView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:gravity="center"
+                                                    android:text="Select  Difficult"
+                                                    android:textSize="16dp"
+                                                    android:onClick="sequenceDifficult"
+                                                    android:background="@drawable/default_input_text"/>
+
+
+                                            </LinearLayout>
+                                        </android.support.v7.widget.CardView>
+
+                                    </LinearLayout>
+
+
+
+
+                                </LinearLayout>
+
+                            </HorizontalScrollView>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:visibility="gone"
+                        android:paddingBottom="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="more options"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:id="@+id/sequence_poke"
+                                android:layout_height="wrap_content" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingLeft="90dp">
+                                android:layout_margin="5dp"
+                                android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:layout_width="200dp"
-                                    android:layout_height="200dp"
-                                    android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:text="Poke"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="11dp"
+                                    android:text="After 5 minutes of a successful alarm stop, a pop up will appear, of which a user needs to clear within two minutes or the Alarm goes off again"/>
 
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Easy"
-                                        android:textColor="@color/easy"
-                                        android:textStyle="bold"
-                                        android:textSize="20dp"/>
-
-                                    <android.support.v7.widget.CardView
-                                        android:layout_width="200dp"
-                                        android:layout_height="150dp"
-                                        app:cardCornerRadius="10dp"
-                                        android:layout_margin = "5dp"
-                                        android:background="@color/colorError"
-                                        app:cardElevation="10dp">
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:padding="5dp"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="3"
-                                                android:textSize="40dp"/>
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="The total number of Sequence to match" />
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:gravity="center"
-                                                android:onClick="sequenceEasy"
-                                                android:text="Select Easy"
-                                                android:textSize="16dp"
-                                                android:background="@drawable/default_input_text"/>
-
-                                        </LinearLayout>
-
-                                    </android.support.v7.widget.CardView>
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="200dp"
-                                    android:layout_height="200dp"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Medium"
-                                        android:textColor="@color/medium"
-                                        android:textStyle="bold"
-                                        android:textSize="20dp"/>
-
-                                    <android.support.v7.widget.CardView
-                                        android:layout_width="200dp"
-                                        android:layout_height="150dp"
-                                        android:layout_margin="5dp"
-                                        app:cardCornerRadius="10dp"
-                                        android:background="@color/colorError"
-                                        app:cardElevation="10dp">
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:padding="5dp"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="4"
-                                                android:textSize="40dp"/>
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="The total number of Sequence to match" />
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:gravity="center"
-                                                android:onClick="sequenceMedium"
-                                                android:text="Select  Medium"
-                                                android:textSize="16dp"
-                                                android:background="@drawable/default_input_text"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="?attr/colorPrimary" />
+                            </LinearLayout>
 
 
 
-                                        </LinearLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:visibility="gone"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                                    </android.support.v7.widget.CardView>
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:id="@+id/sequence_alt"
+                                android:layout_height="wrap_content" />
 
-                                </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:layout_width="200dp"
-                                    android:layout_height="200dp"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Difficult"
-                                        android:textColor="@color/difficult"
-                                        android:textStyle="bold"
-                                        android:textSize="20dp"/>
-
-                                    <android.support.v7.widget.CardView
-                                        android:layout_width="200dp"
-                                        android:layout_height="150dp"
-                                        android:layout_margin="5dp"
-                                        app:cardCornerRadius="10dp"
-                                        android:background="@color/colorError"
-                                        app:cardElevation="10dp">
-
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:padding="5dp"
-                                            android:orientation="vertical">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="6"
-                                                android:textSize="40dp"/>
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="The total number of Sequence to match" />
-
-
-                                            <TextView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:gravity="center"
-                                                android:text="Select  Difficult"
-                                                android:textSize="16dp"
-                                                android:onClick="sequenceDifficult"
-                                                android:background="@drawable/default_input_text"/>
-
-
-                                        </LinearLayout>
-                                    </android.support.v7.widget.CardView>
-
-                                </LinearLayout>
-
-
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:text="Enable alternate puzzles"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="11dp"
+                                    android:text="After 5 fail, allow switching to other types of puzzles"/>
 
 
                             </LinearLayout>
 
-                        </HorizontalScrollView>
-
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:visibility="gone"
-                    android:paddingBottom="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:text="more options"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:id="@+id/sequence_poke"
-                            android:layout_height="wrap_content" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="Poke"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="11dp"
-                                android:text="After 5 minutes of a successful alarm stop, a pop up will appear, of which a user needs to clear within two minutes or the Alarm goes off again"/>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="7dp"
-                                android:background="?attr/colorPrimary" />
-                        </LinearLayout>
-
-
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:id="@+id/sequence_alt"
-                            android:layout_height="wrap_content" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="Enable alternate puzzles"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="11dp"
-                                android:text="After 5 fail, allow switching to other types of puzzles"/>
-
-
                         </LinearLayout>
 
                     </LinearLayout>
-
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

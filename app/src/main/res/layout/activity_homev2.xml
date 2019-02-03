@@ -18,12 +18,11 @@
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="20dp"
-                android:background="@color/colorPrimaryTangarine"
                 android:layout_height="42dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimaryTangarine"
+                    android:background="@drawable/gradient_center"
                     android:elevation="10dp"
                     android:orientation="horizontal">
 
@@ -49,6 +48,7 @@
                             android:layout_width="wrap_content"
                             android:id="@+id/picker"
                             android:onClick="tP"
+                            android:visibility="gone"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_height="match_parent"
@@ -58,7 +58,7 @@
                             android:layout_width="wrap_content"
                             android:id="@+id/settings"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="7dp"
+                            android:layout_marginRight="10dp"
                             android:onClick="oS"
                             android:layout_height="match_parent"
                             app:srcCompat="@drawable/settings"/>
@@ -66,7 +66,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:id="@+id/add_new"
-                            android:layout_marginLeft="7dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginRight="5dp"
                             android:layout_height="match_parent"
                             app:srcCompat="@mipmap/ic_add"/>
@@ -96,9 +96,9 @@
             app:icon_one="@mipmap/ic_action_home_white"
             app:icon_two="@mipmap/ic_action_assignment_white"
             app:icon_three="@mipmap/ic_action_alarm_white"
-            app:tab_color="@color/colorPrimaryPeacock"
-            app:button_color="@color/colorPrimaryTangarine"
             app:icon_four="@mipmap/ic_action_todo_white"
+            app:tab_color="?attr/colorPrimaryDark"
+            app:button_color="?attr/colorAccent"
             app:number_of_tabs="four"
             app:starting_position="one" />
 

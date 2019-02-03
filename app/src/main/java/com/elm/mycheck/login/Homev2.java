@@ -49,7 +49,7 @@ public class Homev2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTheme(R.style.AppTheme_NoActionBar_Peacock);
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
         setContentView(R.layout.activity_homev2);
 
         List<Fragment> fragmentList = new ArrayList<>();

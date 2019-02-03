@@ -6,7 +6,8 @@
             <stroke
                 android:width="1dp"
                 android:color="?attr/colorPrimary" />
-
+            <corners
+                android:radius="10dp"/>
         </shape>
     </item>
 
@@ -16,7 +17,8 @@
             <stroke
                 android:width="1dp"
                 android:color="?attr/colorAccent" />
-
+            <corners
+                android:radius="10dp"/>
         </shape>
     </item>
 
@@ -26,6 +28,8 @@
             <stroke
                 android:width="1dp"
                 android:color="?attr/colorAccent" />
+            <corners
+                android:radius="10dp"/>
         </shape>
     </item>
 
@@ -40,6 +44,8 @@
             <stroke
                 android:width="1dp"
                 android:color="?attr/colorAccent" />
+            <corners
+                android:radius="10dp"/>
 
         </shape>
     </item>
@@ -56,6 +62,8 @@
             <stroke
                 android:width="1dp"
                 android:color="?attr/colorAccent" />
+            <corners
+                android:radius="10dp"/>
         </shape>
     </item>
 </selector>

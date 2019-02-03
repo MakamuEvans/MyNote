@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context="com.elm.mycheck.login.NewToDo">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
     <FrameLayout
         android:id="@+id/container_frame"
         android:layout_width="match_parent"

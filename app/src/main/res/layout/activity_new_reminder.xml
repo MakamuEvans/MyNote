@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         app:layout_collapseMode="pin"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -25,8 +25,6 @@
             android:layout_width="match_parent"
             android:id="@+id/head"
             android:padding="10dp"
-            android:elevation="10dp"
-            android:background="@android:color/white"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -44,7 +42,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorAccent"
                         android:textStyle="bold"
                         android:layout_gravity="center"
                         android:layout_marginTop="15dp"
@@ -74,7 +72,7 @@
                         android:layout_width="wrap_content"
                         android:id="@+id/alarm_type"
                         android:layout_marginTop="5dp"
-                        android:background="@android:color/white"
+                        android:background="@drawable/round_corner_dark"
                         android:layout_height="wrap_content"
                         android:entries="@array/str_reminder_type"
                         android:layout_gravity="center"/>
@@ -88,7 +86,7 @@
                 android:padding="10dp"
                 android:id="@+id/titl"
                 android:visibility="gone"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorAccent"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -113,7 +111,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorAccent"
                 android:layout_below="@id/titl"
                 android:visibility="gone"
                 android:layout_height="wrap_content">
@@ -147,7 +145,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/greyish"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
@@ -205,14 +202,14 @@
                                 android:textStyle="italic"
                                 android:text="None"
                                 android:id="@+id/puzzle_name_activity"
-                                android:textColor="?attr/colorPrimary"/>
+                                android:textColor="?attr/colorAccent"/>
                         </RelativeLayout>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="7dp"
-                            android:background="?attr/colorPrimary"/>
+                            android:background="?attr/colorPrimaryDark"/>
 
 
                         <RelativeLayout
@@ -234,25 +231,28 @@
                                 android:text="None"
                                 android:textStyle="italic"
                                 android:id="@+id/reminder_name_activity"
-                                android:textColor="?attr/colorPrimary"/>
+                                android:textColor="?attr/colorAccent"/>
                         </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="7dp"
-                            android:background="?attr/colorPrimary"/>
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/repeat_mode"
-                            android:layout_margin="7dp">
+                            android:id="@+id/repeat_mode">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:id="@+id/line_separator"
+                                android:layout_marginTop="7dp"
+                                android:layout_marginBottom="7dp"
+                                android:background="?attr/colorPrimaryDark"/>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:layout_margin="7dp"
+                                android:layout_below="@+id/line_separator"
                                 android:id="@+id/repeat_title">
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -270,6 +270,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_margin="7dp"
                                 android:layout_below="@id/repeat_title"
                                 android:orientation="horizontal">
 
@@ -285,7 +286,7 @@
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:layout_margin="10dp"
-                                    android:background="?attr/colorPrimary"/>
+                                    android:background="?attr/colorAccent"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_margin="5dp"
@@ -298,7 +299,7 @@
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:layout_margin="10dp"
-                                    android:background="?attr/colorPrimary"/>
+                                    android:background="?attr/colorAccent"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_margin="5dp"
@@ -311,7 +312,7 @@
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:layout_margin="10dp"
-                                    android:background="?attr/colorPrimary"/>
+                                    android:background="?attr/colorAccent"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_margin="5dp"
@@ -324,7 +325,7 @@
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:layout_margin="10dp"
-                                    android:background="?attr/colorPrimary"/>
+                                    android:background="?attr/colorAccent"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_margin="5dp"
@@ -337,7 +338,7 @@
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:layout_margin="10dp"
-                                    android:background="?attr/colorPrimary"/>
+                                    android:background="?attr/colorAccent"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_margin="5dp"
@@ -350,7 +351,7 @@
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:layout_margin="10dp"
-                                    android:background="?attr/colorPrimary"/>
+                                    android:background="?attr/colorAccent"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_margin="5dp"
@@ -367,7 +368,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="7dp"
-                            android:background="?attr/colorPrimary"/>
+                            android:background="?attr/colorPrimaryDark"/>
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -388,7 +389,7 @@
                                 android:text="None"
                                 android:textStyle="italic"
                                 android:id="@+id/reminder_early_activity"
-                                android:textColor="?attr/colorPrimary"/>
+                                android:textColor="?attr/colorAccent"/>
                         </RelativeLayout>
 
                         <EditText
@@ -399,13 +400,7 @@
                             android:layout_height="100dp"
                             android:hint="Notes/Description (Optional)"
                             android:gravity="top"
-                            android:background="@drawable/round_corner"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="7dp"
-                            android:background="?attr/colorPrimary"/>
+                            android:background="@drawable/round_corner_dark"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 

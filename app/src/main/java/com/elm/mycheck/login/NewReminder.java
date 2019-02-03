@@ -78,7 +78,7 @@ public class NewReminder extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
+        /*if (theme == "tomato")
             setTheme(R.style.AppTheme_NoActionBar);
         if (theme == "tangarine")
             setTheme(R.style.AppTheme_NoActionBar_Tangarine);
@@ -99,7 +99,8 @@ public class NewReminder extends AppCompatActivity {
         if (theme.equalsIgnoreCase("flamingo"))
             setTheme(R.style.AppTheme_NoActionBar_Flamingo);
         if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);*/
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
 
         setContentView(R.layout.activity_new_reminder);
@@ -380,7 +381,7 @@ public class NewReminder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent2 = new Intent(this, Navigation.class);
+                Intent intent2 = new Intent(this, Homev2.class);
                 intent2.putExtra("page", Constants.REMINDER_TAB);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
@@ -600,7 +601,7 @@ public class NewReminder extends AppCompatActivity {
         intent1.putExtra("reminder", dt);
         sendBroadcast(intent1);
 
-        Intent intent2 = new Intent(this, Navigation.class);
+        Intent intent2 = new Intent(this, Homev2.class);
         intent2.putExtra("page", Constants.REMINDER_TAB);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);

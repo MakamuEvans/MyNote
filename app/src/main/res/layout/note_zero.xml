@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_margin="10dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="myNote"
+        android:text="My Note(s)"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="18dp"/>
@@ -35,6 +36,6 @@
         android:layout_gravity="center"
         android:onClick="nN"
         android:padding="5dp"
-        android:background="@drawable/default_input_text"/>
+        android:background="@drawable/default_input_text_round"/>
 
 </LinearLayout>

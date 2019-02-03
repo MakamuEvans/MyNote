@@ -32,12 +32,16 @@
     <color name="colorPrimaryDarkGrape">#0f2289</color>
     <color name="colorAccentGrape">#3f51b5</color>
 
+    <color name="primaryBlue">#ffffff</color>
+    <color name="primaryDarkBlue">#cecece</color>
+    <color name="primaryAccentBlue">#0734e2</color>
+
     <color name="colorPrimaryLavender">#6d7cc9</color>
     <color name="colorPrimaryDarkLavender">#3346ab</color>
     <color name="colorAccentLavender">#6d7cc9</color>
 
     <color name="colorPrimaryBlueBerry">#8e24aa</color>
-    <color name="colorPrimaryDarkBlueBerry">#800a9f</color>
+    <color name="colorPrimaryDarkBlueBerry">#Cecece</color>
     <color name="colorAccentBlueBerry">#8e24aa</color>
 
     <color name="colorPrimaryPeacock">#e67c73</color>

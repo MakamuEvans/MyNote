@@ -73,7 +73,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/colorPrimary">
+                            android:background="@drawable/gradient">
 
                             <ImageView
                                 android:layout_width="100dp"
@@ -96,6 +96,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_margin = "5dp"
                                         android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
                                         android:layout_weight=".4"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">
@@ -128,6 +129,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight=".3"
                                         android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
                                         android:minHeight="100dp"
                                         android:padding="3dp"
                                         android:background="@color/colorError"
@@ -161,6 +163,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight=".3"
                                         android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
                                         android:minHeight="100dp"
                                         android:padding="3dp"
                                         android:background="@color/colorError"
@@ -199,7 +202,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_marginTop="5dp"
-                        android:background="?attr/colorPrimary"
+                        android:background="?attr/colorPrimaryDark"
                         android:layout_height="1dp"/>
 
                     <RelativeLayout
@@ -228,7 +231,7 @@
 
                         <FrameLayout
                             android:layout_width="match_parent"
-                            android:background="?attr/colorPrimary"
+                            android:background="@drawable/gradient"
                             android:layout_height="wrap_content">
 
                             <ImageView
@@ -254,6 +257,7 @@
                                         android:layout_margin="5dp"
                                         android:layout_weight=".4"
                                         android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">
 
@@ -285,6 +289,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight=".3"
                                         android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
                                         android:minHeight="100dp"
                                         android:padding="3dp"
                                         android:background="@color/colorError"
@@ -320,6 +325,7 @@
                                         android:layout_margin="5dp"
                                         android:minHeight="100dp"
                                         android:padding="3dp"
+                                        app:cardCornerRadius="10dp"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">
 
@@ -351,6 +357,7 @@
                                         android:layout_weight=".6"
                                         android:layout_margin="5dp"
                                         android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
                                         android:padding="3dp"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">
@@ -380,6 +387,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight=".3"
                                         android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
                                         android:minHeight="100dp"
                                         android:padding="3dp"
                                         android:background="@color/colorError"
@@ -433,7 +441,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_marginTop="5dp"
-                        android:background="?attr/colorPrimary"
+                        android:background="?attr/colorPrimaryDark"
                         android:layout_marginBottom="5dp"
                         android:layout_height="1dp"/>
 
@@ -462,7 +470,7 @@
 
                         <FrameLayout
                             android:layout_width="match_parent"
-                            android:background="?attr/colorPrimary"
+                            android:background="@drawable/gradient"
                             android:layout_height="wrap_content">
 
                             <ImageView
@@ -488,6 +496,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_margin="5dp"
                                         android:layout_weight=".4"
+                                        app:cardCornerRadius="10dp"
                                         android:minHeight="100dp"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">
@@ -521,6 +530,7 @@
                                         android:layout_weight=".3"
                                         android:layout_margin="5dp"
                                         android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
                                         android:padding="3dp"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">
@@ -555,6 +565,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_margin="5dp"
                                         android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
                                         android:layout_weight=".4"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">
@@ -589,6 +600,7 @@
                                         android:layout_weight=".3"
                                         android:layout_margin="5dp"
                                         android:padding="3dp"
+                                        app:cardCornerRadius="10dp"
                                         android:minHeight="100dp"
                                         android:background="@color/colorError"
                                         app:cardElevation="10dp">

@@ -4,5 +4,6 @@
     <item
         app:showAsAction="always"
         android:title="SAVE"
+        android:iconTint="?attr/colorAccent"
         android:id="@+id/set_reminder_setting"/>
 </menu>

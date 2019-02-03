@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.elm.mycheck.login.R;
 
@@ -76,6 +77,7 @@ public class AddMilestone extends DialogFragment {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity().getApplicationContext(), "ayayay", Toast.LENGTH_SHORT).show();
                         TextView title = (TextView) view.findViewById(R.id.milestone_title);
                         Intent intent = new Intent(ToDo2.TaskReceiver.ACTIION_REP);
                         intent.putExtra("title", title.getText().toString());
