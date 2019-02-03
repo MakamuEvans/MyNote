@@ -83,6 +83,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="7dp"
-            android:background="?attr/colorPrimary"/>
+            android:background="?attr/colorAccent"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

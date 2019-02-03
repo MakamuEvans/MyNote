@@ -2,6 +2,7 @@ package com.elm.mycheck.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -38,12 +39,13 @@ import layout.HomeFragment;
 import layout.NotesFragment;
 import layout.ReminderFragment;
 
-public class Homev2 extends AppCompatActivity {
+public class Homev2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     SpaceTabLayout tabLayout;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ImageView app_menu;
+    DrawerLayout navDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,22 @@ public class Homev2 extends AppCompatActivity {
         tabLayout = (SpaceTabLayout) findViewById(R.id.spaceTabLayout);
 
         tabLayout.initialize(viewPager, getSupportFragmentManager(), fragmentList, savedInstanceState);
+
+         navDrawer = (DrawerLayout) findViewById(R.id.manual_drawer);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        /*Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey("page")) {
+                int page = intent.getExtras().getInt("page");
+                viewPager.setCurrentItem(2);
+
+            }
+
+        }*/
 
         this.init();
     }
@@ -123,7 +141,6 @@ public class Homev2 extends AppCompatActivity {
         app_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DrawerLayout navDrawer = (DrawerLayout) findViewById(R.id.manual_drawer);
                 // If navigation drawer is not open yet open it else close it.
                 if (!navDrawer.isDrawerOpen(GravityCompat.START))
                     navDrawer.openDrawer(GravityCompat.START);
@@ -140,9 +157,8 @@ public class Homev2 extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.manual_drawer);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (navDrawer.isDrawerOpen(GravityCompat.START)) {
+            navDrawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -272,4 +288,39 @@ public class Homev2 extends AppCompatActivity {
 
         dialog.show(getFragmentManager(), "color_test");
     }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        //lazy to rename these things.....phew!!!!!!!
+
+        if (id == R.id.nav_share) {
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_SUBJECT, "myCheck App");
+            share.putExtra(Intent.EXTRA_TEXT, "I use myCheck App to save Notes and have Alarms with Puzzles! Download it now --> https://goo.gl/LNufqP");
+            startActivity(Intent.createChooser(share, "Share via"));
+
+        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(Homev2.this, SettingsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_credit){
+            String url = "http://www.makamuevans.co.ke";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+            return true;
+        } else if (id == R.id.nav_categories){
+            Intent intent = new Intent(Homev2.this, ManageCategories.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_rate){
+            Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=com.elm.mycheck.login"));
+            startActivity(intent);
+        }
+
+        navDrawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 }

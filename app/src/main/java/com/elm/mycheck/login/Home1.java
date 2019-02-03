@@ -146,7 +146,7 @@ public class Home1 extends Fragment {
         expandToDo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Navigation.class);
+                Intent intent = new Intent(getActivity(), Homev2.class);
                 intent.putExtra("page", 3);
                 startActivity(intent);
             }
@@ -154,7 +154,7 @@ public class Home1 extends Fragment {
         expandNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Navigation.class);
+                Intent intent = new Intent(getActivity(), Homev2.class);
                 intent.putExtra("page", 1);
                 startActivity(intent);
             }
@@ -162,7 +162,7 @@ public class Home1 extends Fragment {
         expandReminders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Navigation.class);
+                Intent intent = new Intent(getActivity(), Homev2.class);
                 intent.putExtra("page", 2);
                 startActivity(intent);
             }
