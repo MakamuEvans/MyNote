@@ -15,7 +15,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="3pt"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="20dp"
                 android:layout_height="42dp">
@@ -32,7 +32,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:minWidth="40dp"
+                            android:minWidth="35dp"
                             android:id="@+id/app_menu"
                             android:layout_height="match_parent"
                             app:srcCompat="@drawable/ic_menu"/>
