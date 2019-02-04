@@ -118,6 +118,16 @@ public class AlarmCrud extends Service {
 
             }
 
+            String yrr = String.valueOf(calendar.get(Calendar.YEAR));
+            String mtt = String.valueOf(calendar.get(Calendar.MONTH));
+            String ddd = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            String hhh = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+            String hhh2 = String.valueOf(calendar.get(Calendar.HOUR));
+            String mmm = String.valueOf(calendar.get(Calendar.MINUTE));
+            String sss = String.valueOf(calendar.get(Calendar.SECOND));
+            String pmm = String.valueOf(calendar.get(Calendar.AM_PM));
+            Log.e("timeee", yrr+"--"+mtt+"--"+ddd+"--"+hhh+"--"+hhh2+"------"+mmm+"--"+sss+"-----"+pmm);
+
             createAlarm(
                     title,
                     content,
@@ -156,7 +166,13 @@ public class AlarmCrud extends Service {
                     time = "Two Hours";
                 }
 
-
+                /*String yrr = String.valueOf(calendar.get(Calendar.YEAR));
+                String mtt = String.valueOf(calendar.get(Calendar.MONTH));
+                String ddd = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                String hhh = String.valueOf(calendar.get(Calendar.HOUR));
+                String mmm = String.valueOf(calendar.get(Calendar.MINUTE));
+                String sss = String.valueOf(calendar.get(Calendar.SECOND));
+                Log.e("timeee", yrr+"--"+mtt+"--"+ddd+"--"+hhh+"--"+mmm+"--"+sss);*/
                 createAlarm(
                         title,
                         content,
@@ -170,8 +186,9 @@ public class AlarmCrud extends Service {
         } else { //cancel
             cancelAlarm(reminderId);
         }
-        stopSelf(startId);
-        return Service.START_STICKY;
+        //stopSelf(startId);
+        //return Service.START_STICKY;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -188,10 +205,10 @@ public class AlarmCrud extends Service {
         String format = simpleDateFormat.format(new Date());
         int alarmTracker = Integer.parseInt(nId+aId.toString()+format);
         alarmTracker = alarmTracker - random;
-        Intent  intent;
+        Intent intent = new Intent(this, ReminderAlarms.class);
+
         if (todoId == null || todoId.equalsIgnoreCase("")){
             Log.e("AtherereC", title+content+nId+aId);
-            intent = new Intent("DISPLAY_NOTIFICATION");
             intent.putExtra("title", title);
             intent.putExtra("repeat", repeat);
             intent.putExtra("content", content);
@@ -212,9 +229,11 @@ public class AlarmCrud extends Service {
 
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), alarmTracker, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(calender);
+
         if (repeat){
             Log.e("repeating", "yes");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -225,8 +244,10 @@ public class AlarmCrud extends Service {
                 alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
             }
         }else {
+            Log.e("larm", "single");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if (alarmManager != null) {
+                    Log.e("larm", "n two");
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }else
                     Log.e("repeating", "WTF");

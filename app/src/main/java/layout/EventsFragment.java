@@ -114,6 +114,7 @@ public class EventsFragment extends Fragment {
         newReceiver = new NewReceiver();
         getActivity().registerReceiver(newReceiver, intentFilter);
 
+
         IntentFilter filter = new IntentFilter(updateTodo.SYNC_ACTION);
         getActivity().registerReceiver(new updateTodo(), filter);
         recyclerView = (RecyclerView) view.findViewById(R.id.todo_recycler);

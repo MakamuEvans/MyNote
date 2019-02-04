@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.elm.mycheck.login">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -18,7 +19,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Homev2"></activity>
+
+        <activity android:name=".Homev2" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -72,7 +74,7 @@
 
         <receiver android:name=".services.alarm.ReminderAlarms">
             <intent-filter>
-                <action android:name="DISPLAY_NOTIFICATION" />
+                <action android:name="DISPLAY_NOTIFICATION2" />
             </intent-filter>
         </receiver>
         <receiver android:name="layout.ToDo2$TaskReceiver">
