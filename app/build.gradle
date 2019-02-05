@@ -5,7 +5,7 @@ android {
     /*buildToolsVersion '27.0.3'*/
     defaultConfig {
         applicationId "com.elm.mycheck.login"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 5
         versionName "1.1.1"

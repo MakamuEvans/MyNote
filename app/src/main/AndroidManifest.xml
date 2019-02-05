@@ -48,6 +48,9 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.elm.mycheck.login.model" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".AddNote"
