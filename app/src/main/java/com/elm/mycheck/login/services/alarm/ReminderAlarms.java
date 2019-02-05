@@ -2,6 +2,7 @@ package com.elm.mycheck.login.services.alarm;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -162,7 +163,18 @@ public class ReminderAlarms extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //prepare notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("default",
+                    "myCheck", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Hahaha");
+            mNotificationManager.createNotificationChannel(channel);
+        }
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
         builder.setSmallIcon(R.drawable.my_checkv2)
                 .setContentTitle("myCheck: New Reminder(s)!")
                 .setDefaults(Notification.DEFAULT_ALL)
@@ -170,9 +182,6 @@ public class ReminderAlarms extends BroadcastReceiver {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         System.out.println(count);
         //handle notification putting in mind other active similar notifications
