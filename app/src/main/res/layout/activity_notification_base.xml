@@ -24,17 +24,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10pt"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/gradient"
                 android:orientation="vertical"
+                android:background="@drawable/gradient_rec"
                 android:padding="10dp">
 
                 <TextView
@@ -42,14 +43,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Hello from"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/primaryAccentBlue" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/app_name"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/primaryAccentBlue"
                     android:textSize="45dp" />
 
                 <TextView
@@ -58,9 +59,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="You have one Reminder"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/primaryAccentBlue" />
             </LinearLayout>
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,17 +109,27 @@
 
                 <LinearLayout
                     android:layout_width="200dp"
+                    android:background="@drawable/themeless"
                     android:layout_height="70dp">
-
-                    <Button
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:textSize="20sp"
-                        android:id="@+id/close_alarm"
-                        android:layout_margin="5dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/gradient"
-                        android:textColor="@color/colorWhite"
-                        android:text="Close" />
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="#ec2F4B"
+                        android:id="@+id/relative_layout"
+                        android:alpha="0.9">
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:textSize="20sp"
+                            android:id="@+id/close_alarm"
+                            android:background="@drawable/themeless"
+                            android:layout_height="70dp"
+                            android:textColor="@color/primaryAccentBlue"
+                            android:text="Close" />
+                    </RelativeLayout>
+
+
 
                 </LinearLayout>
 

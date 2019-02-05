@@ -1,5 +1,9 @@
 package com.elm.mycheck.login;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +39,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.elm.mycheck.login.adapter.NotificationsAdapter;
@@ -75,6 +80,7 @@ public class NotificationBase extends AppCompatActivity {
     int snooze_count;
     private int puzzle_level = 0, count_fail = 0;
     private NotificationManager mNotificationManager;
+    private RelativeLayout relativeLayout;
 
     MediaPlayer mMediaPlayer;
     Boolean snoozeActive = false;
@@ -469,6 +475,31 @@ public class NotificationBase extends AppCompatActivity {
         retype = (Button) findViewById(R.id.retype_button);
         s_c = (TextView) findViewById(R.id.s_c);
         quit = "ok";
+
+
+
+
+        relativeLayout = findViewById(R.id.relative_layout);
+
+
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(relativeLayout, "alpha", .5f, .1f);
+        fadeOut.setDuration(3000);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(relativeLayout, "alpha", .1f, .5f);
+        fadeIn.setDuration(3000);
+
+        final AnimatorSet mAnimationSet = new AnimatorSet();
+
+        mAnimationSet.play(fadeIn).after(fadeOut);
+
+        mAnimationSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimationSet.start();
+            }
+        });
+
+        mAnimationSet.start();
     }
 
     @Override

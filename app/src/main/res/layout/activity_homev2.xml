@@ -22,7 +22,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_center"
                     android:elevation="10dp"
                     android:orientation="horizontal">
 
@@ -35,6 +34,7 @@
                             android:minWidth="35dp"
                             android:id="@+id/app_menu"
                             android:layout_height="match_parent"
+                            android:tint="@color/primaryAccentBlue"
                             app:srcCompat="@drawable/ic_menu"/>
                     </RelativeLayout>
                     <LinearLayout
@@ -51,6 +51,7 @@
                             android:visibility="gone"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
+                            android:tint="@color/primaryAccentBlue"
                             android:layout_height="match_parent"
                             app:srcCompat="@drawable/ic_color"/>
 
@@ -59,6 +60,7 @@
                             android:id="@+id/settings"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="10dp"
+                            android:tint="@color/primaryAccentBlue"
                             android:onClick="oS"
                             android:layout_height="match_parent"
                             app:srcCompat="@drawable/settings"/>
@@ -67,6 +69,7 @@
                             android:layout_width="wrap_content"
                             android:id="@+id/add_new"
                             android:layout_marginLeft="10dp"
+                            android:tint="@color/primaryAccentBlue"
                             android:layout_marginRight="5dp"
                             android:layout_height="match_parent"
                             app:srcCompat="@mipmap/ic_add"/>
