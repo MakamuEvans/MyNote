@@ -27,7 +27,6 @@ import com.github.irshulx.models.EditorContent;
 import com.google.gson.Gson;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
-import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
 
 public class FullNote extends AppCompatActivity {

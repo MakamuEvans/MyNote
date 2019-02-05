@@ -32,6 +32,13 @@
         <item name="colorAccent">@color/colorAccentTangarine</item>
     </style>
 
+    <style name="AppTheme.PrimarySettings" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryAccentBlue</item>
+        <item name="colorPrimaryDark">@color/primaryAccentBlue</item>
+        <item name="colorAccent">@color/primaryAccentBlue</item>
+    </style>
+
     <style name="AppTheme.Primary" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryBlue</item>

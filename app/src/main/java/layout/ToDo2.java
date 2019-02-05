@@ -106,6 +106,7 @@ public class ToDo2 extends Fragment {
         LinearLayout add_task = (LinearLayout) view.findViewById(R.id.add_task);
         todoId = getArguments().getString("id");
         title = getArguments().getString("title");
+        getActivity().setTitle(title);
 
         IntentFilter intentFilter = new IntentFilter(TaskReceiver.ACTIION_REP);
         taskReceiver = new TaskReceiver();

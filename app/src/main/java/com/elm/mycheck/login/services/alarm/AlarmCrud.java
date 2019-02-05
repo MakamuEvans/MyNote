@@ -217,7 +217,7 @@ public class AlarmCrud extends Service {
             intent.putExtra("alarmTracker", alarmTracker);
         }else {
             Log.e("AtherereC", title+content+nId+aId);
-            intent = new Intent("DISPLAY_NOTIFICATION");
+           // intent = new Intent("DISPLAY_NOTIFICATION");
             intent.putExtra("title", title);
             intent.putExtra("repeat", repeat);
             intent.putExtra("content", content);

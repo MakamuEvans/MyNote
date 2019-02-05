@@ -186,7 +186,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String themee = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", themee);
-        theme.applyStyle(R.style.AppTheme_NoActionBar_Primary, true);
+        theme.applyStyle(R.style.AppTheme_PrimarySettings, true);
 
     }
 

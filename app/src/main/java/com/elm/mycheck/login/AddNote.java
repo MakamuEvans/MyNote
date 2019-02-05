@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
 import top.defaults.colorpicker.ColorPickerPopup;
 
@@ -70,7 +69,6 @@ public class AddNote extends AppCompatActivity {
     private EditText title, note;
     private ImageView imageView, imagePlace, strike_through;
     private TextView save, update, add_category;
-    private RichEditor richEditor;
     private Long category = null;
     private Boolean savedStatus = false;
     private Long note_id;
@@ -177,116 +175,6 @@ public class AddNote extends AppCompatActivity {
             }
         });
 
-        /*findViewById(R.id.editor_bold).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setBold();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_quote).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setBlockquote();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_ordered).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setNumbers();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_italic).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setItalic();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_undo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.undo();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_redo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.redo();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_underline).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setUnderline();
-                }
-            }
-        });
-
-        findViewById(R.id.strike_through).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setStrikeThrough();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_bullets).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setBullets();
-                }
-            }
-        });
-*/
-       /* findViewById(R.id.editor_numbers).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setNumbers();
-                }
-            }
-        });*/
-
         title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -303,31 +191,6 @@ public class AddNote extends AppCompatActivity {
 
             }
         });
-
-        /*richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override public void onTextChange(String text) {
-                if (text.contains("<img src=")){
-                    imageStatus = false;
-                    if (!text.contains("<br><img src=")){
-                        String finalHtml = text.replace("<img src=", "<br><img src=");
-                        finalHtml = finalHtml.replace("alt=\"Image\">", "alt=\"Image\"><br>");
-                        richEditor.setHtml(finalHtml);
-                        richEditor.focusEditor();
-                    }
-                }else {
-                    imageStatus = true;
-                }
-
-                if (text.isEmpty()){
-                    if (title.getText().toString().isEmpty()){
-                        savedStatus = false;
-                    }
-                }
-
-                editListener = true;
-            }
-        });*/
-
     }
 
     private void setUpEditor() {
@@ -353,6 +216,7 @@ public class AddNote extends AppCompatActivity {
             }
         });
 
+        //findViewById(R.id.action_bold).
         findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

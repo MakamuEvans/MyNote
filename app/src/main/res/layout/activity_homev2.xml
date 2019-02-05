@@ -97,7 +97,7 @@
             app:icon_two="@mipmap/ic_action_assignment_white"
             app:icon_three="@mipmap/ic_action_alarm_white"
             app:icon_four="@mipmap/ic_action_todo_white"
-            app:tab_color="?attr/colorPrimaryDark"
+            app:tab_color="@color/primaryBluish"
             app:button_color="?attr/colorAccent"
             app:number_of_tabs="four"
             app:starting_position="one" />

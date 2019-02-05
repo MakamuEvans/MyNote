@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/base_notif"
     android:layout_height="match_parent"
-    android:background="@drawable/animation_dark">
+    android:background="@drawable/animation_list">
 
     <RelativeLayout
         android:layout_width="wrap_content"
