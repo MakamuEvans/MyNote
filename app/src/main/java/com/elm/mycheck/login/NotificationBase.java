@@ -475,31 +475,6 @@ public class NotificationBase extends AppCompatActivity {
         retype = (Button) findViewById(R.id.retype_button);
         s_c = (TextView) findViewById(R.id.s_c);
         quit = "ok";
-
-
-
-
-        relativeLayout = findViewById(R.id.relative_layout);
-
-
-        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(relativeLayout, "alpha", .5f, .1f);
-        fadeOut.setDuration(3000);
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(relativeLayout, "alpha", .1f, .5f);
-        fadeIn.setDuration(3000);
-
-        final AnimatorSet mAnimationSet = new AnimatorSet();
-
-        mAnimationSet.play(fadeIn).after(fadeOut);
-
-        mAnimationSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mAnimationSet.start();
-            }
-        });
-
-        mAnimationSet.start();
     }
 
     @Override
