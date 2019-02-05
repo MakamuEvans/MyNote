@@ -175,7 +175,7 @@ public class ReminderAlarms extends BroadcastReceiver {
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
-        builder.setSmallIcon(R.drawable.my_checkv2)
+        builder.setSmallIcon(R.mipmap.my_check)
                 .setContentTitle("myCheck: New Reminder(s)!")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)
