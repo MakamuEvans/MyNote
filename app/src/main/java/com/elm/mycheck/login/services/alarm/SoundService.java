@@ -117,7 +117,7 @@ public class SoundService extends Service {
 
             Timer timer = new Timer();
             //timer.schedule();
-            timer.schedule(task, 1000, 4000);
+            timer.schedule(task, 4000, 4000);
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -163,7 +163,7 @@ public class SoundService extends Service {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.my_checkv2)
+        builder.setSmallIcon(R.mipmap.my_check)
                 .setContentTitle("Missed Alarm")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)

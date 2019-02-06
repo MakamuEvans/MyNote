@@ -1001,6 +1001,18 @@ public class NotificationBase extends AppCompatActivity {
             text_test.setText(Constants.text1);
         if (random == 2)
             text_test.setText(Constants.text2);
+        if (random == 3)
+            text_test.setText(Constants.text3);
+        if (random == 4)
+            text_test.setText(Constants.text4);
+        if (random == 5)
+            text_test.setText(Constants.text5);
+        if (random == 6)
+            text_test.setText(Constants.text6);
+        if (random == 7)
+            text_test.setText(Constants.text7);
+        if (random == 8)
+            text_test.setText(Constants.text8);
         //set text
 
         //get response
