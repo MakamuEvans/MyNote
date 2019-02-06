@@ -7,8 +7,8 @@ android {
         applicationId "com.elm.mycheck.login"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 5
-        versionName "1.1.1"
+        versionCode 6
+        versionName "2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:25.1.0'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'org.xdty.preference:color-picker:0.0.5'
+
     implementation 'com.github.vihtarb:tooltip:0.1.9'
     implementation 'eu.long1:spacetablayout:1.0.4'
 
