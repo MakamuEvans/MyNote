@@ -145,6 +145,7 @@ public class ToDoDetails extends AppCompatActivity {
                 MDToast.makeText(getApplicationContext(),"haha",MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
                 Bundle args = new Bundle();
                 args.putString("task_id", id.toString());
+                args.putBoolean("new_task", false);
                 addMilestone.setArguments(args);
 
                 addMilestone.show(getFragmentManager(), "Dialog");
@@ -278,13 +279,11 @@ public class ToDoDetails extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.e("Haa", "MilestoneReceiver Called");
             Bundle bundle = intent.getExtras();
-            String newNote = bundle.getString("milestone");
-            Gson gson = new Gson();
-            Type type = new TypeToken<Milestones>(){
-            }.getType();
-            Milestones milestones = gson.fromJson(newNote, type);
+            String title = bundle.getString("title");
+            String todoID = bundle.getString("noteId");
 
-            progress(Long.valueOf(milestones.getTodoid()));
+            Milestones milestones = new Milestones(todoID, title, null, false);
+            milestones.save();
 
             if (milestoneAdapter != null){
                 milestoneAdapter.insert(milestones);

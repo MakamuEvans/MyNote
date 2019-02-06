@@ -26,7 +26,7 @@ public class ManageCategories extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("myPref", 0);
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
-        setTheme(R.style.AppTheme_Primary);
+        setTheme(R.style.AppTheme_PrimarySettings);
 
         setContentView(R.layout.activity_manage_categories);
         setTitle("Manage Categories");

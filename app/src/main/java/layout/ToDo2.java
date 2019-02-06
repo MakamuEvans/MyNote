@@ -142,6 +142,7 @@ public class ToDo2 extends Fragment {
 
                 Bundle args = new Bundle();
                 args.putString("task_id", todoId);
+                args.putBoolean("new_task", true);
                 addMilestone.setArguments(args);
 
                 addMilestone.show(getActivity().getFragmentManager(), "Dialog");
@@ -178,10 +179,10 @@ public class ToDo2 extends Fragment {
         Milestones milestones = new Milestones(todoID, title, null, false);
         milestones.save();
 
-        String data = new Gson().toJson(milestones);
+        /*String data = new Gson().toJson(milestones);
         Intent intent = new Intent(ToDoDetails.newMilestoneReceiver.ACTIION_REP);
         intent.putExtra("milestone", data);
-        context.sendBroadcast(intent);
+        context.sendBroadcast(intent);*/
 
         if (milestoneAdapter != null) {
             milestoneAdapter.insert(milestones);
@@ -301,8 +302,8 @@ public class ToDo2 extends Fragment {
             Log.e("todo", "Milestone received");
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
-            String noteID = bundle.getString("noteId");
-            onCompleted(title, noteID, context);
+            String todoID = bundle.getString("noteId");
+            onCompleted(title, todoID, context);
         }
     }
 }

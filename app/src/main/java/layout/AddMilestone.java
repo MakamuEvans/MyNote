@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elm.mycheck.login.R;
+import com.elm.mycheck.login.ToDoDetails;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,11 +66,13 @@ public class AddMilestone extends DialogFragment {
         }
     }
 
+    Intent intent;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_add_milestone, null);
 
         final String noteId = getArguments().getString("task_id");
+        final boolean new_task = getArguments().getBoolean("new_task");
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Add Task")
@@ -79,7 +82,11 @@ public class AddMilestone extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getActivity().getApplicationContext(), "ayayay", Toast.LENGTH_SHORT).show();
                         TextView title = (TextView) view.findViewById(R.id.milestone_title);
-                        Intent intent = new Intent(ToDo2.TaskReceiver.ACTIION_REP);
+                        if (new_task)
+                            intent = new Intent(ToDo2.TaskReceiver.ACTIION_REP);
+                        else
+                            intent = new Intent(ToDoDetails.newMilestoneReceiver.ACTIION_REP);
+
                         intent.putExtra("title", title.getText().toString());
                         intent.putExtra("noteId", noteId);
                         getActivity().sendBroadcast(intent);
