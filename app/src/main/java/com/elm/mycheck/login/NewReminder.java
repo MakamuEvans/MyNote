@@ -73,7 +73,7 @@ public class NewReminder extends AppCompatActivity {
     private boolean ssunday = false, smonday = false, stuesday = false, swednesday = false, sthursday = false, sfriday = false, ssaturday = false, edit_mode = false;
 
     SimpleDateFormat simpleDateFormat, simpleDateFormat2;
-    SingleDateAndTimePicker dateTime,time_picker;
+    SingleDateAndTimePicker dateTime, time_picker;
     RelativeLayout repeat_mode;
 
     @SuppressLint("ResourceType")
@@ -161,8 +161,8 @@ public class NewReminder extends AppCompatActivity {
         simpleDateFormat2 = new SimpleDateFormat(format2, Locale.ENGLISH);
 
         selectedDate = findViewById(R.id.start_date);
-         dateTime= findViewById(R.id.date_picker);
-         time_picker= findViewById(R.id.time_picker);
+        dateTime = findViewById(R.id.date_picker);
+        time_picker = findViewById(R.id.time_picker);
         dateTime.setStepMinutes(1);
         dateTime.setIsAmPm(false);
         time_picker.setDisplayDays(false);
@@ -171,7 +171,7 @@ public class NewReminder extends AppCompatActivity {
         time_picker.setIsAmPm(false);
         dateTime.setMustBeOnFuture(true);
 
-         repeat_mode= (RelativeLayout) findViewById(R.id.repeat_mode);
+        repeat_mode = (RelativeLayout) findViewById(R.id.repeat_mode);
         spinner = (Spinner) findViewById(R.id.alarm_type);
 
         new Tooltip.Builder(spinner)
@@ -183,6 +183,7 @@ public class NewReminder extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("position", String.valueOf(position));
                 String selected_text = spinner.getSelectedItem().toString();
                 if (selected_text.equals("One Time")) {
                     dateTime.setVisibility(View.VISIBLE);
@@ -230,14 +231,14 @@ public class NewReminder extends AppCompatActivity {
             }
         });
 
-        time_picker.setListener(new SingleDateAndTimePicker.Listener() {
+        time_picker.addOnDateChangedListener(new SingleDateAndTimePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(String displayed, Date date) {
                 selectedDate.setText(simpleDateFormat2.format(date));
             }
         });
 
-        dateTime.setListener(new SingleDateAndTimePicker.Listener() {
+        dateTime.addOnDateChangedListener(new SingleDateAndTimePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(String displayed, Date date) {
                 selectedDate.setText(simpleDateFormat.format(date));
@@ -269,21 +270,55 @@ public class NewReminder extends AppCompatActivity {
                 //Log.e("reminder", newReminder.getRepeat());
                 Date alarm_date = simpleDateFormat.parse(newReminder.getTime());
 
-                if (newReminder.getRepeat() == null){
+                if (newReminder.getRepeat() == null) {
+                    Log.e("reminder", "not repeating");
                     repeating = false;
                     dateTime.setVisibility(View.VISIBLE);
-                    //dateTime.defa
+                    dateTime.setDefaultDate(alarm_date);
                     time_picker.setVisibility(View.GONE);
                     repeat_mode.setVisibility(View.GONE);
                     selectedDate.setText(simpleDateFormat.format(alarm_date));
-                }else {
-                    selectedDate.setText(simpleDateFormat.format(alarm_date));
+                } else {
+                    Log.e("reminder", "repeating");
+
+                    selectedDate.setText(simpleDateFormat2.format(alarm_date));
                     dateTime.setVisibility(View.GONE);
+                    spinner.setSelection(1, true);
                     repeating = true;
+                    time_picker.setDefaultDate(simpleDateFormat.parse(newReminder.getTime()));
                     dateTime.setVisibility(View.GONE);
                     time_picker.setVisibility(View.VISIBLE);
                     repeat_mode.setVisibility(View.VISIBLE);
-                    spinner.setSelection(1);
+
+                    String[] repeat_dates = newReminder.getRepeat().split(",");
+                    for (String dt : repeat_dates
+                    ) {
+                        switch (dt) {
+                            case "Sunday":
+                                tsunday.callOnClick();
+                                break;
+                            case "Monday":
+                                tmonday.callOnClick();
+                                break;
+                            case "Tuesday":
+                                ttuesday.callOnClick();
+                                break;
+                            case "Wednesday":
+                                twednesday.callOnClick();
+                                break;
+                            case "Thursday":
+                                tthursday.callOnClick();
+                                break;
+                            case "Friday":
+                                tfriday.callOnClick();
+                                break;
+                            case "Saturday":
+                                tsaturday.callOnClick();
+                                break;
+                            default:
+
+                        }
+                    }
                 }
 
                 reminderDescription.setText(newReminder.getDescription());
@@ -525,7 +560,7 @@ public class NewReminder extends AppCompatActivity {
      */
     public String repeatDates() {
         List<String> alarm_days = new ArrayList<>();
-        if (ssunday || smonday || stuesday || swednesday || sthursday || sfriday || ssaturday) {
+        if ((ssunday || smonday || stuesday || swednesday || sthursday || sfriday || ssaturday) && repeating) {
             if (ssunday) {
                 alarm_days.add("Sunday");
             }
@@ -612,24 +647,42 @@ public class NewReminder extends AppCompatActivity {
         Date today = new Date();
 
         //save alarm data to db
-        newReminder = new Reminder(
-                reminderName.getText().toString(),
-                date_string,
-                priorSet,
-                reminderDescription.getText().toString(),
-                puzzle,
-                true,
-                false,
-                repeatDates(),
-                "",
-                puzzle,
-                puzzle_level,
-                poke,
-                alternate,
-                0,
-                dateFormat.format(today),
-                dateFormat.format(today));
-        newReminder.save();
+        if (!edit_mode) {
+            newReminder = new Reminder(
+                    reminderName.getText().toString(),
+                    date_string,
+                    priorSet,
+                    reminderDescription.getText().toString(),
+                    puzzle,
+                    true,
+                    false,
+                    repeatDates(),
+                    "",
+                    puzzle,
+                    puzzle_level,
+                    poke,
+                    alternate,
+                    0,
+                    dateFormat.format(today),
+                    dateFormat.format(today));
+            newReminder.save();
+        } else {
+            newReminder.setTitle(reminderName.getText().toString());
+            newReminder.setTime(date_string);
+            newReminder.setPrior(priorSet);
+            newReminder.setDescription(reminderDescription.getText().toString());
+            newReminder.setPuzzle(puzzle);
+            newReminder.setStatus(true);
+            newReminder.setActive(false);
+            newReminder.setRepeat(repeatDates());
+            newReminder.setPuzzletype(puzzle);
+            newReminder.setPuzzlelevel(puzzle_level);
+            newReminder.setPoke(poke);
+            newReminder.setAlternatepuzzle(alternate);
+            newReminder.setUpdated_at(dateFormat.format(today));
+            newReminder.save();
+        }
+
 
         if (priorSet) {
             AlarmReminder alarmReminder = new AlarmReminder(
@@ -645,6 +698,8 @@ public class NewReminder extends AppCompatActivity {
         //create alarm -->from a service
         Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
         intent.putExtra("alarmId", newReminder.getId());
+        if (edit_mode)
+            intent.putExtra("edit", true);
         intent.putExtra("create", true);
         startService(intent);
 

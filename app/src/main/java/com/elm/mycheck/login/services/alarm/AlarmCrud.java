@@ -33,7 +33,7 @@ public class AlarmCrud extends Service {
     private final static String TAG = AlarmCrud.class.getSimpleName();
     private String title, content, dated;
     private Long calender, reminderId;
-    private boolean create, repeat;
+    private boolean create, repeat, update = false;
     private boolean reset = false;
 
     @Nullable
@@ -49,6 +49,9 @@ public class AlarmCrud extends Service {
         reminderId = bundle.getLong("alarmId");
         create = bundle.getBoolean("create");
         reset = bundle.getBoolean("reset");
+        update = bundle.getBoolean("edit_mode");
+        if (update)
+            cancelAlarm(reminderId);
 
         Reminder reminder = Reminder.findById(Reminder.class, reminderId);
         title = reminder.getTitle();
