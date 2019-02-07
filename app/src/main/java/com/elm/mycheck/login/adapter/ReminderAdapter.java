@@ -14,6 +14,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.elm.mycheck.login.NewReminder;
 import com.elm.mycheck.login.R;
 import com.elm.mycheck.login.model.AlarmReminder;
 import com.elm.mycheck.login.model.Reminder;
@@ -60,11 +61,16 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (card_text.getVisibility() == View.VISIBLE) {
+                    /*if (card_text.getVisibility() == View.VISIBLE) {
                         card_text.setVisibility(View.GONE);
                     } else {
                         card_text.setVisibility(View.VISIBLE);
-                    }
+                    }*/
+                    final int position = getLayoutPosition();
+                    final Reminder reminder = allReminders.get(position);
+                    Intent intent = new Intent(v.getContext(), NewReminder.class);
+                    intent.putExtra("alarmId", reminder.getId());
+                    v.getContext().startActivity(intent);
                 }
             });
 
