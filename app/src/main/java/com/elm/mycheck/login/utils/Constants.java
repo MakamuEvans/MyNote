@@ -23,8 +23,8 @@ public class Constants {
     public static final int morning = 201;
 
     //retype Texts
-    public static final String text1 = "Hey me! So am going to do myself a favour and do what am supposed to do at this time: Doing it in 5, 4, 3, 2, 1, 0.5, 0.1101";
-    public static final String text2 = "Winning and losing is a part of life. When you win, don't become arrogant; When you lose, don't give up or feel like you've failed :: This is the wonder of life!";
+    public static final String text1 = "Hey me! am doing a favour to me by Doing IT!! in 5, 4, 3, 1, 0.5, 0.1101";
+    public static final String text2 = "Winning and losing is a part of life. When you win, doN't becOme arrogant; When you lose, don't give up or feel like you've failed";
     public static final String text3 = "When everything seems To be going against you; remEmber that the airplane takes off against the wind, not with it....";
     public static final String text4 = "I Don’t regret the things I’ve done, I regret the things I didn’t DO when I had the chAncE.";
     public static final String text5 = "Challenge yourself with something you know you could never do, and what you’ll find is that you can OverCOMe anyThing.";

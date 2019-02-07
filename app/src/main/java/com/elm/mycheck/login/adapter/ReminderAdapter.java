@@ -46,17 +46,18 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class myViewHolder extends RecyclerView.ViewHolder {
         public TextView title, time, dated, card_text, repeat_days;
-        public ImageView reminderStatus, delete;
+        public ImageView reminderStatus, delete, puzzle;
 
         public myViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.reminder_title);
-            time = (TextView) itemView.findViewById(R.id.reminder_time);
-            repeat_days = (TextView) itemView.findViewById(R.id.repeat_days);
-            dated = (TextView) itemView.findViewById(R.id.reminder_dated);
-            reminderStatus = (ImageView) itemView.findViewById(R.id.reminderstatus);
-            delete = (ImageView) itemView.findViewById(R.id.card_del);
-            card_text = (TextView) itemView.findViewById(R.id.card_text);
+            title = itemView.findViewById(R.id.reminder_title);
+            time = itemView.findViewById(R.id.reminder_time);
+            repeat_days = itemView.findViewById(R.id.repeat_days);
+            dated = itemView.findViewById(R.id.reminder_dated);
+            reminderStatus = itemView.findViewById(R.id.reminderstatus);
+            delete = itemView.findViewById(R.id.card_del);
+            card_text =itemView.findViewById(R.id.card_text);
+            puzzle = itemView.findViewById(R.id.reminder_puzzle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -222,6 +223,19 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
               holder.time.setText(date_simpleDateFormat.format(date1)+" "+time_simpleDateFormat.format(date1));
             }else {
                holder.time.setText(time_simpleDateFormat.format(date1));
+            }
+
+            if (reminder.getPuzzle().equalsIgnoreCase("Active Touch")){
+                holder.puzzle.setVisibility(View.VISIBLE);
+                holder.puzzle.setImageResource(R.drawable.ic_touch);
+            }
+            if (reminder.getPuzzle().equalsIgnoreCase("Retype")){
+                holder.puzzle.setVisibility(View.VISIBLE);
+                holder.puzzle.setImageResource(R.drawable.ic_keyboard);
+            }
+            if (reminder.getPuzzle().equalsIgnoreCase("Sequence")){
+                holder.puzzle.setVisibility(View.VISIBLE);
+                holder.puzzle.setImageResource(R.drawable.ic_shuffle);
             }
 
             holder.card_text.setVisibility(View.GONE);
