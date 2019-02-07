@@ -178,7 +178,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         }
 
-    @Override
+    /*@Override
     protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
 
 
@@ -188,7 +188,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Log.e("Theme", themee);
         theme.applyStyle(R.style.AppTheme_PrimarySettings, true);
 
-    }
+    }*/
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         public static class GeneralPreferenceFragment extends PreferenceFragment {

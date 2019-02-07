@@ -41,6 +41,8 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 import com.tooltip.Tooltip;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
@@ -319,6 +321,11 @@ public class NewReminder extends AppCompatActivity {
 
                         }
                     }
+                }
+
+                if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(newReminder.getId())).count() > 0 && newReminder.getPrior()) {
+                    AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(newReminder.getId())).first();
+                    reminderEarly.setText(alarmReminder.getTime());
                 }
 
                 reminderDescription.setText(newReminder.getDescription());
@@ -666,6 +673,17 @@ public class NewReminder extends AppCompatActivity {
                     dateFormat.format(today),
                     dateFormat.format(today));
             newReminder.save();
+
+
+            if (priorSet) {
+                AlarmReminder alarmReminder = new AlarmReminder(
+                        newReminder.getId(),
+                        reminderEarly.getText().toString(),
+                        0,
+                        false
+                );
+                alarmReminder.save();
+            }
         } else {
             newReminder.setTitle(reminderName.getText().toString());
             newReminder.setTime(date_string);
@@ -681,18 +699,22 @@ public class NewReminder extends AppCompatActivity {
             newReminder.setAlternatepuzzle(alternate);
             newReminder.setUpdated_at(dateFormat.format(today));
             newReminder.save();
-        }
 
 
-        if (priorSet) {
-            AlarmReminder alarmReminder = new AlarmReminder(
-                    newReminder.getId(),
-                    reminderEarly.getText().toString(),
-                    0,
-                    false
-            );
-            alarmReminder.save();
-            //prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString(), newReminder.getId());
+            AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(newReminder.getId())).first();
+            if (alarmReminder != null)
+                alarmReminder.delete();
+
+            if (priorSet) {
+                AlarmReminder alarm_reminder = new AlarmReminder(
+                        newReminder.getId(),
+                        reminderEarly.getText().toString(),
+                        0,
+                        false
+                );
+                alarm_reminder.save();
+                //prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString(), newReminder.getId());
+            }
         }
 
         //create alarm -->from a service

@@ -59,12 +59,28 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/reminder_dated"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textSize="8dp" />
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
+
+                        <ImageView
+                            android:id="@+id/reminder_puzzle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="12dp"
+                            app:srcCompat="@drawable/ic_keyboard"
+                            android:layout_alignParentRight="true"
+                            />
+
+                        <TextView
+                            android:id="@+id/reminder_dated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:textSize="8dp" />
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <LinearLayout

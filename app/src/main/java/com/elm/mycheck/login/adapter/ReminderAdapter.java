@@ -226,7 +226,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             holder.card_text.setVisibility(View.GONE);
             holder.repeat_days.setText(reminder.getRepeat());
-            if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).count() > 0){
+            if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).count() > 0 && reminder.getPrior()){
                 AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).first();
                 int value = Integer.parseInt(alarmReminder.getTime().replaceAll("[^0-9]", ""));
 
