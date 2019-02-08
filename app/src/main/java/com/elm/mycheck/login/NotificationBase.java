@@ -524,7 +524,7 @@ public class NotificationBase extends AppCompatActivity {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.my_checkv2)
+        builder.setSmallIcon(R.mipmap.my_check)
                 .setContentTitle("Alarm")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)

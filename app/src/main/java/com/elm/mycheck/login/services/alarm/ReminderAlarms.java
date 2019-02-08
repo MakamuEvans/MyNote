@@ -231,7 +231,7 @@ public class ReminderAlarms extends BroadcastReceiver {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.mipmap.logo)
+        builder.setSmallIcon(R.mipmap.my_check)
                 .setContentTitle(nTitle)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)

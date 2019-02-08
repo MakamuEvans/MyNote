@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elm.mycheck.login.model.Note;
@@ -63,17 +65,20 @@ public class Homev2 extends AppCompatActivity implements NavigationView.OnNaviga
         fragmentList.add(new ReminderFragment());
         fragmentList.add(new EventsFragment());
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        tabLayout = (SpaceTabLayout) findViewById(R.id.spaceTabLayout);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.spaceTabLayout);
 
         tabLayout.initialize(viewPager, getSupportFragmentManager(), fragmentList);
-        //tabLayout.i
-        //tabLayout.tabOne.select();
 
-         navDrawer = (DrawerLayout) findViewById(R.id.manual_drawer);
+         navDrawer = findViewById(R.id.manual_drawer);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView user_name = header.findViewById(R.id.nav_username);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Log.e("Pref", String.valueOf(sp.getInt("theme_color", 1)));
+        user_name.setText(sp.getString("user_name", "Buddy"));
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
