@@ -119,7 +119,7 @@ public class Homev2 extends AppCompatActivity implements NavigationView.OnNaviga
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Homev2.this, "WTF", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(Homev2.this, "WTF", Toast.LENGTH_SHORT).show();
                 PopupMenu popupMenu = new PopupMenu(Homev2.this, plus);
                 popupMenu.getMenuInflater().inflate(R.menu.new_menu, popupMenu.getMenu());
 

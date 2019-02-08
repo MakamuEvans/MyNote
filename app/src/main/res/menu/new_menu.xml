@@ -3,7 +3,7 @@
     <item android:id="@+id/note_setting"
         android:title="New Note"/>
     <item android:id="@+id/reminder_setting"
-        android:title="New Reminder" />
+        android:title="New Alarm" />
     <item android:id="@+id/todo_setting"
         android:title="New To-Do"/>
 </menu>
