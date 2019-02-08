@@ -66,23 +66,26 @@ public class Homev2 extends AppCompatActivity implements NavigationView.OnNaviga
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (SpaceTabLayout) findViewById(R.id.spaceTabLayout);
 
-        tabLayout.initialize(viewPager, getSupportFragmentManager(), fragmentList, savedInstanceState);
+        tabLayout.initialize(viewPager, getSupportFragmentManager(), fragmentList);
+        //tabLayout.i
+        //tabLayout.tabOne.select();
 
          navDrawer = (DrawerLayout) findViewById(R.id.manual_drawer);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*Intent intent = getIntent();
+        Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             if (bundle.containsKey("page")) {
                 int page = intent.getExtras().getInt("page");
-                viewPager.setCurrentItem(2);
+                //viewPager.setCurrentItem(2);
+                tabLayout.setCurrentPosition(page);
 
             }
 
-        }*/
+        }
 
         this.init();
     }
@@ -151,7 +154,7 @@ public class Homev2 extends AppCompatActivity implements NavigationView.OnNaviga
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        tabLayout.saveState(outState);
+        //tabLayout.saveState(outState);
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
