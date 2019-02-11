@@ -60,8 +60,9 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
             holder.imageView.setImageResource(R.mipmap.ic_action_check_circle_not);
         }else {
             holder.mSuccess.setVisibility(View.GONE);
-            holder.imageView.setColorFilter(holder.itemView.getContext().getResources().getColor(R.color.primaryAccentBlue));
             holder.imageView.setImageResource(R.mipmap.ic_action_check_circle);
+            holder.imageView.setColorFilter(holder.itemView.getContext().getResources().getColor(R.color.primaryAccentBlue));
+
         }
         viewBinderHelper.bind(holder.swipeRevealLayout, milestones.getId().toString());
     }

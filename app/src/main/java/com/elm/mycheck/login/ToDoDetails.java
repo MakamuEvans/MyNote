@@ -142,7 +142,7 @@ public class ToDoDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AddMilestone addMilestone = new AddMilestone();
-                MDToast.makeText(getApplicationContext(),"haha",MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
+               // MDToast.makeText(getApplicationContext(),"haha",MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
                 Bundle args = new Bundle();
                 args.putString("task_id", id.toString());
                 args.putBoolean("new_task", false);

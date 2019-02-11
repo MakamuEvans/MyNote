@@ -41,7 +41,7 @@ public class ReminderAlarms extends BroadcastReceiver {
     String nTitle, nContent;
     int nId, alarmTracker;
     Long alarmId;
-    Boolean repeat;
+    Boolean repeat, is_snooze= false;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -53,16 +53,20 @@ public class ReminderAlarms extends BroadcastReceiver {
         alarmId = bundle.getLong("alarmId");
         repeat = bundle.getBoolean("repeat");
         alarmTracker = bundle.getInt("alarmTracker");
+        is_snooze = bundle.getBoolean("is_snooze");
 
         Log.e("Atherere", String.valueOf(nId));
 
         //get type of notification -->early reminder n actual?
         if (nId == Constants.actualReminder) {
+            Log.e("Atherere", "actual");
             //actual
-            //handle alarms differently for api 19 and above due to OS changes
+            ///////////////////////////////////////////////////////
+            // handle alarms differently for api 19 and above due to OS changes
+            // api below 19 can have repeating alarm, hence this will have to be rescheduled after every day for 19 and sbove
+            /////////////////////////////////////////////////////////
             if (Build.VERSION.SDK_INT >= 19) {
                 if (repeat) {
-
                     Intent intent4 = new Intent(context, AlarmCrud.class);
                     intent4.putExtra("alarmId", alarmId);
                     intent4.putExtra("create", true);
@@ -86,7 +90,7 @@ public class ReminderAlarms extends BroadcastReceiver {
                         //set reminder as active
                         reminder.setActive(true);
                         reminder.save();
-                        if (reminder.getStatus())
+                        if (reminder.getStatus() || is_snooze)
                             actualAlarms(context);
                     }
                 }else {
@@ -94,11 +98,13 @@ public class ReminderAlarms extends BroadcastReceiver {
                 }
 
             } else {
+                Log.e("atherere", "not repeating");
                 reminder = Reminder.findById(Reminder.class, alarmId);
+                Log.e("atherere", reminder.toString());
                 if (reminder != null){
                     reminder.setActive(true);
                     reminder.save();
-                    if (reminder.getStatus())
+                    if (reminder.getStatus() || is_snooze)
                         actualAlarms(context);
 
                     reminder.setStatus(false);

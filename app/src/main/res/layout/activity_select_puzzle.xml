@@ -28,7 +28,7 @@
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
             android:textSize="11dp"
-            android:text="Note that the Alarm will REMAIN ON for 10 Minutes, until you solve a Puzzle. SNOOZE feature will also be disabled"/>
+            android:text="Note that the Alarm will REMAIN ON for 5   Minutes, until you solve a Puzzle. SNOOZE feature will also be disabled"/>
 
 
     </LinearLayout>

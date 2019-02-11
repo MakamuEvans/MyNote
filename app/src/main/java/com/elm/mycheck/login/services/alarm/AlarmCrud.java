@@ -33,8 +33,9 @@ public class AlarmCrud extends Service {
     private final static String TAG = AlarmCrud.class.getSimpleName();
     private String title, content, dated;
     private Long calender, reminderId;
-    private boolean create, repeat, update = false;
+    private boolean create, repeat, update = false, is_snooze = false;
     private boolean reset = false;
+    private int snooze_time = 5;
 
     @Nullable
     @Override
@@ -50,6 +51,33 @@ public class AlarmCrud extends Service {
         create = bundle.getBoolean("create");
         reset = bundle.getBoolean("reset");
         update = bundle.getBoolean("edit_mode");
+        is_snooze = bundle.getBoolean("is_snooze");
+        snooze_time = bundle.getInt("snooze_time");
+
+        if (is_snooze){
+            Log.e("hahaha", "yesss");
+            Reminder reminder_snooze = Select.from(Reminder.class)
+                    .where(Condition.prop("active").eq("1"))
+                    .first();
+            Calendar now = Calendar.getInstance();
+            Log.e("timee", now.getTime().toString());
+            now.add(Calendar.MINUTE, snooze_time);
+            Log.e("timee", now.getTime().toString());
+
+            //now.getTimeInMillis()
+
+            createAlarm(
+                    reminder_snooze.getTitle(),
+                    reminder_snooze.getDescription(),
+                    Constants.actualReminder,
+                    now.getTimeInMillis(),  //.getTimeInMillis(),
+                    reminder_snooze.getId(),
+                    reminder_snooze.getRepeat() == null ? false:true,
+                    reminder_snooze.getTodo()
+            );
+            return  START_STICKY;
+           // System.exit(1);
+        }
         if (update)
             cancelAlarm(reminderId);
 
@@ -190,8 +218,8 @@ public class AlarmCrud extends Service {
             cancelAlarm(reminderId);
         }
         //stopSelf(startId);
-        //return Service.START_STICKY;
-        return super.onStartCommand(intent, flags, startId);
+        return Service.START_STICKY;
+        //return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -229,12 +257,16 @@ public class AlarmCrud extends Service {
             intent.putExtra("alarmTracker", alarmTracker);
         }
 
+        if (is_snooze)
+            intent.putExtra("is_snooze", true);
+
 
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), alarmTracker, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
+        //Log.e("timee", calender.);
         calendar.setTimeInMillis(calender);
 
         if (repeat){

@@ -13,6 +13,7 @@
         <ImageView
             android:id="@+id/reminders_close"
             android:layout_width="wrap_content"
+            android:layout_margin="10dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@android:color/white"
@@ -102,8 +103,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:padding="15px"
                         android:background="@drawable/themeless"
-                        android:text="Snooze" />
+                        android:text="Snoozee" />
 
                 </LinearLayout>
 

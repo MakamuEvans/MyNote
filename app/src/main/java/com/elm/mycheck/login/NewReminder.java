@@ -49,6 +49,7 @@ import com.valdesekamdem.library.mdtoast.MDToast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -168,13 +169,13 @@ public class NewReminder extends AppCompatActivity {
         dateTime.setStepMinutes(1);
         dateTime.setIsAmPm(false);
         time_picker.setDisplayDays(false);
-        time_picker.setMustBeOnFuture(false);
+       // time_picker.setMustBeOnFuture(false);
         time_picker.setStepMinutes(1);
         time_picker.setIsAmPm(false);
-        dateTime.setMustBeOnFuture(true);
+        //dateTime.setMustBeOnFuture(true);
 
-        repeat_mode = (RelativeLayout) findViewById(R.id.repeat_mode);
-        spinner = (Spinner) findViewById(R.id.alarm_type);
+        repeat_mode = findViewById(R.id.repeat_mode);
+        spinner = findViewById(R.id.alarm_type);
 
         new Tooltip.Builder(spinner)
                 .setText("Click here to modify Alarm Type")
@@ -206,7 +207,7 @@ public class NewReminder extends AppCompatActivity {
             }
         });
 
-        selectedDate.setText(simpleDateFormat.format(dateTime.getDate()));
+        selectedDate.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
 
         RelativeLayout title_layout = (RelativeLayout) findViewById(R.id.title_layout);
         RelativeLayout early_layout = (RelativeLayout) findViewById(R.id.early_layout);
@@ -620,6 +621,11 @@ public class NewReminder extends AppCompatActivity {
         if (repeating) {
             if (repeatDates() == null) {
                 MDToast.makeText(getBaseContext(), "No week days selected for repeating alarm!", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                return;
+            }
+        } else {
+            if (!dateTime.getDate().after(Calendar.getInstance().getTime())){
+                MDToast.makeText(getBaseContext(), "You can't set a one time alarm to past date!", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 return;
             }
         }

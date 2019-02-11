@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -45,6 +46,7 @@ import android.widget.TextView;
 import com.elm.mycheck.login.adapter.NotificationsAdapter;
 import com.elm.mycheck.login.model.AlarmReminder;
 import com.elm.mycheck.login.model.Reminder;
+import com.elm.mycheck.login.services.alarm.AlarmCrud;
 import com.elm.mycheck.login.services.alarm.PlaySound;
 import com.elm.mycheck.login.services.alarm.SoundService;
 import com.elm.mycheck.login.utils.Constants;
@@ -56,7 +58,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class NotificationBase extends AppCompatActivity {
+public class NotificationBase extends Activity {
     private static final String TAG = NotificationBase.class.getSimpleName();
     public static boolean activityOpen = false;
     public List<Reminder> activeReminders = new ArrayList<>();
@@ -112,28 +114,7 @@ public class NotificationBase extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
-            setTheme(R.style.AppTheme_NoActionBar);
-        if (theme == "tangarine")
-            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
-        if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_NoActionBar_Banana);
-        if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_NoActionBar_Basil);
-        if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_NoActionBar_Sage);
-        if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_NoActionBar_Peacock);
-        if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
-        if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_NoActionBar_Lavender);
-        if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_NoActionBar_Grape);
-        if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
-        if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+        //setTheme(R.style.AppTheme_NoActionBar_Primary);
 
         SharedPreferences preferences1 = getSharedPreferences("myPref", 0);
         SharedPreferences.Editor editor1 = preferences1.edit();
@@ -165,7 +146,7 @@ public class NotificationBase extends AppCompatActivity {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(500);
         init();
-        close_button = (ImageView) findViewById(R.id.reminders_close);
+        close_button = findViewById(R.id.reminders_close);
         demo = false;
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -229,8 +210,6 @@ public class NotificationBase extends AppCompatActivity {
             editor2.commit();
             snooze_count = 0;
         }
-
-
         reminder_action = (LinearLayout) findViewById(R.id.reminder_action);
 
 
@@ -267,8 +246,6 @@ public class NotificationBase extends AppCompatActivity {
                 activeReminders.add(Reminder.findById(Reminder.class, reminder.getReminderid()));
             }
         }
-
-
         //stopService(new Intent(NotificationBase.this, PlaySound.class));
 
         //register receiver
@@ -277,17 +254,16 @@ public class NotificationBase extends AppCompatActivity {
         registerReceiver(newNotificationn, intentFilter);
 
 
-        final HorizontalInfiniteCycleViewPager horizontalInfiniteCycleViewPager =
-                (HorizontalInfiniteCycleViewPager) findViewById(R.id.hicvp);
+        final HorizontalInfiniteCycleViewPager horizontalInfiniteCycleViewPager = findViewById(R.id.hicvp);
         horizontalInfiniteCycleViewPager.setAdapter(new NotificationsAdapter(getBaseContext(), false, activeReminders));
 
-        notificationsCount = (TextView) findViewById(R.id.notifications_count);
+        notificationsCount = findViewById(R.id.notifications_count);
         notificationsCount.setText("You have " + activeReminders.size() + " Reminder(s)");
         if (notification)
             notificationsCount.setText(activeReminders.size() + " Upcoming Reminder(s)");
 
-        pause_media = (Button) findViewById(R.id.snooze_alarm);
-        close_b = (Button) findViewById(R.id.close_alarm);
+        pause_media = findViewById(R.id.snooze_alarm);
+        close_b = findViewById(R.id.close_alarm);
 
         close_b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,8 +298,6 @@ public class NotificationBase extends AppCompatActivity {
                 snoozeAlarm();
                 quit = "no";
                 finish();
-
-
                 //mMediaPlayer.stop();
             }
         });
@@ -341,6 +315,7 @@ public class NotificationBase extends AppCompatActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         alartTime = Integer.parseInt(sp.getString("ring_duration", "1"));
         snoozeTime = Integer.parseInt(sp.getString("snooze_duration", "5"));
+        //Log.e("hahahahahahahah", String.valueOf(snoozeTime));
         vibrate = sp.getBoolean("notifications_new_message_vibrate", true);
 
         Uri ringtone = Uri.parse(sp.getString("notifications_new_message_ringtone", "content://settings/system/ringtone"));
@@ -386,14 +361,20 @@ public class NotificationBase extends AppCompatActivity {
     }
 
     private void snoozeAlarm() {
+        Log.e("hee","Snooze Called");
         cancelCountDown();
         if (wakeLock.isHeld())
             wakeLock.release();
         stopAlarm();
         //createNotification("Reminder in Snooze Mode");
         if (!snooze) {
-            Intent intent = new Intent(NotificationBase.this, SoundService.class);
+            /*Intent intent = new Intent(NotificationBase.this, SoundService.class);
             intent.putExtra("snoozeAlarm", true);
+            startService(intent);*/
+
+            Intent intent = new Intent(NotificationBase.this, AlarmCrud.class);
+            intent.putExtra("is_snooze", true);
+            intent.putExtra("snooze_time", snoozeTime);
             startService(intent);
         } else {
             createNotification("You Missed an Alarm. Click to View");
@@ -434,18 +415,18 @@ public class NotificationBase extends AppCompatActivity {
 
     private void init() {
         //initialize layout
-        info_layout = (LinearLayout) findViewById(R.id.alarm_info);
-        box_puzzle = (LinearLayout) findViewById(R.id.puzzle_box);
-        sequence_puzzle = (LinearLayout) findViewById(R.id.puzzle_sequence);
-        retype_puzzle = (LinearLayout) findViewById(R.id.puzzle_retype);
-        sequence_quiz = (LinearLayout) findViewById(R.id.sequence_quiz);
-        sequence_ans = (LinearLayout) findViewById(R.id.sequence_ans);
+        info_layout = findViewById(R.id.alarm_info);
+        box_puzzle = findViewById(R.id.puzzle_box);
+        sequence_puzzle = findViewById(R.id.puzzle_sequence);
+        retype_puzzle = findViewById(R.id.puzzle_retype);
+        sequence_quiz = findViewById(R.id.sequence_quiz);
+        sequence_ans = findViewById(R.id.sequence_ans);
 
-        box_counter_t = (TextView) findViewById(R.id.success_counter);
-        box_message = (TextView) findViewById(R.id.box_message);
-        box_timer = (TextView) findViewById(R.id.box_timer);
-        sequence_message = (TextView) findViewById(R.id.sequence_message);
-        sequence_counterr = (TextView) findViewById(R.id.sequence_counterr);
+        box_counter_t = findViewById(R.id.success_counter);
+        box_message = findViewById(R.id.box_message);
+        box_timer = findViewById(R.id.box_timer);
+        sequence_message = findViewById(R.id.sequence_message);
+        sequence_counterr = findViewById(R.id.sequence_counterr);
 
         sequence_message.setText("Touch on a Shape");
 
@@ -454,26 +435,26 @@ public class NotificationBase extends AppCompatActivity {
         box_counter_t.setText(count_string);
         box_message.setText("Touch White Box");
 
-        c_1 = (CardView) findViewById(R.id.p_1);
-        c_2 = (CardView) findViewById(R.id.p_2);
-        c_3 = (CardView) findViewById(R.id.p_3);
-        c_4 = (CardView) findViewById(R.id.p_4);
-        c_5 = (CardView) findViewById(R.id.p_5);
-        c_6 = (CardView) findViewById(R.id.p_6);
-        c_7 = (CardView) findViewById(R.id.p_7);
-        c_8 = (CardView) findViewById(R.id.p_8);
-        c_9 = (CardView) findViewById(R.id.p_9);
+        c_1 = findViewById(R.id.p_1);
+        c_2 = findViewById(R.id.p_2);
+        c_3 = findViewById(R.id.p_3);
+        c_4 = findViewById(R.id.p_4);
+        c_5 = findViewById(R.id.p_5);
+        c_6 = findViewById(R.id.p_6);
+        c_7 = findViewById(R.id.p_7);
+        c_8 = findViewById(R.id.p_8);
+        c_9 = findViewById(R.id.p_9);
 
-        s_1 = (CardView) findViewById(R.id.s_1);
-        s_2 = (CardView) findViewById(R.id.s_2);
-        s_3 = (CardView) findViewById(R.id.s_3);
-        s_4 = (CardView) findViewById(R.id.s_4);
+        s_1 = findViewById(R.id.s_1);
+        s_2 = findViewById(R.id.s_2);
+        s_3 = findViewById(R.id.s_3);
+        s_4 = findViewById(R.id.s_4);
 
-        text_test = (TextView) findViewById(R.id.text_test);
-        failed_retype = (TextView) findViewById(R.id.failed_retype);
-        text_response = (EditText) findViewById(R.id.text_response);
-        retype = (Button) findViewById(R.id.retype_button);
-        s_c = (TextView) findViewById(R.id.s_c);
+        text_test = findViewById(R.id.text_test);
+        failed_retype = findViewById(R.id.failed_retype);
+        text_response = findViewById(R.id.text_response);
+        retype = findViewById(R.id.retype_button);
+        s_c = findViewById(R.id.s_c);
         quit = "ok";
     }
 
@@ -483,8 +464,10 @@ public class NotificationBase extends AppCompatActivity {
         if (quit.equals("ok") && !notification) {
             createNotification("You have an Active Reminder.");
         }
-        if (notification)
+        if (notification || demo){
+            close_button.callOnClick();
             finish();
+        }
         if (animationDrawable != null && animationDrawable.isRunning())
             animationDrawable.stop();
         super.onPause();
@@ -560,7 +543,7 @@ public class NotificationBase extends AppCompatActivity {
         startAlarm();
 
         wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
-                PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm.myTag"
+                PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm254.myTag"
         );
 
         if (alartTime == 30) {
@@ -570,7 +553,7 @@ public class NotificationBase extends AppCompatActivity {
         }
 
         if (isPuzzle) {
-            alartTime = 60 * 60000;
+            alartTime = 5 * 60000;
             snooze=true;
         }
 

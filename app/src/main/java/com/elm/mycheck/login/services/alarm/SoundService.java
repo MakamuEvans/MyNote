@@ -147,7 +147,7 @@ public class SoundService extends Service {
             @Override
             public void onFinish() {
                 getApplicationContext().startActivity(new Intent(getApplicationContext(), NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("snooze", true));
-                stopSelf();
+                //stopSelf();
             }
         }.start();
     }
