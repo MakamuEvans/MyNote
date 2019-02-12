@@ -638,12 +638,32 @@ public class NewReminder extends AppCompatActivity {
         String date_string;
         Date date;
 
+        Long diff, sec, min, hr, days;
+        String toast = "Alarm Set";
         //get date depending on ReminderType
         if (!repeating) {
             date_string = simpleDateFormat.format(dateTime.getDate());
+            diff = dateTime.getDate().getTime() - Calendar.getInstance().getTime().getTime();
+            sec = diff/1000;
+            min = sec/60;
+            hr = min/60;
+            days = hr/24;
+
+            if (days < 1){
+                Long mins_diff = min - (hr * 60);
+                toast = "Alarm set "+hr+" hr(s), "+mins_diff+" mins from now";
+            }else {
+                toast = "Alarm set on "+date_string;
+            }
+            /*Log.e("sec", String.valueOf(sec));
+            Log.e("min", String.valueOf(min));
+            Log.e("hr", String.valueOf(hr));
+            Log.e("day", String.valueOf(days));*/
             // date = simpleDateFormat.parse(simpleDateFormat.format(dateTime.getDate()));
         } else {
             date_string = simpleDateFormat.format(time_picker.getDate());
+            String time_string = simpleDateFormat2.format(time_picker.getDate());
+            toast = "Repeating alarm set at "+time_string;
             // date = simpleDateFormat.parse(simpleDateFormat.format(time_picker.getDate()));
         }
 
@@ -732,7 +752,7 @@ public class NewReminder extends AppCompatActivity {
         startService(intent);
 
         //Toast.makeText(getBaseContext(), "Reminder set to  " + date_string, Toast.LENGTH_LONG).show();
-        MDToast.makeText(getBaseContext(), "Reminder set", MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+        MDToast.makeText(getBaseContext(), toast, MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
 
         //update ui and launch relevant fragment
         String dt = new Gson().toJson(newReminder);
@@ -747,4 +767,12 @@ public class NewReminder extends AppCompatActivity {
         startActivity(intent2);
         finish();
     }
+
+    /*private String ToastMessage(Long min, Long hr, Long days){
+        String response;
+        if (days >= 1){
+            //response = "Alarm set "+days+" day(s) "+hr+
+        }
+
+    }*/
 }

@@ -33,7 +33,7 @@ public class AlarmCrud extends Service {
     private final static String TAG = AlarmCrud.class.getSimpleName();
     private String title, content, dated;
     private Long calender, reminderId;
-    private boolean create, repeat, update = false, is_snooze = false;
+    private boolean create, repeat, update = false, is_snooze = false, auto_snooze = false;
     private boolean reset = false;
     private int snooze_time = 5;
 
@@ -53,6 +53,7 @@ public class AlarmCrud extends Service {
         update = bundle.getBoolean("edit_mode");
         is_snooze = bundle.getBoolean("is_snooze");
         snooze_time = bundle.getInt("snooze_time");
+        auto_snooze = bundle.getBoolean("auto_snooze");
 
         if (is_snooze){
             Log.e("hahaha", "yesss");
@@ -257,8 +258,10 @@ public class AlarmCrud extends Service {
             intent.putExtra("alarmTracker", alarmTracker);
         }
 
-        if (is_snooze)
+        if (is_snooze){
             intent.putExtra("is_snooze", true);
+            intent.putExtra("auto_snooze", auto_snooze);
+        }
 
 
 

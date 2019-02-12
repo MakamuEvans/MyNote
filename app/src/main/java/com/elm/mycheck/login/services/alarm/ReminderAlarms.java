@@ -41,7 +41,7 @@ public class ReminderAlarms extends BroadcastReceiver {
     String nTitle, nContent;
     int nId, alarmTracker;
     Long alarmId;
-    Boolean repeat, is_snooze= false;
+    Boolean repeat, is_snooze= false, auto_snooze=false;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -54,6 +54,7 @@ public class ReminderAlarms extends BroadcastReceiver {
         repeat = bundle.getBoolean("repeat");
         alarmTracker = bundle.getInt("alarmTracker");
         is_snooze = bundle.getBoolean("is_snooze");
+        auto_snooze = bundle.getBoolean("auto_snooze");
 
         Log.e("Atherere", String.valueOf(nId));
 
@@ -175,7 +176,7 @@ public class ReminderAlarms extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel("default",
                     "myCheck", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("Hahaha");
+            channel.setDescription("Alarms");
             mNotificationManager.createNotificationChannel(channel);
         }
 
@@ -235,6 +236,16 @@ public class ReminderAlarms extends BroadcastReceiver {
         resultIntent.putExtra("reminder", alarmTracker);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("todo",
+                    "to Do", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("to Do");
+            mNotificationManager.createNotificationChannel(channel);
+        }
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.mipmap.my_check)
@@ -243,10 +254,6 @@ public class ReminderAlarms extends BroadcastReceiver {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
-
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -274,9 +281,9 @@ public class ReminderAlarms extends BroadcastReceiver {
         if (isOpen) {
             /*Intent intent = new Intent(NotificationBase.newNotification.ACTION);
             context.sendBroadcast(intent);*/
-            context.startActivity(new Intent(context, NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            context.startActivity(new Intent(context, NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("auto_snooze", auto_snooze));
         } else {
-            context.startActivity(new Intent(context, NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            context.startActivity(new Intent(context, NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("auto_snooze", auto_snooze));
         }
     }
 

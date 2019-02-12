@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -17,6 +18,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.Vibrator;
@@ -93,7 +95,7 @@ public class NotificationBase extends Activity {
     private int random;
     private int box_counter = 0;
     private String count_string = null;
-    private Boolean isPuzzle = false;
+    private Boolean isPuzzle = false, auto_snooze = false;
     private String puzzleType = null;
 
     private FrameLayout layout;
@@ -188,6 +190,10 @@ public class NotificationBase extends Activity {
                     snooze = true;
 
             }
+
+            if (bundle.containsKey("auto_snooze")) {
+                auto_snooze = intent.getExtras().getBoolean("auto_snooze");
+            }
         }
         if (demo) {
             close_button.setVisibility(View.VISIBLE);
@@ -233,7 +239,7 @@ public class NotificationBase extends Activity {
                 if (!a_reminder.getPuzzle().equals("None")) {
                     isPuzzle = true;
                     puzzleType = a_reminder.getPuzzle();
-                    puzzle_level = decodePuzzle(a_reminder.getPuzzletype(),a_reminder.getPuzzlelevel());
+                    puzzle_level = decodePuzzle(a_reminder.getPuzzletype(), a_reminder.getPuzzlelevel());
                 }
             }
         } else {
@@ -242,7 +248,7 @@ public class NotificationBase extends Activity {
                     .list();
 
             for (AlarmReminder reminder : activeNotifications
-                    ) {
+            ) {
                 activeReminders.add(Reminder.findById(Reminder.class, reminder.getReminderid()));
             }
         }
@@ -295,7 +301,7 @@ public class NotificationBase extends Activity {
             @Override
             public void onClick(View v) {
                 mNotificationManager.cancel(500);
-                snoozeAlarm();
+                snoozeAlarm(false);
                 quit = "no";
                 finish();
                 //mMediaPlayer.stop();
@@ -346,7 +352,7 @@ public class NotificationBase extends Activity {
                     .where(Condition.prop("active").eq("1"))
                     .list();
             for (AlarmReminder reminder : activeNotifications
-                    ) {
+            ) {
                 reminder.setActive(false);
                 reminder.save();
             }
@@ -360,20 +366,21 @@ public class NotificationBase extends Activity {
         startService(intent);
     }
 
-    private void snoozeAlarm() {
-        Log.e("hee","Snooze Called");
+    private void snoozeAlarm(boolean auto) {
+        Log.e("hee", "Snooze Called");
         cancelCountDown();
         if (wakeLock.isHeld())
             wakeLock.release();
         stopAlarm();
         //createNotification("Reminder in Snooze Mode");
-        if (!snooze) {
+        if (!snooze && !auto_snooze) {
             /*Intent intent = new Intent(NotificationBase.this, SoundService.class);
             intent.putExtra("snoozeAlarm", true);
             startService(intent);*/
 
             Intent intent = new Intent(NotificationBase.this, AlarmCrud.class);
             intent.putExtra("is_snooze", true);
+            intent.putExtra("auto_snooze", auto);
             intent.putExtra("snooze_time", snoozeTime);
             startService(intent);
         } else {
@@ -385,29 +392,29 @@ public class NotificationBase extends Activity {
         stopService(new Intent(NotificationBase.this, SoundService.class));
     }
 
-    private int decodePuzzle(String type, String level){
-        if (type.equalsIgnoreCase("Active touch")){
-            if (level.equalsIgnoreCase("1")){
+    private int decodePuzzle(String type, String level) {
+        if (type.equalsIgnoreCase("Active touch")) {
+            if (level.equalsIgnoreCase("1")) {
                 return 20;
-            }else if (level.equalsIgnoreCase("2")){
+            } else if (level.equalsIgnoreCase("2")) {
                 return 30;
-            }else {
+            } else {
                 return 50;
             }
-        }else if (type.equalsIgnoreCase("Retype")){
-            if (level.equalsIgnoreCase("1")){
+        } else if (type.equalsIgnoreCase("Retype")) {
+            if (level.equalsIgnoreCase("1")) {
                 return 20;
-            }else if (level.equalsIgnoreCase("2")){
+            } else if (level.equalsIgnoreCase("2")) {
                 return 30;
-            }else {
+            } else {
                 return 50;
             }
-        }else {
-            if (level.equalsIgnoreCase("1")){
+        } else {
+            if (level.equalsIgnoreCase("1")) {
                 return 3;
-            }else if (level.equalsIgnoreCase("2")){
+            } else if (level.equalsIgnoreCase("2")) {
                 return 4;
-            }else {
+            } else {
                 return 6;
             }
         }
@@ -464,7 +471,7 @@ public class NotificationBase extends Activity {
         if (quit.equals("ok") && !notification) {
             createNotification("You have an Active Reminder.");
         }
-        if (notification || demo){
+        if (notification || demo) {
             close_button.callOnClick();
             finish();
         }
@@ -476,14 +483,14 @@ public class NotificationBase extends Activity {
     @Override
     protected void onResume() {
         Log.e("aisee", "onResume");
-        if (demo){
+        if (demo) {
 
-        }else if (demo){
+        } else if (demo) {
             if (demo_type.equalsIgnoreCase("puzzle"))
                 boxPuzzle();
             if (demo_type.equalsIgnoreCase("sequence"))
                 sequencePuzzle();
-        }else if (isPuzzle) {
+        } else if (isPuzzle) {
            /* close_button.setVisibility(View.GONE);
             if (puzzleType.equals("puzzle"))
                 boxPuzzle();
@@ -494,7 +501,7 @@ public class NotificationBase extends Activity {
         if (animationDrawable != null && !animationDrawable.isRunning())
             animationDrawable.run();
         super.onResume();
-         //h
+        //h
     }
 
     private void createNotification(String message) {
@@ -505,6 +512,16 @@ public class NotificationBase extends Activity {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        NotificationManager mNotificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("missed",
+                    "Missed", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Missed Alarms");
+            mNotificationManager.createNotificationChannel(channel);
+        }
+
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setSmallIcon(R.mipmap.my_check)
@@ -513,10 +530,6 @@ public class NotificationBase extends Activity {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
-
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -554,7 +567,7 @@ public class NotificationBase extends Activity {
 
         if (isPuzzle) {
             alartTime = 5 * 60000;
-            snooze=true;
+            snooze = true;
         }
 
         wakeLock.acquire(alartTime);
@@ -586,7 +599,8 @@ public class NotificationBase extends Activity {
 
                 //stopService(new Intent(NotificationBase.this, PlaySound.class));
 
-                snoozeAlarm();
+                snoozeAlarm(true);
+                finish();
 
 
             }
@@ -678,7 +692,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -702,7 +716,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
 
             }
@@ -727,7 +741,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -751,7 +765,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -775,7 +789,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of " +puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -799,7 +813,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -823,7 +837,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -847,7 +861,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -871,7 +885,7 @@ public class NotificationBase extends Activity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+ puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -960,7 +974,7 @@ public class NotificationBase extends Activity {
                 box_message.setTextColor(getResources().getColor(R.color.red));
                 box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
 
-                count_string = box_counter + " of "+ puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         }.start();
@@ -1053,7 +1067,7 @@ public class NotificationBase extends Activity {
                 if (active[ansCount] == 1) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1080,7 +1094,7 @@ public class NotificationBase extends Activity {
                 setCardAnimation(s_2);
                 if (active[ansCount] == 2) {
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1109,7 +1123,7 @@ public class NotificationBase extends Activity {
                 if (active[ansCount] == 3) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1137,7 +1151,7 @@ public class NotificationBase extends Activity {
                 if (active[ansCount] == 4) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1180,7 +1194,7 @@ public class NotificationBase extends Activity {
             s_c.setVisibility(View.VISIBLE);
         }
 
-        s_c.setText(imageCount + " of "+ puzzle_level);
+        s_c.setText(imageCount + " of " + puzzle_level);
 
 
         //active.

@@ -34,8 +34,8 @@
 
     <color name="primaryBlue">#ffffff</color>
     <color name="primaryDarkBlue">#cecece</color>
-    <color name="primaryAccentBlue">#0734e2</color>
-    <color name="primaryBluish">#6579F1</color>
+    <color name="primaryAccentBlue">#ca2b2b</color>
+    <color name="primaryBluish">#D85B5B</color>
 
     <color name="colorPrimaryLavender">#6d7cc9</color>
     <color name="colorPrimaryDarkLavender">#3346ab</color>
