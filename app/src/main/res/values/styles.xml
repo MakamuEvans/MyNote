@@ -61,7 +61,7 @@
     <style name="SplashTheme.Tangarine" parent="AppTheme.Tangarine">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
+        <item name="android:windowBackground">@drawable/my_check_splash</item>
     </style>
 
     <style name="AppTheme.Banana" parent="Theme.AppCompat.Light.DarkActionBar">

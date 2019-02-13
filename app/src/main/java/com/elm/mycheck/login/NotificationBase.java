@@ -85,6 +85,7 @@ public class NotificationBase extends Activity {
     private int puzzle_level = 0, count_fail = 0;
     private NotificationManager mNotificationManager;
     private RelativeLayout relativeLayout;
+    private boolean missed = false;
 
     MediaPlayer mMediaPlayer;
     Boolean snoozeActive = false;
@@ -194,6 +195,10 @@ public class NotificationBase extends Activity {
             if (bundle.containsKey("auto_snooze")) {
                 auto_snooze = intent.getExtras().getBoolean("auto_snooze");
             }
+
+            if (bundle.containsKey("missed")) {
+                missed = intent.getExtras().getBoolean("missed");
+            }
         }
         if (demo) {
             close_button.setVisibility(View.VISIBLE);
@@ -229,8 +234,8 @@ public class NotificationBase extends Activity {
             if (activeReminders.size() == 0) {
                 //return;
                 //onDestroy();
-               /* quit = true;
-                finish();*/
+                /* quit = true;*/
+                finish();
             }
 
             for (Reminder reminder : activeReminders) {
@@ -290,11 +295,12 @@ public class NotificationBase extends Activity {
                     stopAlarm();
                     clearActives();
                     quit = "no";
-                    finish();
+                    finishAffinity();
+                    //finish();
                 }
             }
         });
-        if (isPuzzle)
+        if (isPuzzle || missed)
             pause_media.setVisibility(View.GONE);
 
         pause_media.setOnClickListener(new View.OnClickListener() {
@@ -303,7 +309,8 @@ public class NotificationBase extends Activity {
                 mNotificationManager.cancel(500);
                 snoozeAlarm(false);
                 quit = "no";
-                finish();
+                onDestroy();
+                //finish();
                 //mMediaPlayer.stop();
             }
         });
@@ -328,7 +335,8 @@ public class NotificationBase extends Activity {
         System.out.println(ringtone);
         if (!notification) {
             Log.e("playSound", "Playing...");
-            playSound(this, ringtone);
+            if (!missed)
+                playSound(this, ringtone);
         } else {
             close_b.setVisibility(View.GONE);
             pause_media.setVisibility(View.GONE);
@@ -467,9 +475,9 @@ public class NotificationBase extends Activity {
 
     @Override
     protected void onPause() {
-        Log.e("aisee", "pause");
+        Log.e("aisee", "quit");
         if (quit.equals("ok") && !notification) {
-            createNotification("You have an Active Reminder.");
+            createNotification("You have an Active Alarm.");
         }
         if (notification || demo) {
             close_button.callOnClick();
@@ -505,59 +513,60 @@ public class NotificationBase extends Activity {
     }
 
     private void createNotification(String message) {
-        Intent resultIntent = new Intent(this, NotificationBase.class);
-        resultIntent.putExtra("fromSnooze", true);
-        Intent openReminder = new Intent(this, NotificationBase.class);
-        resultIntent.putExtra("fromSnooze", true);
+        //set action responses
+        Intent resultIntent = new Intent(NotificationBase.this, NotificationBase.class);
+        resultIntent.putExtra("missed", true);
+        Intent openReminder = new Intent(NotificationBase.this, NotificationBase.class);
+        openReminder.putExtra("missed", true);
+        PendingIntent pendingIntent = PendingIntent.getActivity(NotificationBase.this, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
-
+        //prepare notification
         NotificationManager mNotificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("missed",
-                    "Missed", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("Missed Alarms");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("missed_alarms",
+                    "Missed Alarms", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Alarms Missed");
             mNotificationManager.createNotificationChannel(channel);
         }
 
-        //prepare notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "missed_alarms");
         builder.setSmallIcon(R.mipmap.my_check)
-                .setContentTitle("Alarm")
+                .setContentTitle("myCheck")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
 
+        System.out.println(count);
+        //handle notification putting in mind other active similar notifications
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(ToDoDetails.class);
+        stackBuilder.addParentStack(NotificationBase.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
                         0,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
-        builder.addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent);
+        builder.addAction(R.mipmap.ic_action_check_free, "View!", pendingIntent);
         // builder.addAction(R.mipmap.ic_action_close, "Got it!", null);
         builder.setContentText(message);
         builder.setContentIntent(resultPendingIntent);
-        mNotificationManager.notify(500, builder.build());
+        mNotificationManager.notify(101, builder.build());
     }
 
     //public PowerManager.WakeLock wakeLock;
 
+    PowerManager powerManager;
+
     private void playSound(Context context, Uri alert) {
-        Log.e(TAG, "sn " + snooze_count);
-
-
+        //Log.e(TAG, "sn " + snooze_count);
         startAlarm();
-
-        wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
-                PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm254.myTag"
-        );
+        powerManager = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "mycheck:elm");
 
         if (alartTime == 30) {
             alartTime = 30000;
@@ -598,7 +607,7 @@ public class NotificationBase extends Activity {
                 startService(intent);*/
 
                 //stopService(new Intent(NotificationBase.this, PlaySound.class));
-
+                quit = "no";
                 snoozeAlarm(true);
                 finish();
 
@@ -904,7 +913,7 @@ public class NotificationBase extends Activity {
             stopAlarm();
             if (!demo)
                 clearActives();
-            finish();
+            finishAffinity();
         } else {
             if (random == 1) {
                 c_1.setCardBackgroundColor(getResources().getColor(R.color.colorWhite));
@@ -1024,7 +1033,7 @@ public class NotificationBase extends Activity {
                     stopAlarm();
                     if (!demo)
                         clearActives();
-                    finish();
+                    finishAffinity();
                 } else {
                     //warn
                     failed_retype.setVisibility(View.VISIBLE);
@@ -1044,7 +1053,7 @@ public class NotificationBase extends Activity {
         stopAlarm();
         if (!demo)
             clearActives();
-        finish();
+        finishAffinity();
     }
 
     private void sequencePuzzle() {

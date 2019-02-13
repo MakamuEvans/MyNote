@@ -211,6 +211,9 @@ public class FullNote extends AppCompatActivity {
         } else {
             setTitle(note1.getTitle());
         }
+
+        EditorContent editorContent = editor.getContentDeserialized(note1.getNote());
+        editor.render(editorContent);
        /* RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setInputEnabled(false);
