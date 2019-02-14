@@ -90,7 +90,7 @@ public class Home1 extends Fragment {
         mAdView1 = (AdView) view.findViewById(R.id.adView2);
         mAdView1.setVisibility(View.GONE);
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("EA28AA409AA1C2A25750D1B354BDD8A9")
+                //.addTestDevice("EA28AA409AA1C2A25750D1B354BDD8A9")
                 .build();
         mAdView.loadAd(adRequest);
         mAdView1.loadAd(adRequest);

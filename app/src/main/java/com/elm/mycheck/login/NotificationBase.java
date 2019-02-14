@@ -309,8 +309,8 @@ public class NotificationBase extends Activity {
                 mNotificationManager.cancel(500);
                 snoozeAlarm(false);
                 quit = "no";
-                onDestroy();
-                //finish();
+                //onDestroy();
+                finish();
                 //mMediaPlayer.stop();
             }
         });

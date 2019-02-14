@@ -56,7 +56,7 @@ public class AlarmCrud extends Service {
         auto_snooze = bundle.getBoolean("auto_snooze");
 
         if (is_snooze){
-            Log.e("hahaha", "yesss");
+            Log.e("hahahaa", "yessfs");
             Reminder reminder_snooze = Select.from(Reminder.class)
                     .where(Condition.prop("active").eq("1"))
                     .first();

@@ -68,6 +68,7 @@ public class ReminderAlarms extends BroadcastReceiver {
             /////////////////////////////////////////////////////////
             if (Build.VERSION.SDK_INT >= 19) {
                 if (repeat) {
+                    Log.e("Atherere", "repeating");
                     Intent intent4 = new Intent(context, AlarmCrud.class);
                     intent4.putExtra("alarmId", alarmId);
                     intent4.putExtra("create", true);
