@@ -31,20 +31,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elm.mycheck.login.model.AlarmReminder;
+import com.elm.mycheck.login.model.Note;
 import com.elm.mycheck.login.model.Reminder;
 import com.elm.mycheck.login.services.alarm.AlarmCrud;
 import com.elm.mycheck.login.utils.Constants;
 import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker;
+import com.github.irshulx.models.EditorContent;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 import com.tooltip.Tooltip;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -60,15 +65,19 @@ public class NewReminder extends AppCompatActivity {
     private PuzzleReceiver puzzleReceiver;
     private PokeReceiver pokeReceiver;
     private AlternateReceiver alternateReceiver;
-    private Boolean repeating =false;
+    private Boolean repeating = false;
     private String puzzle = "None";
     private String puzzle_level = "[#]";
     private String poke = "No", alternate = "No";
     private View view;
     private AdView adView;
     private Spinner spinner;
-    private TextView tsunday,tmonday,ttuesday,twednesday,tthursday,tfriday,tsaturday;
-    private boolean ssunday=false,smonday=false,stuesday=false,swednesday=false,sthursday=false,sfriday=false,ssaturday=false;
+    private TextView tsunday, tmonday, ttuesday, twednesday, tthursday, tfriday, tsaturday;
+    private boolean ssunday = false, smonday = false, stuesday = false, swednesday = false, sthursday = false, sfriday = false, ssaturday = false, edit_mode = false;
+
+    SimpleDateFormat simpleDateFormat, simpleDateFormat2;
+    SingleDateAndTimePicker dateTime, time_picker;
+    RelativeLayout repeat_mode;
 
     @SuppressLint("ResourceType")
     @Override
@@ -78,28 +87,7 @@ public class NewReminder extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
-            setTheme(R.style.AppTheme_NoActionBar);
-        if (theme == "tangarine")
-            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
-        if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_NoActionBar_Banana);
-        if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_NoActionBar_Basil);
-        if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_NoActionBar_Sage);
-        if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_NoActionBar_Peacock);
-        if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
-        if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_NoActionBar_Lavender);
-        if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_NoActionBar_Grape);
-        if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
-        if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
 
         setContentView(R.layout.activity_new_reminder);
@@ -114,7 +102,7 @@ public class NewReminder extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-        adView.setAdListener(new AdListener(){
+        adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
@@ -133,9 +121,7 @@ public class NewReminder extends AppCompatActivity {
         reminderName = (TextView) findViewById(R.id.reminder_name_activity);
         reminderEarly = (TextView) findViewById(R.id.reminder_early_activity);
         reminderDescription = (EditText) findViewById(R.id.reminder_description);
-
-       // reminderDescription.setFocusable(false);
-
+        //reminderDescription.setFocusable(false);
 
         //initialize repeaters
         tmonday = (TextView) findViewById(R.id.repeat_monday);
@@ -153,7 +139,7 @@ public class NewReminder extends AppCompatActivity {
         //register receivers
         IntentFilter intentFilter = new IntentFilter(earlyReceiver.ACTIION_REP);
         earlyReceiver = new EarlyReceiver();
-        registerReceiver(earlyReceiver,intentFilter);
+        registerReceiver(earlyReceiver, intentFilter);
 
         IntentFilter filter = new IntentFilter(TitleReceiver.ACTIION_REP);
         titleReceiver = new TitleReceiver();
@@ -173,23 +159,23 @@ public class NewReminder extends AppCompatActivity {
 
 
         String format = "MMM dd yyyy HH:mm";
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         String format2 = "HH:mm";
-        final SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(format2, Locale.ENGLISH);
+        simpleDateFormat2 = new SimpleDateFormat(format2, Locale.ENGLISH);
 
-        selectedDate = (TextView) findViewById(R.id.start_date);
-        final SingleDateAndTimePicker dateTime = (SingleDateAndTimePicker) findViewById(R.id.date_picker);
-        final SingleDateAndTimePicker time_picker = (SingleDateAndTimePicker) findViewById(R.id.time_picker);
+        selectedDate = findViewById(R.id.start_date);
+        dateTime = findViewById(R.id.date_picker);
+        time_picker = findViewById(R.id.time_picker);
         dateTime.setStepMinutes(1);
         dateTime.setIsAmPm(false);
         time_picker.setDisplayDays(false);
-        time_picker.setMustBeOnFuture(false);
+       // time_picker.setMustBeOnFuture(false);
         time_picker.setStepMinutes(1);
         time_picker.setIsAmPm(false);
-        dateTime.setMustBeOnFuture(true);
+        //dateTime.setMustBeOnFuture(true);
 
-        final RelativeLayout repeat_mode = (RelativeLayout) findViewById(R.id.repeat_mode);
-        spinner = (Spinner) findViewById(R.id.alarm_type);
+        repeat_mode = findViewById(R.id.repeat_mode);
+        spinner = findViewById(R.id.alarm_type);
 
         new Tooltip.Builder(spinner)
                 .setText("Click here to modify Alarm Type")
@@ -200,26 +186,28 @@ public class NewReminder extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("position", String.valueOf(position));
                 String selected_text = spinner.getSelectedItem().toString();
-                if (selected_text.equals("One Time")){
+                if (selected_text.equals("One Time")) {
                     dateTime.setVisibility(View.VISIBLE);
                     time_picker.setVisibility(View.GONE);
                     repeating = false;
                     repeat_mode.setVisibility(View.GONE);
-                }else {
+                } else {
                     dateTime.setVisibility(View.GONE);
                     repeating = true;
                     time_picker.setVisibility(View.VISIBLE);
                     repeat_mode.setVisibility(View.VISIBLE);
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
-        selectedDate.setText(simpleDateFormat.format(dateTime.getDate()));
+        selectedDate.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
 
         RelativeLayout title_layout = (RelativeLayout) findViewById(R.id.title_layout);
         RelativeLayout early_layout = (RelativeLayout) findViewById(R.id.early_layout);
@@ -246,20 +234,105 @@ public class NewReminder extends AppCompatActivity {
             }
         });
 
-        time_picker.setListener(new SingleDateAndTimePicker.Listener() {
+        time_picker.addOnDateChangedListener(new SingleDateAndTimePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(String displayed, Date date) {
                 selectedDate.setText(simpleDateFormat2.format(date));
             }
         });
 
-
-        dateTime.setListener(new SingleDateAndTimePicker.Listener() {
+        dateTime.addOnDateChangedListener(new SingleDateAndTimePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(String displayed, Date date) {
                 selectedDate.setText(simpleDateFormat.format(date));
             }
         });
+
+        try {
+            editingMode();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Long alarm_id;
+
+    private void editingMode() throws ParseException {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey("alarmId")) {
+                edit_mode = true;
+                alarm_id = intent.getExtras().getLong("alarmId");
+                newReminder = Reminder.findById(Reminder.class, alarm_id);
+                onComplete(newReminder.getTitle());
+                puzzle = newReminder.getPuzzle();
+                puzzle_level = newReminder.getPuzzlelevel();
+                setPuzzleText();
+                Log.e("reminder", newReminder.toString());
+                //Log.e("reminder", newReminder.getRepeat());
+                Date alarm_date = simpleDateFormat.parse(newReminder.getTime());
+
+                if (newReminder.getRepeat() == null) {
+                    Log.e("reminder", "not repeating");
+                    repeating = false;
+                    dateTime.setVisibility(View.VISIBLE);
+                    dateTime.setDefaultDate(alarm_date);
+                    time_picker.setVisibility(View.GONE);
+                    repeat_mode.setVisibility(View.GONE);
+                    selectedDate.setText(simpleDateFormat.format(alarm_date));
+                } else {
+                    Log.e("reminder", "repeating");
+
+                    selectedDate.setText(simpleDateFormat2.format(alarm_date));
+                    dateTime.setVisibility(View.GONE);
+                    spinner.setSelection(1, true);
+                    repeating = true;
+                    time_picker.setDefaultDate(simpleDateFormat.parse(newReminder.getTime()));
+                    dateTime.setVisibility(View.GONE);
+                    time_picker.setVisibility(View.VISIBLE);
+                    repeat_mode.setVisibility(View.VISIBLE);
+
+                    String[] repeat_dates = newReminder.getRepeat().split(",");
+                    for (String dt : repeat_dates
+                    ) {
+                        switch (dt) {
+                            case "Sunday":
+                                tsunday.callOnClick();
+                                break;
+                            case "Monday":
+                                tmonday.callOnClick();
+                                break;
+                            case "Tuesday":
+                                ttuesday.callOnClick();
+                                break;
+                            case "Wednesday":
+                                twednesday.callOnClick();
+                                break;
+                            case "Thursday":
+                                tthursday.callOnClick();
+                                break;
+                            case "Friday":
+                                tfriday.callOnClick();
+                                break;
+                            case "Saturday":
+                                tsaturday.callOnClick();
+                                break;
+                            default:
+
+                        }
+                    }
+                }
+
+                if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(newReminder.getId())).count() > 0 && newReminder.getPrior()) {
+                    AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(newReminder.getId())).first();
+                    reminderEarly.setText(alarmReminder.getTime());
+                }
+
+                reminderDescription.setText(newReminder.getDescription());
+            }
+
+        }
     }
 
     @Override
@@ -278,7 +351,8 @@ public class NewReminder extends AppCompatActivity {
     }
 
     public static final int STORAGE = 1234;
-    public void permission(View view){
+
+    public void permission(View view) {
         if (ContextCompat.checkSelfPermission(NewReminder.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(NewReminder.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(NewReminder.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -286,6 +360,24 @@ public class NewReminder extends AppCompatActivity {
             return;
         }
 
+    }
+
+    private void setPuzzleText() {
+        String level_text;
+        switch (puzzle_level) {
+            case "1":
+                level_text = "Easy";
+                break;
+            case "2":
+                level_text = "Medium";
+                break;
+            case "3":
+                level_text = "Hard";
+                break;
+            default:
+                level_text = "None";
+        }
+        puzzle_name_activity.setText(puzzle + "(" + level_text + ")");
     }
 
     @Override
@@ -297,8 +389,8 @@ public class NewReminder extends AppCompatActivity {
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
                 } else {
-                    MDToast.makeText(NewReminder.this,"Reminder requires read to external Storage",MDToast.LENGTH_SHORT,MDToast.TYPE_WARNING).show();
-                 this.finish();
+                    MDToast.makeText(NewReminder.this, "Reminder requires read to external Storage", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                    this.finish();
                 }
                 return;
             }
@@ -309,50 +401,50 @@ public class NewReminder extends AppCompatActivity {
         tmonday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                smonday = smonday == false ? true:false;
+                smonday = smonday == false ? true : false;
                 changeTextColor(tmonday, smonday);
             }
         });
         ttuesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stuesday = stuesday == false ? true:false;
+                stuesday = stuesday == false ? true : false;
                 changeTextColor(ttuesday, stuesday);
             }
         });
         twednesday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                swednesday = swednesday ==false ? true:false;
+                swednesday = swednesday == false ? true : false;
                 changeTextColor(twednesday, swednesday);
             }
         });
         tthursday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sthursday = sthursday == false ? true:false;
+                sthursday = sthursday == false ? true : false;
                 changeTextColor(tthursday, sthursday);
             }
         });
         tfriday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sfriday = sfriday == false ? true:false;
+                sfriday = sfriday == false ? true : false;
                 changeTextColor(tfriday, sfriday);
             }
         });
         tsaturday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ssaturday = ssaturday ==false? true:false;
+                ssaturday = ssaturday == false ? true : false;
                 changeTextColor(tsaturday, ssaturday);
             }
         });
         tsunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ssunday = ssunday ==false? true:false;
-                changeTextColor(tsunday,ssunday);
+                ssunday = ssunday == false ? true : false;
+                changeTextColor(tsunday, ssunday);
             }
         });
     }
@@ -362,10 +454,10 @@ public class NewReminder extends AppCompatActivity {
         super.onPause();
     }
 
-    public void changeTextColor(TextView textView, Boolean status){
-        if (status){
+    public void changeTextColor(TextView textView, Boolean status) {
+        if (status) {
             textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        }else {
+        } else {
             textView.setTextColor(getResources().getColor(android.R.color.tertiary_text_dark));
         }
     }
@@ -380,7 +472,7 @@ public class NewReminder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent2 = new Intent(this, Navigation.class);
+                Intent intent2 = new Intent(this, Homev2.class);
                 intent2.putExtra("page", Constants.REMINDER_TAB);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
@@ -402,13 +494,14 @@ public class NewReminder extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("reminder", "Title Received");
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
             onComplete(title);
         }
     }
 
-    public class PokeReceiver extends BroadcastReceiver{
+    public class PokeReceiver extends BroadcastReceiver {
         public static final String ACTIION_REP = "receive_poke";
 
         @Override
@@ -417,7 +510,8 @@ public class NewReminder extends AppCompatActivity {
             poke = bundle.getString("poke");
         }
     }
-    public class AlternateReceiver extends BroadcastReceiver{
+
+    public class AlternateReceiver extends BroadcastReceiver {
         public static final String ACTIION_REP = "receive_alternate";
 
         @Override
@@ -432,12 +526,13 @@ public class NewReminder extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("reminder", "Puzzle Received");
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
             String level = bundle.getString("level");
             puzzle = title;
             puzzle_level = level;
-            puzzle_name_activity.setText(puzzle+"["+level+"]");
+            setPuzzleText();
             //onComplete(title);
         }
     }
@@ -447,6 +542,8 @@ public class NewReminder extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("reminder", "Early Received");
+
             Bundle bundle = intent.getExtras();
             String duration = bundle.getString("duration");
             onCompleted(duration);
@@ -466,42 +563,46 @@ public class NewReminder extends AppCompatActivity {
 
     /**
      * put all the dates of a repeating alarm into an array
+     *
      * @return
      */
-    public String repeatDates(){
+    public String repeatDates() {
         List<String> alarm_days = new ArrayList<>();
-        if (ssunday || smonday || stuesday || swednesday || sthursday || sfriday ||ssaturday){
-            if (ssunday){
+        if ((ssunday || smonday || stuesday || swednesday || sthursday || sfriday || ssaturday) && repeating) {
+            if (ssunday) {
                 alarm_days.add("Sunday");
             }
-            if (smonday){
+            if (smonday) {
                 alarm_days.add("Monday");
             }
-            if (stuesday){
+            if (stuesday) {
                 alarm_days.add("Tuesday");
             }
-            if (swednesday){
+            if (swednesday) {
                 alarm_days.add("Wednesday");
             }
-            if (sthursday){
+            if (sthursday) {
                 alarm_days.add("Thursday");
             }
-            if (sfriday){
+            if (sfriday) {
                 alarm_days.add("Friday");
             }
-            if (ssaturday){
+            if (ssaturday) {
                 alarm_days.add("Saturday");
             }
 
             String merged = android.text.TextUtils.join(",", alarm_days);
             return merged;
-        }else {
+        } else {
             return null;
         }
     }
 
+    Reminder newReminder;
+
     /**
      * set reminder
+     *
      * @param view
      * @throws ParseException
      */
@@ -511,15 +612,20 @@ public class NewReminder extends AppCompatActivity {
         SingleDateAndTimePicker time_picker = (SingleDateAndTimePicker) findViewById(R.id.time_picker);
 
         //is title set?
-        if (reminderName.getText().toString().isEmpty() || reminderName.getText().toString().equals("None")){
+        if (reminderName.getText().toString().isEmpty() || reminderName.getText().toString().equals("None")) {
             MDToast.makeText(getBaseContext(), "Alarm Title should be filled", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
             return;
         }
 
         //which type of alarm?
-        if (repeating){
-            if (repeatDates() == null){
+        if (repeating) {
+            if (repeatDates() == null) {
                 MDToast.makeText(getBaseContext(), "No week days selected for repeating alarm!", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
+                return;
+            }
+        } else {
+            if (!dateTime.getDate().after(Calendar.getInstance().getTime())){
+                MDToast.makeText(getBaseContext(), "You can't set a one time alarm to past date!", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
                 return;
             }
         }
@@ -532,13 +638,33 @@ public class NewReminder extends AppCompatActivity {
         String date_string;
         Date date;
 
+        Long diff, sec, min, hr, days;
+        String toast = "Alarm Set";
         //get date depending on ReminderType
-        if (!repeating){
+        if (!repeating) {
             date_string = simpleDateFormat.format(dateTime.getDate());
-           // date = simpleDateFormat.parse(simpleDateFormat.format(dateTime.getDate()));
-        }else {
+            diff = dateTime.getDate().getTime() - Calendar.getInstance().getTime().getTime();
+            sec = diff/1000;
+            min = sec/60;
+            hr = min/60;
+            days = hr/24;
+
+            if (days < 1){
+                Long mins_diff = min - (hr * 60);
+                toast = "Alarm set "+hr+" hr(s), "+mins_diff+" mins from now";
+            }else {
+                toast = "Alarm set on "+date_string;
+            }
+            /*Log.e("sec", String.valueOf(sec));
+            Log.e("min", String.valueOf(min));
+            Log.e("hr", String.valueOf(hr));
+            Log.e("day", String.valueOf(days));*/
+            // date = simpleDateFormat.parse(simpleDateFormat.format(dateTime.getDate()));
+        } else {
             date_string = simpleDateFormat.format(time_picker.getDate());
-           // date = simpleDateFormat.parse(simpleDateFormat.format(time_picker.getDate()));
+            String time_string = simpleDateFormat2.format(time_picker.getDate());
+            toast = "Repeating alarm set at "+time_string;
+            // date = simpleDateFormat.parse(simpleDateFormat.format(time_picker.getDate()));
         }
 
 
@@ -554,44 +680,79 @@ public class NewReminder extends AppCompatActivity {
         Date today = new Date();
 
         //save alarm data to db
-        Reminder newReminder = new Reminder(
-                reminderName.getText().toString(),
-                date_string,
-                priorSet,
-                reminderDescription.getText().toString(),
-                puzzle,
-                true,
-                false,
-                repeatDates(),
-                "",
-                puzzle,
-                puzzle_level,
-                poke,
-                alternate,
-                0,
-                dateFormat.format(today),
-                dateFormat.format(today));
-        newReminder.save();
-
-        if (priorSet){
-            AlarmReminder alarmReminder = new AlarmReminder(
-                    newReminder.getId(),
-                    reminderEarly.getText().toString(),
+        if (!edit_mode) {
+            newReminder = new Reminder(
+                    reminderName.getText().toString(),
+                    date_string,
+                    priorSet,
+                    reminderDescription.getText().toString(),
+                    puzzle,
+                    true,
+                    false,
+                    repeatDates(),
+                    "",
+                    puzzle,
+                    puzzle_level,
+                    poke,
+                    alternate,
                     0,
-                    false
-            );
-            alarmReminder.save();
-            //prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString(), newReminder.getId());
+                    dateFormat.format(today),
+                    dateFormat.format(today));
+            newReminder.save();
+
+
+            if (priorSet) {
+                AlarmReminder alarmReminder = new AlarmReminder(
+                        newReminder.getId(),
+                        reminderEarly.getText().toString(),
+                        0,
+                        false
+                );
+                alarmReminder.save();
+            }
+        } else {
+            newReminder.setTitle(reminderName.getText().toString());
+            newReminder.setTime(date_string);
+            newReminder.setPrior(priorSet);
+            newReminder.setDescription(reminderDescription.getText().toString());
+            newReminder.setPuzzle(puzzle);
+            newReminder.setStatus(true);
+            newReminder.setActive(false);
+            newReminder.setRepeat(repeatDates());
+            newReminder.setPuzzletype(puzzle);
+            newReminder.setPuzzlelevel(puzzle_level);
+            newReminder.setPoke(poke);
+            newReminder.setAlternatepuzzle(alternate);
+            newReminder.setUpdated_at(dateFormat.format(today));
+            newReminder.save();
+
+
+            AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(newReminder.getId())).first();
+            if (alarmReminder != null)
+                alarmReminder.delete();
+
+            if (priorSet) {
+                AlarmReminder alarm_reminder = new AlarmReminder(
+                        newReminder.getId(),
+                        reminderEarly.getText().toString(),
+                        0,
+                        false
+                );
+                alarm_reminder.save();
+                //prior = priorReminder(reminderEarly.getText().toString(), reminderName.getText().toString(), newReminder.getId());
+            }
         }
 
         //create alarm -->from a service
         Intent intent = new Intent(NewReminder.this, AlarmCrud.class);
         intent.putExtra("alarmId", newReminder.getId());
+        if (edit_mode)
+            intent.putExtra("edit", true);
         intent.putExtra("create", true);
         startService(intent);
 
         //Toast.makeText(getBaseContext(), "Reminder set to  " + date_string, Toast.LENGTH_LONG).show();
-        MDToast.makeText(getBaseContext(), "Reminder set", MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+        MDToast.makeText(getBaseContext(), toast, MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
 
         //update ui and launch relevant fragment
         String dt = new Gson().toJson(newReminder);
@@ -600,10 +761,18 @@ public class NewReminder extends AppCompatActivity {
         intent1.putExtra("reminder", dt);
         sendBroadcast(intent1);
 
-        Intent intent2 = new Intent(this, Navigation.class);
+        Intent intent2 = new Intent(this, Homev2.class);
         intent2.putExtra("page", Constants.REMINDER_TAB);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);
         finish();
     }
+
+    /*private String ToastMessage(Long min, Long hr, Long days){
+        String response;
+        if (days >= 1){
+            //response = "Alarm set "+days+" day(s) "+hr+
+        }
+
+    }*/
 }

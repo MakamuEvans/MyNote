@@ -19,7 +19,7 @@ public class SelectPuzzle extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
+        /*if (theme == "tomato")
             setTheme(R.style.AppTheme_NoActionBar);
         if (theme == "tangarine")
             setTheme(R.style.AppTheme_NoActionBar_Tangarine);
@@ -40,7 +40,8 @@ public class SelectPuzzle extends AppCompatActivity {
         if (theme.equalsIgnoreCase("flamingo"))
             setTheme(R.style.AppTheme_NoActionBar_Flamingo);
         if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);*/
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
         setContentView(R.layout.activity_select_puzzle);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -233,7 +233,7 @@ vibrator.cancel();
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.mipmap.logo)
+        builder.setSmallIcon(R.mipmap.my_check)
                 .setContentTitle("Active Alarm")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)

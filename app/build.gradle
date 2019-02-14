@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 26
     /*buildToolsVersion '27.0.3'*/
     defaultConfig {
         applicationId "com.elm.mycheck.login"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
-        versionCode 5
-        versionName "1.1.1"
+        versionCode 7
+        versionName "2.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -25,7 +26,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:11.0.4'
     implementation 'com.google.firebase:firebase-crash:11.0.4'
     implementation 'com.google.firebase:firebase-messaging:11.0.4'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -41,21 +42,25 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.0.1'
     implementation 'com.android.support:support-v4:25.1.0'
-    implementation 'jp.wasabeef:richeditor-android:1.2.2'
+    implementation 'com.github.irshulx:laser-native-editor:3.0.3'
+    implementation 'com.github.duanhong169:colorpicker:1.1.6'
+    /*
+        implementation 'jp.wasabeef:richeditor-android:1.2.2'
+    */
     implementation 'com.github.devlight:infinitecycleviewpager:1.0.2'
-    implementation 'com.github.clans:fab:1.6.4'
+    /*implementation 'com.github.clans:fab:1.6.4'*/
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
-    implementation 'com.github.florent37:singledateandtimepicker:1.1.5'
+    implementation 'com.github.florent37:singledateandtimepicker:2.0.5'
     implementation 'se.emilsjolander:StickyScrollViewItems:1.1.0'
     implementation 'com.valdesekamdem.library:md-toast:0.9.0'
     implementation 'com.android.support:support-vector-drawable:25.1.0'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'org.xdty.preference:color-picker:0.0.5'
     implementation 'com.github.vihtarb:tooltip:0.1.9'
-    implementation 'eu.long1:spacetablayout:1.0.4'
-
-
+    // implementation project("SpaceTabLayout:spacetablayout")
+    //implementation 'eu.long1:spacetablayout:1.0.4'
     testImplementation 'junit:junit:4.12'
+    implementation project(':spacetablayout')
 }
 
 

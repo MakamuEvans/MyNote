@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.elm.mycheck.login.Navigation;
+import com.elm.mycheck.login.Homev2;
 import com.elm.mycheck.login.R;
 import com.elm.mycheck.login.ToDoDetails;
 import com.elm.mycheck.login.adapter.MilestoneAdapter;
@@ -106,10 +106,11 @@ public class ToDo2 extends Fragment {
         LinearLayout add_task = (LinearLayout) view.findViewById(R.id.add_task);
         todoId = getArguments().getString("id");
         title = getArguments().getString("title");
+        getActivity().setTitle(title);
 
         IntentFilter intentFilter = new IntentFilter(TaskReceiver.ACTIION_REP);
         taskReceiver = new TaskReceiver();
-        // getActivity().registerReceiver(taskReceiver, intentFilter);
+        getActivity().registerReceiver(taskReceiver, intentFilter);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler);
         milestones = Milestones.listAll(Milestones.class);
@@ -127,7 +128,7 @@ public class ToDo2 extends Fragment {
             @Override
             public void onClick(View v) {
                 int page = 3;
-                Intent intent = new Intent(getActivity(), Navigation.class);
+                Intent intent = new Intent(getActivity(), Homev2.class);
                 intent.putExtra("page", page);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -141,6 +142,7 @@ public class ToDo2 extends Fragment {
 
                 Bundle args = new Bundle();
                 args.putString("task_id", todoId);
+                args.putBoolean("new_task", true);
                 addMilestone.setArguments(args);
 
                 addMilestone.show(getActivity().getFragmentManager(), "Dialog");
@@ -177,10 +179,10 @@ public class ToDo2 extends Fragment {
         Milestones milestones = new Milestones(todoID, title, null, false);
         milestones.save();
 
-        String data = new Gson().toJson(milestones);
+        /*String data = new Gson().toJson(milestones);
         Intent intent = new Intent(ToDoDetails.newMilestoneReceiver.ACTIION_REP);
         intent.putExtra("milestone", data);
-        context.sendBroadcast(intent);
+        context.sendBroadcast(intent);*/
 
         if (milestoneAdapter != null) {
             milestoneAdapter.insert(milestones);
@@ -210,7 +212,7 @@ public class ToDo2 extends Fragment {
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = getActivity().getTheme();
-        theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
         @ColorInt int color = typedValue.data;
 
         //noinspection SimplifiableIfStatement
@@ -297,11 +299,11 @@ public class ToDo2 extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("Haa", "TaskReceiver Called");
+            Log.e("todo", "Milestone received");
             Bundle bundle = intent.getExtras();
             String title = bundle.getString("title");
-            String noteID = bundle.getString("noteId");
-            onCompleted(title, noteID, context);
+            String todoID = bundle.getString("noteId");
+            onCompleted(title, todoID, context);
         }
     }
 }

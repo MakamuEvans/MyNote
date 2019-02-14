@@ -2,29 +2,76 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_margin="10dp"
     android:layout_gravity="center"
     android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="myReminder"
+        android:text="My Reminder"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="18dp"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        app:srcCompat="@drawable/ic_alarm_clock"/>
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/tutorial_alarm"
-        android:gravity="center"/>
+        android:layout_marginTop="5pt"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_check_circle_black_24dp"
+            android:tint="@color/primaryAccentBlue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Alarms"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5pt"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_check_circle_black_24dp"
+            android:tint="@color/primaryAccentBlue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set up reminders so you never miss a moment."/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5pt"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_check_circle_black_24dp"
+            android:tint="@color/primaryAccentBlue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heavy Sleeper? we got you covered with puzzled alarms designed to activate your brain."/>
+    </LinearLayout>
+
+
 
     <Button
         android:layout_width="wrap_content"
@@ -34,6 +81,6 @@
         android:onClick="nR"
         android:layout_gravity="center"
         android:padding="5dp"
-        android:background="@drawable/default_input_text"/>
+        android:background="@drawable/default_input_text_round"/>
 
 </LinearLayout>

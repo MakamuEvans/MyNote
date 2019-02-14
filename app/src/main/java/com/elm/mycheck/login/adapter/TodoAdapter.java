@@ -69,7 +69,7 @@ public class TodoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ColorStateList oldColor = holder.total_count.getTextColors();
 
             if (total == completed){
-                holder.title.setTextColor(holder.itemView.getResources().getColor(R.color.colorPrimary));
+                holder.title.setTextColor(holder.itemView.getResources().getColor(R.color.primaryAccentBlue));
             }else {
                 holder.title.setTextColor(oldColor);
             }

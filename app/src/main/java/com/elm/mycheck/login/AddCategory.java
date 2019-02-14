@@ -107,7 +107,6 @@ public class AddCategory extends DialogFragment {
                                 Category category = Select.from(Category.class)
                                         .where(Condition.prop("title").eq(s_title))
                                         .first();
-
                                 Intent intent = new Intent(AddNote.CategoryReceiver.ACTIION_REP);
                                 intent.putExtra("title", category.getId());
                                 getActivity().sendBroadcast(intent);
@@ -124,8 +123,6 @@ public class AddCategory extends DialogFragment {
                             intent.putExtra("title", category.getId());
                             getActivity().sendBroadcast(intent);
                         }
-                        //String category =
-
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

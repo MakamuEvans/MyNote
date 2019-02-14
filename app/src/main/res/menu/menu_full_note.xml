@@ -13,8 +13,9 @@
         android:id="@+id/action_favourite"
         android:orderInCategory="90"
         android:title="Favourite"
+        app:iconTint="?attr/colorAccent"
         android:icon="@mipmap/ic_action_favorite_border"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:icon="@android:drawable/ic_menu_delete"
@@ -25,6 +26,7 @@
 
     <item
         android:title="In"
+        android:visible="false"
         android:icon="@mipmap/zom_in"
         android:id="@+id/action_in"
         android:orderInCategory="100"
@@ -32,6 +34,7 @@
 
     <item
         android:title="Out"
+        android:visible="false"
         android:icon="@mipmap/zoom_out"
         android:id="@+id/action_out"
         android:orderInCategory="100"
@@ -41,6 +44,7 @@
         android:icon="@android:drawable/ic_menu_edit"
         android:title="edit"
         android:id="@+id/action_edit"
+        app:iconTint="?attr/colorAccent"
         android:orderInCategory="100"
         app:showAsAction="always"/>
 </menu>

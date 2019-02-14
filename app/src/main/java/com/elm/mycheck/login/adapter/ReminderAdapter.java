@@ -14,6 +14,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.elm.mycheck.login.NewReminder;
 import com.elm.mycheck.login.R;
 import com.elm.mycheck.login.model.AlarmReminder;
 import com.elm.mycheck.login.model.Reminder;
@@ -45,26 +46,32 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class myViewHolder extends RecyclerView.ViewHolder {
         public TextView title, time, dated, card_text, repeat_days;
-        public ImageView reminderStatus, delete;
+        public ImageView reminderStatus, delete, puzzle;
 
         public myViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.reminder_title);
-            time = (TextView) itemView.findViewById(R.id.reminder_time);
-            repeat_days = (TextView) itemView.findViewById(R.id.repeat_days);
-            dated = (TextView) itemView.findViewById(R.id.reminder_dated);
-            reminderStatus = (ImageView) itemView.findViewById(R.id.reminderstatus);
-            delete = (ImageView) itemView.findViewById(R.id.card_del);
-            card_text = (TextView) itemView.findViewById(R.id.card_text);
+            title = itemView.findViewById(R.id.reminder_title);
+            time = itemView.findViewById(R.id.reminder_time);
+            repeat_days = itemView.findViewById(R.id.repeat_days);
+            dated = itemView.findViewById(R.id.reminder_dated);
+            reminderStatus = itemView.findViewById(R.id.reminderstatus);
+            delete = itemView.findViewById(R.id.card_del);
+            card_text =itemView.findViewById(R.id.card_text);
+            puzzle = itemView.findViewById(R.id.reminder_puzzle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (card_text.getVisibility() == View.VISIBLE) {
+                    /*if (card_text.getVisibility() == View.VISIBLE) {
                         card_text.setVisibility(View.GONE);
                     } else {
                         card_text.setVisibility(View.VISIBLE);
-                    }
+                    }*/
+                    final int position = getLayoutPosition();
+                    final Reminder reminder = allReminders.get(position);
+                    Intent intent = new Intent(v.getContext(), NewReminder.class);
+                    intent.putExtra("alarmId", reminder.getId());
+                    v.getContext().startActivity(intent);
                 }
             });
 
@@ -218,9 +225,22 @@ public class ReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                holder.time.setText(time_simpleDateFormat.format(date1));
             }
 
+            if (reminder.getPuzzle().equalsIgnoreCase("Active Touch")){
+                holder.puzzle.setVisibility(View.VISIBLE);
+                holder.puzzle.setImageResource(R.drawable.ic_touch);
+            }
+            if (reminder.getPuzzle().equalsIgnoreCase("Retype")){
+                holder.puzzle.setVisibility(View.VISIBLE);
+                holder.puzzle.setImageResource(R.drawable.ic_keyboard);
+            }
+            if (reminder.getPuzzle().equalsIgnoreCase("Sequence")){
+                holder.puzzle.setVisibility(View.VISIBLE);
+                holder.puzzle.setImageResource(R.drawable.ic_shuffle);
+            }
+
             holder.card_text.setVisibility(View.GONE);
             holder.repeat_days.setText(reminder.getRepeat());
-            if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).count() > 0){
+            if (Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).count() > 0 && reminder.getPrior()){
                 AlarmReminder alarmReminder = Select.from(AlarmReminder.class).where(Condition.prop("reminderid").eq(reminder.getId())).first();
                 int value = Integer.parseInt(alarmReminder.getTime().replaceAll("[^0-9]", ""));
 

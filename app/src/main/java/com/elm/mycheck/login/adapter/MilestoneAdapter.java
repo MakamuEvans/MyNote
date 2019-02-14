@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -60,6 +61,8 @@ public class MilestoneAdapter extends RecyclerView.Adapter<MilestoneAdapter.myVi
         }else {
             holder.mSuccess.setVisibility(View.GONE);
             holder.imageView.setImageResource(R.mipmap.ic_action_check_circle);
+            holder.imageView.setColorFilter(holder.itemView.getContext().getResources().getColor(R.color.primaryAccentBlue));
+
         }
         viewBinderHelper.bind(holder.swipeRevealLayout, milestones.getId().toString());
     }

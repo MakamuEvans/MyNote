@@ -23,8 +23,16 @@ public class Constants {
     public static final int morning = 201;
 
     //retype Texts
-    public static final String text1 = "Hey me! So am going to do myself a favour and GET UP. Owwww I just told myself to GetUp: Doing it in 5, 4, 3, 2, 1, 0.5, 0.1101.";
-    public static final String text2 = "So am using this app called myCheck and its like forcing me to GETUP. Who DOES THAT!#* Nway, lemme get up and Share it to my FRiendS";
+    public static final String text1 = "Hey me! am doing a favour to me by Doing IT!! in 5, 4, 3, 1, 0.5, 0.1101";
+    public static final String text2 = "Winning and losing is a part of life. When you win, doN't becOme arrogant; When you lose, don't give up or feel like you've failed";
+    public static final String text3 = "When everything seems To be going against you; remEmber that the airplane takes off against the wind, not with it....";
+    public static final String text4 = "I Don’t regret the things I’ve done, I regret the things I didn’t DO when I had the chAncE.";
+    public static final String text5 = "Challenge yourself with something you know you could never do, and what you’ll find is that you can OverCOMe anyThing.";
+
+    //morning texts
+    public static final String text6 = "Some people dream of success, while other people get up every morning and make it happen! Make yours Happen!!!";
+    public static final String text7 = "My GOAL is To simply wake up every morning a better perSon than when I went to bED";
+    public static final String text8 = "Though no one can go back and make a brand new start: anyone can START from noW and make a brand new enDing!.";
 
     public String uniqueCode(){
         Date presentTime_Date = Calendar.getInstance().getTime();

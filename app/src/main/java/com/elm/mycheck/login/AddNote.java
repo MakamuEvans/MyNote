@@ -1,9 +1,11 @@
 package com.elm.mycheck.login;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,7 +13,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,6 +32,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,25 +41,34 @@ import android.widget.Toast;
 import com.elm.mycheck.login.model.Category;
 import com.elm.mycheck.login.model.Note;
 import com.elm.mycheck.login.model.User;
+import com.github.irshulx.Editor;
+import com.github.irshulx.EditorListener;
+import com.github.irshulx.models.EditorContent;
+import com.github.irshulx.models.EditorTextStyle;
 import com.google.gson.Gson;
 import com.orm.query.Select;
 import com.tooltip.Tooltip;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
+import top.defaults.colorpicker.ColorPickerPopup;
 
 public class AddNote extends AppCompatActivity {
     public static final String ACTION_RESP = "com.elm.mycheck.login.services.note.Upload";
     private EditText title, note;
     private ImageView imageView, imagePlace, strike_through;
     private TextView save, update, add_category;
-    private RichEditor richEditor;
     private Long category = null;
     private Boolean savedStatus = false;
     private Long note_id;
@@ -69,6 +84,7 @@ public class AddNote extends AppCompatActivity {
     private Boolean editmode = false;
     private View view1;
     private CategoryReceiver categoryReceiver;
+    private Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,40 +94,22 @@ public class AddNote extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
-            setTheme(R.style.AppTheme_NoActionBar);
-        if (theme == "tangarine")
-            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
-        if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_NoActionBar_Banana);
-        if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_NoActionBar_Basil);
-        if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_NoActionBar_Sage);
-        if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_NoActionBar_Peacock);
-        if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
-        if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_NoActionBar_Lavender);
-        if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_NoActionBar_Grape);
-        if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
-        if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
 
         setContentView(R.layout.activity_add_note);
+        editor = findViewById(R.id.editor);
+        this.setUpEditor();
+       // Editor editor1 = new Editor(getApplicationContext());
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        richEditor= (RichEditor) findViewById(R.id.notes_editor);
+        /*richEditor= (RichEditor) findViewById(R.id.notes_editor);
         //richEditor.setEditorHeight(1000);
         //richEditor.setEditorFontSize(22);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setPadding(10,10,10,10);
-        richEditor.setPlaceholder("Touch to add notes");
+        richEditor.setPlaceholder("Touch to add notes");*/
 
 
         //register receivers
@@ -155,7 +153,8 @@ public class AddNote extends AppCompatActivity {
                 note_id = intent.getExtras().getLong("noteId");
                 Note note1 = Note.findById(Note.class, note_id);
                 title.setText(note1.getTitle());
-                richEditor.setHtml(note1.getNote());
+                EditorContent editorContent = editor.getContentDeserialized(note1.getNote());
+                editor.render(editorContent);
                 if (note1.getCategory() != null){
                     setCategory(note1.getCategory());
                 }
@@ -176,116 +175,6 @@ public class AddNote extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.editor_bold).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setBold();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_quote).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setBlockquote();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_ordered).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setNumbers();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_italic).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setItalic();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_undo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.undo();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_redo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.redo();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_underline).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setUnderline();
-                }
-            }
-        });
-
-        findViewById(R.id.strike_through).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setStrikeThrough();
-                }
-            }
-        });
-
-        findViewById(R.id.editor_bullets).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setBullets();
-                }
-            }
-        });
-
-       /* findViewById(R.id.editor_numbers).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (title.hasFocus()){
-                    MDToast.makeText(getBaseContext(), "Only applicable to Note's body", MDToast.LENGTH_SHORT, MDToast.TYPE_WARNING).show();
-                }else {
-                    richEditor.setNumbers();
-                }
-            }
-        });*/
-
         title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -302,32 +191,352 @@ public class AddNote extends AppCompatActivity {
 
             }
         });
+    }
 
-        richEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override public void onTextChange(String text) {
-                if (text.contains("<img src=")){
-                    imageStatus = false;
-                    if (!text.contains("<br><img src=")){
-                        String finalHtml = text.replace("<img src=", "<br><img src=");
-                        finalHtml = finalHtml.replace("alt=\"Image\">", "alt=\"Image\"><br>");
-                        richEditor.setHtml(finalHtml);
-                        richEditor.focusEditor();
-                    }
-                }else {
-                    imageStatus = true;
-                }
-
-                if (text.isEmpty()){
-                    if (title.getText().toString().isEmpty()){
-                        savedStatus = false;
-                    }
-                }
-
-                editListener = true;
+    private void setUpEditor() {
+        findViewById(R.id.action_h1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "H1", Toast.LENGTH_SHORT).show();
+                editor.updateTextStyle(EditorTextStyle.H1);
             }
         });
 
+        findViewById(R.id.action_h2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.H2);
+            }
+        });
+
+        findViewById(R.id.action_h3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.H3);
+            }
+        });
+
+        //findViewById(R.id.action_bold).
+        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Bold", Toast.LENGTH_SHORT).show();
+
+                editor.updateTextStyle(EditorTextStyle.BOLD);
+            }
+        });
+
+        findViewById(R.id.action_Italic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.ITALIC);
+            }
+        });
+
+        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.INDENT);
+            }
+        });
+
+        findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE);
+            }
+        });
+
+        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.updateTextStyle(EditorTextStyle.OUTDENT);
+            }
+        });
+
+        findViewById(R.id.action_bulleted).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertList(false);
+            }
+        });
+
+        findViewById(R.id.action_unordered_numbered).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertList(true);
+            }
+        });
+
+        findViewById(R.id.action_hr).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertDivider();
+            }
+        });
+
+
+        findViewById(R.id.action_color).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ColorPickerPopup.Builder(AddNote.this)
+                        .initialColor(Color.RED) // Set initial color
+                        .enableAlpha(true) // Enable alpha slider or not
+                        .okTitle("Choose")
+                        .cancelTitle("Cancel")
+                        .showIndicator(true)
+                        .showValue(true)
+                        .build()
+                        .show(findViewById(android.R.id.content), new ColorPickerPopup.ColorPickerObserver() {
+                            @Override
+                            public void onColorPicked(int color) {
+                                Toast.makeText(AddNote.this, "picked" + colorHex(color), Toast.LENGTH_LONG).show();
+                                editor.updateTextColor(colorHex(color));
+                            }
+                        });
+
+
+            }
+        });
+
+        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.openImagePicker();
+            }
+        });
+
+        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.insertLink();
+            }
+        });
+
+
+        findViewById(R.id.action_erase).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.clearAllContents();
+            }
+        });
+        //editor.dividerBackground=R.drawable.divider_background_dark;
+        //editor.setFontFace(R.string.fontFamily__serif);
+        /*Map<Integer, String> headingTypeface = getHeadingTypeface();
+        Map<Integer, String> contentTypeface = getContentface();
+        editor.setHeadingTypeface(headingTypeface);
+        editor.setContentTypeface(contentTypeface);*/
+        editor.setDividerLayout(R.layout.tmpl_divider_layout);
+        editor.setEditorImageLayout(R.layout.tmpl_image_view);
+        editor.setListItemLayout(R.layout.tmpl_list_item);
+        //editor.setNormalTextSize(10);
+        // editor.setEditorTextColor("#FF3333");
+        //editor.StartEditor();
+        editor.setEditorListener(new EditorListener() {
+            @Override
+            public void onTextChanged(EditText editText, Editable text) {
+                // Toast.makeText(EditorTestActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onUpload(Bitmap image, String uuid) {
+                Toast.makeText(AddNote.this, uuid, Toast.LENGTH_LONG).show();
+                /**
+                 * TODO do your upload here from the bitmap received and all onImageUploadComplete(String url); to insert the result url to
+                 * let the editor know the upload has completed
+                 */
+                String imageUrl = saveToInternalStorage(image, uuid);
+                Toast.makeText(AddNote.this, getApplicationContext().getFilesDir()+"/"+uuid+".jpg", Toast.LENGTH_LONG).show();
+
+                editor.onImageUploadComplete(getApplicationContext().getFilesDir()+"/"+uuid+".jpg", uuid);
+                // editor.onImageUploadFailed(uuid);
+            }
+
+            @Override
+            public View onRenderMacro(String name, Map<String, Object> props, int index) {
+                return null;
+            }
+
+        });
+
+
+        /**
+         * rendering serialized content
+         // */
+        //  String serialized = "{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003etextline 1 a great time and I will branch office is closed on Sundays\\u003c/p\\u003e\\n\"],\"contentStyles\":[\"H1\"],\"textSettings\":{\"textColor\":\"#c00000\"},\"type\":\"INPUT\"},{\"content\":[],\"type\":\"hr\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003ethe only one that you have received the stream free and open minded person to discuss a business opportunity to discuss my background.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"childs\":[{\"content\":[\"it is a great weekend and we will have the same to me that the same a great time\"],\"contentStyles\":[\"BOLD\"],\"textSettings\":{\"textColor\":\"#FF0000\"},\"type\":\"IMG_SUB\"}],\"content\":[\"http://www.videogamesblogger.com/wp-content/uploads/2015/08/metal-gear-solid-5-the-phantom-pain-cheats-640x325.jpg\"],\"type\":\"img\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eI have a place where I have a great time and I will branch manager state to boast a new job in a few weeks and we can host or domain to get to know.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"childs\":[{\"content\":[\"the stream of water in a few weeks and we can host in the stream free and no ippo\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#5E5E5E\"},\"type\":\"IMG_SUB\"}],\"content\":[\"http://www.videogamesblogger.com/wp-content/uploads/2015/08/metal-gear-solid-5-the-phantom-pain-cheats-640x325.jpg\"],\"type\":\"img\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eit is that I can get it done today will online at location and I am not a big difference to me so that we are headed \\u003ca href\\u003d\\\"www.google.com\\\"\\u003ewww.google.com\\u003c/a\\u003e it was the only way I.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eit is not a good day to get the latest version to blame it to the product the.\\u003c/p\\u003e\\n\"],\"contentStyles\":[\"BOLDITALIC\"],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eit is that I can send me your email to you and I am not able a great time and consideration I have to do the needful.\\u003c/p\\u003e\\n\"],\"contentStyles\":[\"INDENT\"],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eI will be a while ago to a great weekend a great time with the same.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}";
+//        String serialized = "{\"nodes\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cspan style\\u003d\\\"color:#000000;\\\"\\u003e\\u003cspan style\\u003d\\\"color:#000000;\\\"\\u003eit is not available beyond that statue in a few days and then we could\\u003c/span\\u003e\\u003c/span\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[\"H1\"],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[],\"type\":\"hr\"},{\"content\":[\"author-tag\"],\"macroSettings\":{\"data-author-name\":\"Alex Wong\",\"data-tag\":\"macro\",\"data-date\":\"12 July 2018\"},\"type\":\"macro\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eit is a free trial to get a great weekend a good day to you u can do that for.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eit is that I have to do the needful as early in life is not available beyond my imagination to be a good.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"childs\":[{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003e\\u003cb\\u003eit is not available in the next week or two and I have a place where I\\u003c/b\\u003e\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#006AFF\"},\"type\":\"IMG_SUB\"}],\"content\":[\"http://www.videogamesblogger.com/wp-content/uploads/2015/08/metal-gear-solid-5-the-phantom-pain-cheats-640x325.jpg\"],\"type\":\"img\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eit is not available in the next week to see you tomorrow morning to see you then.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"},{\"content\":[],\"type\":\"hr\"},{\"content\":[\"\\u003cp dir\\u003d\\\"ltr\\\"\\u003eit is not available in the next day delivery to you soon with it and.\\u003c/p\\u003e\\n\"],\"contentStyles\":[],\"textSettings\":{\"textColor\":\"#000000\"},\"type\":\"INPUT\"}]}";
+        // EditorContent des = editor.getContentDeserialized(serialized);
+        // editor.render(des);
+
+//        Intent intent = new Intent(getApplicationContext(), RenderTestActivity.class);
+//        intent.putExtra("content", serialized);
+//        startActivity(intent);
+
+
+        /**
+         * Rendering html
+         */
+        //render();
+        //editor.render();  // this method must be called to start the editor
+        /*findViewById(R.id.btnRender).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                *//*
+                Retrieve the content as serialized, you could also say getContentAsHTML();
+                *//*
+                String text = editor.getContentAsSerialized();
+                editor.getContentAsHTML();
+                Intent intent = new Intent(getApplicationContext(), RenderTestActivity.class);
+                intent.putExtra("content", text);
+                startActivity(intent);
+            }
+        });*/
+
+
+        /**
+         * Since the endusers are typing the content, it's always considered good idea to backup the content every specific interval
+         * to be safe.
+         *
+         private final long backupInterval = 10 * 1000;
+         Timer timer = new Timer();
+         timer.scheduleAtFixedRate(new TimerTask() {
+        @Override public void run() {
+        String text = editor.getContentAsSerialized();
+        SharedPreferences.Editor preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+        preferences.putString(String.format("backup-{0}",  new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(new Date())), text);
+        preferences.apply();
+        }
+        }, 0, backupInterval);
+         */
     }
+
+    /*private View insertMacro() {
+        View view = getLayoutInflater().inflate(R.layout.layout_authored_by, null);
+        Map<String, Object> map = new HashMap<>();
+        map.put("author-name", "Alex Wong");
+        map.put("date","12 July 2018");
+        editor.insertMacro("author-tag",view, map);
+        return view;
+    }*/
+
+    private String colorHex(int color) {
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        return String.format(Locale.getDefault(), "#%02X%02X%02X", r, g, b);
+    }
+
+    public static void setGhost(Button button) {
+        int radius = 4;
+        GradientDrawable background = new GradientDrawable();
+        background.setShape(GradientDrawable.RECTANGLE);
+        background.setStroke(4, Color.WHITE);
+        background.setCornerRadius(radius);
+        button.setBackgroundDrawable(background);
+    }
+
+    private void render() {
+        String x = "<h2 id=\"installation\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;color:#c00000;background-color:#333;text-align:center; margin-top: -80px !important;\">Installation</h2>" +
+                "<h3 id=\"requires-html5-doctype\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;color:#ff0000; margin-bottom: 8px; margin-right: 0px; margin-left: 0px;\">Requires HTML5 doctype</h3>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">Bootstrap uses certain HTML elements and CSS properties which require HTML5 doctype. Include&nbsp;<code style=\"font-size: 12.6px;\">&lt;!DOCTYPE html&gt;</code>&nbsp;in the beginning of all your projects.</p>" +
+                "<img src=\"http://www.scifibloggers.com/wp-content/uploads/TOR_2.jpg\" />" +
+                "<h2 id=\"integration\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-top: -80px !important;\">Integration</h2>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">3rd parties available in django, rails, angular and so on.</p>" +
+                "<h3 id=\"django\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 8px; margin-right: 0px; margin-left: 0px;\">Django</h3>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">Handy update for your django admin page.</p>" +
+                "<ul style=\"color: rgb(51, 51, 51);\"><li style=\"font-size: 14px; color: #c00000;\">django-summernote</li><li style=\"font-size: 14px; color: rgb(104, 116, 127);\"><a href=\"https://pypi.python.org/pypi/django-summernote\" target=\"_blank\">summernote plugin for Django</a></li></ul>" +
+                "<h3 id=\"ruby-on-rails\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 8px; margin-right: 0px; margin-left: 0px;\">Ruby On Rails</h3>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">This gem was built to gemify the assets used in Summernote.</p>" +
+                "<ul style=\"color: rgb(51, 51, 51);\"><li style=\"font-size: 14px; color: rgb(104, 116, 127);\"><a href=\"https://github.com/summernote/summernote-rails\" target=\"_blank\">summernote-rails</a></li></ul>" +
+                "<h3 id=\"angularjs\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 8px; margin-right: 0px; margin-left: 0px;\">AngularJS</h3>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">AngularJS directive to Summernote.</p>" +
+                "<ul style=\"color: rgb(51, 51, 51);\"><li style=\"font-size: 14px; color: rgb(104, 116, 127);\"><a href=\"https://github.com/summernote/angular-summernote\">angular-summernote</a></li></ul>" +
+                "<h3 id=\"apache-wicket\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 8px; margin-right: 0px; margin-left: 0px;\">Apache Wicket</h3>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">Summernote widget for Wicket Bootstrap.</p>" +
+                "<ul style=\"color: rgb(51, 51, 51);\"><li style=\"font-size: 14px; color: rgb(104, 116, 127);\"><a href=\"http://wb-mgrigorov.rhcloud.com/summernote\" target=\"_blank\">demo</a></li><li style=\"font-size: 14px; color: rgb(104, 116, 127);\"><a href=\"https://github.com/l0rdn1kk0n/wicket-bootstrap/tree/4f97ca783f7279ca43f9e2ee790703161f59fa40/bootstrap-extensions/src/main/java/de/agilecoders/wicket/extensions/markup/html/bootstrap/editor\" target=\"_blank\">source code</a></li></ul>" +
+                "<h3 id=\"webpack\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 8px; margin-right: 0px; margin-left: 0px;\">Webpack</h3>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">Example about using summernote with webpack.</p>" +
+                "<ul style=\"color: rgb(51, 51, 51);\"><li style=\"font-size: 14px; color: rgb(104, 116, 127);\"><a href=\"https://github.com/hackerwins/summernote-webpack-example\" target=\"_blank\">summernote-webpack-example</a></li></ul>" +
+                "<h3 id=\"meteor\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin-bottom: 8px; margin-right: 0px; margin-left: 0px;\">Meteor</h3>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\">Example about using summernote with meteor.</p>" +
+                "<ul style=\"color: rgb(51, 51, 51);\"><li style=\"font-size: 14px; color: rgb(104, 116, 127);\"><a href=\"https://github.com/hackerwins/summernote-meteor-example\" target=\"_blank\">summernote-meteor-example</a></li></ul>" +
+                "<p style=\"font-size: 14px; color: rgb(104, 116, 127);\"><br></p>";
+        editor.render(x);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                // Log.d(TAG, String.valueOf(bitmap));
+                editor.insertImage(bitmap);
+                //editor.onImageUploadComplete();
+            } catch (IOException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            //Write your code if there's no result
+            Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+            // editor.RestoreState();
+        }
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage, String uuid){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(getApplicationContext().getFilesDir(),uuid+".jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
+
+    /*@Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setGhost((Button) findViewById(R.id.btnRender));
+    }*/
+
+    public Map<Integer, String> getHeadingTypeface() {
+        Map<Integer, String> typefaceMap = new HashMap<>();
+        typefaceMap.put(Typeface.NORMAL, "fonts/GreycliffCF-Bold.ttf");
+        typefaceMap.put(Typeface.BOLD, "fonts/GreycliffCF-Heavy.ttf");
+        typefaceMap.put(Typeface.ITALIC, "fonts/GreycliffCF-Heavy.ttf");
+        typefaceMap.put(Typeface.BOLD_ITALIC, "fonts/GreycliffCF-Bold.ttf");
+        return typefaceMap;
+    }
+
+    public Map<Integer, String> getContentface() {
+        Map<Integer, String> typefaceMap = new HashMap<>();
+        typefaceMap.put(Typeface.NORMAL, "fonts/Lato-Medium.ttf");
+        typefaceMap.put(Typeface.BOLD, "fonts/Lato-Bold.ttf");
+        typefaceMap.put(Typeface.ITALIC, "fonts/Lato-MediumItalic.ttf");
+        typefaceMap.put(Typeface.BOLD_ITALIC, "fonts/Lato-BoldItalic.ttf");
+        return typefaceMap;
+    }
+
+
+
+
 
     @Override
     protected void onDestroy() {
@@ -391,12 +600,10 @@ public class AddNote extends AppCompatActivity {
     public void saveNote(View view) {
         String noteData;
         title = (EditText) findViewById(R.id.note_title);
-        richEditor= (RichEditor) findViewById(R.id.notes_editor);
-        if (richEditor.getHtml() == null){
-            noteData = null;
-        }else {
-            noteData = richEditor.getHtml();
-        }
+        //richEditor= (RichEditor) findViewById(R.id.notes_editor);
+
+        noteData = editor.getContentAsSerialized();
+
 
         if (imagePath != null){
             merged = android.text.TextUtils.join(",", array);
@@ -436,7 +643,7 @@ public class AddNote extends AppCompatActivity {
 
         //close activity and open relevant one.
         int page = 1;
-        Intent intent2 = new Intent(this, Navigation.class);
+        Intent intent2 = new Intent(this, Homev2.class);
         intent2.putExtra("page", page);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent2);
@@ -445,12 +652,11 @@ public class AddNote extends AppCompatActivity {
     public void updateNote(View view){
         String noteData;
         title = (EditText) findViewById(R.id.note_title);
-        richEditor= (RichEditor) findViewById(R.id.notes_editor);
-        if (richEditor.getHtml() == null){
-            noteData = null;
-        }else {
-            noteData = richEditor.getHtml();
-        }
+      //  richEditor= (RichEditor) findViewById(R.id.notes_editor);
+
+        noteData = editor.getContentAsSerialized();
+
+
 
         if (imagePath != null){
             merged = android.text.TextUtils.join(",", array);
@@ -563,7 +769,7 @@ public class AddNote extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -599,7 +805,7 @@ public class AddNote extends AppCompatActivity {
             richEditor.insertImage(imagePath + "\" style=\"width:80%;", "Image");
             cursor.close();
         }
-    }
+    }*/
 
     private  void setCategory(Long categoryId){
         category = categoryId;

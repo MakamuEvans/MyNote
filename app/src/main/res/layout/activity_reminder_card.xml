@@ -27,6 +27,7 @@
                 android:id="@+id/reminderstatus"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:tint="?attr/colorAccent"
                 android:layout_gravity="center"
                 android:src="@mipmap/ic_action_access_alarm" />
 
@@ -50,21 +51,37 @@
                             android:id="@+id/reminder_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="serif"
+                            android:fontFamily="@font/allerta"
                             android:text="Latest Reminder"
-                            android:textColor="?attr/colorPrimary"
+                            android:textColor="@android:color/black"
                             android:textSize="20dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/reminder_dated"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="?attr/colorPrimary"
-                        android:textSize="8dp" />
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
+
+                        <ImageView
+                            android:id="@+id/reminder_puzzle"
+                            android:layout_width="wrap_content"
+                            android:visibility="gone"
+                            android:layout_height="12dp"
+                            app:srcCompat="@drawable/ic_keyboard"
+                            android:layout_alignParentRight="true"
+                            />
+
+                        <TextView
+                            android:id="@+id/reminder_dated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:textSize="8dp" />
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <LinearLayout
@@ -82,8 +99,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
-                            android:text=""
-                            android:textColor="?attr/colorPrimary" />
+                            android:text="" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -116,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="7dp"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimaryDark" />
 
     </LinearLayout>
 

@@ -3,13 +3,17 @@
     <item>
         <shape>
             <gradient
-                android:startColor="?attr/colorPrimary"
-                android:endColor="#ffffff"
-                android:angle="45" />
+                android:startColor="@color/primaryDarkBlue"
+                android:endColor="@color/primaryBlue"
+                android:type="sweep"
+                android:angle="90" />
             <stroke
                 android:width="2dp"
                 android:color="@color/colorWhite"/>
+            <corners
+                android:radius="10pt"/>
 
         </shape>
     </item>
+
 </selector>

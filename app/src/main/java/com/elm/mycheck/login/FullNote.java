@@ -8,30 +8,40 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elm.mycheck.login.model.Category;
 import com.elm.mycheck.login.model.Note;
+import com.github.irshulx.Editor;
+import com.github.irshulx.models.EditorContent;
 import com.google.gson.Gson;
 import com.valdesekamdem.library.mdtoast.MDToast;
 
-import jp.wasabeef.richeditor.RichEditor;
 import layout.NotesFragment;
 
 public class FullNote extends AppCompatActivity {
     private Long note_id = null;
     private TextView updated_on, full_category;
-    private RichEditor richEditor;
+   // private RichEditor richEditor;
+    private Editor editor;
     Note note1;
     int fontSize = 15;
     private ImageView in,out,fav,edit,delete;
+
+    //pinch
+    private ScaleGestureDetector scaleGestureDetector;
+    private float scaleFactor = 1.0f;
+    private CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,28 +50,7 @@ public class FullNote extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
-            setTheme(R.style.AppTheme_NoActionBar);
-        if (theme == "tangarine")
-            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
-        if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_NoActionBar_Banana);
-        if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_NoActionBar_Basil);
-        if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_NoActionBar_Sage);
-        if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_NoActionBar_Peacock);
-        if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
-        if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_NoActionBar_Lavender);
-        if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_NoActionBar_Grape);
-        if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
-        if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
         setContentView(R.layout.activity_full_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,6 +63,8 @@ public class FullNote extends AppCompatActivity {
         note_id = intent.getExtras().getLong("noteId");
         note1 = Note.findById(Note.class, note_id);
 
+
+
         //init
         init();
         //set data
@@ -82,11 +73,10 @@ public class FullNote extends AppCompatActivity {
         } else {
             setTitle(note1.getTitle());
         }
-        richEditor = (RichEditor) findViewById(R.id.notes_editor);
-        // richEditor.setEditorBackgroundColor(Color.RED);
-        richEditor.setInputEnabled(false);
-        richEditor.setHtml(note1.getNote());
-        richEditor.setEditorFontSize(fontSize);
+
+        editor = findViewById(R.id.editor);
+        EditorContent editorContent = editor.getContentDeserialized(note1.getNote());
+        editor.render(editorContent);
 
         updated_on = (TextView) findViewById(R.id.updated_on);
         full_category = (TextView) findViewById(R.id.full_category);
@@ -117,7 +107,8 @@ public class FullNote extends AppCompatActivity {
             public void onClick(View view) {
                 if (fontSize >= 10)
                     fontSize--;
-                richEditor.setEditorFontSize(fontSize);
+                editor.setH1TextSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
             }
         });
         out.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +116,8 @@ public class FullNote extends AppCompatActivity {
             public void onClick(View view) {
                 if (fontSize <= 25)
                     fontSize++;
-                richEditor.setEditorFontSize(fontSize);
+                editor.setH1TextSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
             }
         });
         fav.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +199,7 @@ public class FullNote extends AppCompatActivity {
         });
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -218,10 +211,13 @@ public class FullNote extends AppCompatActivity {
         } else {
             setTitle(note1.getTitle());
         }
-        RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
+
+        EditorContent editorContent = editor.getContentDeserialized(note1.getNote());
+        editor.render(editorContent);
+       /* RichEditor richEditor = (RichEditor) findViewById(R.id.notes_editor);
         richEditor.setEditorBackgroundColor(Color.TRANSPARENT);
         richEditor.setInputEnabled(false);
-        richEditor.setHtml(note1.getNote());
+        richEditor.setHtml(note1.getNote());*/
     }
 
     @Override
@@ -308,12 +304,12 @@ public class FullNote extends AppCompatActivity {
             case R.id.action_out:
                 if (fontSize <= 25)
                     fontSize++;
-                richEditor.setEditorFontSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
                 return true;
             case R.id.action_in:
                 if (fontSize >= 10)
                     fontSize--;
-                richEditor.setEditorFontSize(fontSize);
+                //richEditor.setEditorFontSize(fontSize);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -322,14 +318,14 @@ public class FullNote extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /*getMenuInflater().inflate(R.menu.menu_full_note, menu);
+        getMenuInflater().inflate(R.menu.menu_full_note, menu);
         Note note1 = Note.findById(Note.class, note_id);
 
         if (note1.getFavourite()) {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_white);
         } else {
             menu.findItem(R.id.action_favourite).setIcon(R.mipmap.ic_action_favorite_border);
-        }*/
+        }
         return true;
     }
 }

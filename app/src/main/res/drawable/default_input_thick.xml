@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:state_focused="true">
+        <shape>
+            <solid android:color="@color/primaryAccentBlue"/>
+            <stroke
+                android:width="2dp"
+                android:color="@color/primaryBlue" />
+            <corners
+                android:radius="10dp"/>
+        </shape>
+    </item>
+
+    <item android:state_pressed="true" android:state_focused="false">
+        <shape>
+            <solid android:color="@color/primaryAccentBlue"/>
+            <stroke
+                android:width="2dp"
+                android:color="@color/primaryAccentBlue" />
+            <corners
+                android:radius="10dp"/>
+        </shape>
+    </item>
+
+    <item android:state_pressed="false" android:state_focused="true">
+        <shape>
+            <solid android:color="#FFFFFF"/>
+            <stroke
+                android:width="2dp"
+                android:color="@color/primaryAccentBlue" />
+            <corners
+                android:radius="10dp"/>
+        </shape>
+    </item>
+
+    <item android:state_pressed="false" android:state_focused="false">
+        <shape>
+            <gradient
+                android:startColor="#FFFFFF"
+                android:centerColor="#FFFFFF"
+                android:endColor="#FFFFFF"
+                android:angle="270"
+                />
+            <stroke
+                android:width="2dp"
+                android:color="@color/primaryAccentBlue" />
+            <corners
+                android:radius="10dp"/>
+
+        </shape>
+    </item>
+
+    <item android:state_enabled="true">
+        <shape>
+            <solid android:color="#f2b8e3"/>
+            <padding
+                android:left="2dp"
+                android:top="2dp"
+                android:right="2dp"
+                android:bottom="2dp"
+                />
+            <stroke
+                android:width="2dp"
+                android:color="@color/primaryAccentBlue" />
+            <corners
+                android:radius="10dp"/>
+        </shape>
+    </item>
+</selector>

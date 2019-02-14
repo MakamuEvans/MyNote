@@ -7,14 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="6dp"
-        android:background="?attr/colorPrimary" />
+        android:background="?attr/colorAccent" />
     <TextView
-        android:id="@+android:id/title"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="12dp"
-        android:textColor="?attr/colorAccent"
         android:textSize="14sp"
         android:textStyle="bold" />
 </LinearLayout>

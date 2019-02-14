@@ -3,8 +3,7 @@
 
   <PreferenceCategory
       android:key="General_Settings"
-      android:title="General"
-      android:layout="@layout/preference_category" >
+      android:title="General">
 
     <EditTextPreference
         android:capitalize="words"
@@ -15,19 +14,18 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
+        android:title="%s" />
 
   </PreferenceCategory>
 
   <PreferenceCategory
       android:key="Notification_Settings"
-      android:title="Notifications"
-      android:layout="@layout/preference_category" >
+      android:title="Notifications">
 
     <RingtonePreference
         android:defaultValue="content://settings/system/notification_sound"
         android:key="notifications_new_message_ringtone"
-        android:ringtoneType="all"
+        android:ringtoneType="ringtone"
         android:title="@string/pref_title_ringtone" />
 
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
@@ -61,8 +59,7 @@
   <PreferenceCategory
       android:key="Timing_Settings"
       android:title="Timing"
-      android:summary="Ideal time for Notification, so you never miss out"
-      android:layout="@layout/preference_category" >
+      android:summary="Ideal time for Notification, so you never miss out">
 
     <ListPreference
         android:defaultValue="5"

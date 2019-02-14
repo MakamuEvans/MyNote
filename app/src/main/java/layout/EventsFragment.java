@@ -93,7 +93,9 @@ public class EventsFragment extends Fragment {
 
         adView = (AdView) view.findViewById(R.id.ToDoadView);
         adView.setVisibility(View.GONE);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+             //   .addTestDevice("EA28AA409AA1C2A25750D1B354BDD8A9")
+                .build();
         adView.loadAd(adRequest);
 
         adView.setAdListener(new AdListener(){
@@ -113,6 +115,7 @@ public class EventsFragment extends Fragment {
         IntentFilter intentFilter = new IntentFilter(NewReceiver.SYNC_ACTION);
         newReceiver = new NewReceiver();
         getActivity().registerReceiver(newReceiver, intentFilter);
+
 
         IntentFilter filter = new IntentFilter(updateTodo.SYNC_ACTION);
         getActivity().registerReceiver(new updateTodo(), filter);

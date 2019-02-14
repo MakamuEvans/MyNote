@@ -25,6 +25,8 @@ import com.elm.mycheck.login.R;
 import com.elm.mycheck.login.ToDoDetails;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SoundService extends Service {
     private MediaPlayer mMediaPlayer;
@@ -81,6 +83,8 @@ public class SoundService extends Service {
     }
 
 
+    AudioManager audioManager;
+    int volume = 3;
     private void playSound() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         alartTime = Integer.parseInt(sp.getString("ring_duration", "1"));
@@ -101,20 +105,34 @@ public class SoundService extends Service {
             } else {
                 mMediaPlayer.setDataSource(getApplicationContext(), ringtone);
             }
-            final AudioManager audioManager = (AudioManager) getApplicationContext()
+             audioManager = (AudioManager) getApplicationContext()
                     .getSystemService(Context.AUDIO_SERVICE);
             //if ()
-            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, 20, 0);
+            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, volume, 0);
             //if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
             Log.e("hai", "Playing Sound");
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
             mMediaPlayer.prepare();
             mMediaPlayer.start();
+
+            Timer timer = new Timer();
+            //timer.schedule();
+            timer.schedule(task, 4000, 4000);
         } catch (IOException e) {
             System.out.println(e);
         }
 
     }
+
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            volume = volume + 1;
+            while (volume < 20){
+                audioManager.setStreamVolume(AudioManager.STREAM_ALARM, volume, 0);
+            }
+        }
+    };
 
 
     public void Snoozetimer() {
@@ -129,7 +147,7 @@ public class SoundService extends Service {
             @Override
             public void onFinish() {
                 getApplicationContext().startActivity(new Intent(getApplicationContext(), NotificationBase.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("snooze", true));
-                stopSelf();
+                //stopSelf();
             }
         }.start();
     }
@@ -145,7 +163,7 @@ public class SoundService extends Service {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.mipmap.logo)
+        builder.setSmallIcon(R.mipmap.my_check)
                 .setContentTitle("Missed Alarm")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)

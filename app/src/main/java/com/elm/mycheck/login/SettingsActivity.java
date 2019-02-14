@@ -178,7 +178,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         }
 
-    @Override
+    /*@Override
     protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
 
 
@@ -186,31 +186,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String themee = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", themee);
-        if (themee == "tomato")
-        theme.applyStyle(R.style.AppTheme, true);
-        if (themee == "tangarine")
-            theme.applyStyle(R.style.AppTheme_Tangarine, true);
+        theme.applyStyle(R.style.AppTheme_PrimarySettings, true);
 
-        if (themee.equalsIgnoreCase("banana"))
-            theme.applyStyle(R.style.AppTheme_Banana, true);
-        if (themee.equalsIgnoreCase("basil"))
-            theme.applyStyle(R.style.AppTheme_Basil, true);
-        if (themee.equalsIgnoreCase("sage"))
-            theme.applyStyle(R.style.AppTheme_Sage, true);
-        if (themee.equalsIgnoreCase("peacock"))
-            theme.applyStyle(R.style.AppTheme_Peacock, true);
-        if (themee.equalsIgnoreCase("blueberry"))
-            theme.applyStyle(R.style.AppTheme_BlueBerry, true);
-        if (themee.equalsIgnoreCase("lavender"))
-            theme.applyStyle(R.style.AppTheme_Lavender, true);
-        if (themee.equalsIgnoreCase("grape"))
-            theme.applyStyle(R.style.AppTheme_Grape, true);
-        if (themee.equalsIgnoreCase("flamingo"))
-            theme.applyStyle(R.style.AppTheme_Flamingo, true);
-        if (themee.equalsIgnoreCase("graphite"))
-            theme.applyStyle(R.style.AppTheme_Graphite, true);
-
-    }
+    }*/
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         public static class GeneralPreferenceFragment extends PreferenceFragment {

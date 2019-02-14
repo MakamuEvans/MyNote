@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -61,32 +62,12 @@ public class ToDoDetails extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("myPref", 0);
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
-        Log.e("Theme", theme);
-        if (theme == "tomato")
-            setTheme(R.style.AppTheme_NoActionBar);
-        if (theme == "tangarine")
-            setTheme(R.style.AppTheme_Tangarine);
-        if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_Banana);
-        if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_Basil);
-        if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_Sage);
-        if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_Peacock);
-        if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_BlueBerry);
-        if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_Lavender);
-        if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_Grape);
-        if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_Flamingo);
-        if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_Graphite);
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
 
         setContentView(R.layout.activity_to_do_details);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
@@ -109,7 +90,7 @@ public class ToDoDetails extends AppCompatActivity {
             public void onClick(View view) {
                 TypedValue typedValue = new TypedValue();
                 Resources.Theme theme = getTheme();
-                theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+                theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
                 @ColorInt int color = typedValue.data;
                 new SingleDateAndTimePickerDialog.Builder(ToDoDetails.this)
                         //.bottomSheet()
@@ -161,9 +142,10 @@ public class ToDoDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AddMilestone addMilestone = new AddMilestone();
-                MDToast.makeText(getApplicationContext(),"haha",MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
+               // MDToast.makeText(getApplicationContext(),"haha",MDToast.LENGTH_SHORT,MDToast.TYPE_INFO).show();
                 Bundle args = new Bundle();
                 args.putString("task_id", id.toString());
+                args.putBoolean("new_task", false);
                 addMilestone.setArguments(args);
 
                 addMilestone.show(getFragmentManager(), "Dialog");
@@ -297,13 +279,11 @@ public class ToDoDetails extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.e("Haa", "MilestoneReceiver Called");
             Bundle bundle = intent.getExtras();
-            String newNote = bundle.getString("milestone");
-            Gson gson = new Gson();
-            Type type = new TypeToken<Milestones>(){
-            }.getType();
-            Milestones milestones = gson.fromJson(newNote, type);
+            String title = bundle.getString("title");
+            String todoID = bundle.getString("noteId");
 
-            progress(Long.valueOf(milestones.getTodoid()));
+            Milestones milestones = new Milestones(todoID, title, null, false);
+            milestones.save();
 
             if (milestoneAdapter != null){
                 milestoneAdapter.insert(milestones);

@@ -135,9 +135,7 @@ public class Navigation extends AppCompatActivity
                 if (bundle.containsKey("page")) {
                     int page = intent.getExtras().getInt("page");
                     mViewPager.setCurrentItem(page);
-
                 }
-
             }
 
             spinner = (Spinner) findViewById(R.id.fullSpinner);

@@ -35,13 +35,14 @@
                     android:id="@+id/uploadstatus"/>
 
                 <TextView
+                    android:id="@+id/card_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/allerta"
                     android:text="Latest Notes"
-                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
                     android:textSize="20dp"
-                    android:fontFamily="serif"
-                    android:id="@+id/card_title"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -62,6 +63,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
                 android:orientation="vertical">
+                <com.github.irshulx.Editor
+                    android:layout_width="match_parent"
+                    android:id="@+id/editor"
+                    app:render_type="Editor"
+                    app:placeholder="Start writing here..."
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                </com.github.irshulx.Editor>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="7dp"
-            android:background="?attr/colorPrimary"/>
+            android:background="?attr/colorPrimaryDark"/>
 
     </LinearLayout>
 

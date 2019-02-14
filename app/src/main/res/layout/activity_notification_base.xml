@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/base_notif"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary">
+    android:background="@drawable/animation_list">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -12,6 +13,7 @@
         <ImageView
             android:id="@+id/reminders_close"
             android:layout_width="wrap_content"
+            android:layout_margin="10dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@android:color/white"
@@ -23,16 +25,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10pt">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/gradient"
+                android:background="@drawable/gradient_rec"
                 android:orientation="vertical"
                 android:padding="10dp">
 
@@ -41,14 +44,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Hello from"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/primaryAccentBlue" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/app_name"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/primaryAccentBlue"
                     android:textSize="45dp" />
 
                 <TextView
@@ -57,51 +60,52 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="You have one Reminder"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/primaryAccentBlue" />
             </LinearLayout>
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
+            android:id="@+id/alarm_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/alarm_info"
             android:layout_marginBottom="5dp"
-            android:visibility="visible"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
                 android:id="@+id/hicvp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".6"
-                app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
-                app:icvp_scroll_duration="250"
                 app:icvp_center_page_scale_offset="30dp"
-                app:icvp_min_page_scale_offset="5dp"
+                app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
                 app:icvp_max_page_scale="0.8"
+                app:icvp_medium_scaled="false"
                 app:icvp_min_page_scale="0.55"
-                app:icvp_medium_scaled="false"/>
+                app:icvp_min_page_scale_offset="5dp"
+                app:icvp_scroll_duration="250" />
 
             <LinearLayout
-                android:layout_width="match_parent"
                 android:id="@+id/reminder_action"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".4"
                 android:gravity="center"
-                android:visibility="visible"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="100dp"
                     android:layout_height="wrap_content">
 
                     <Button
+                        android:id="@+id/snooze_alarm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Snooze"
                         android:layout_marginBottom="5dp"
-                        android:id="@+id/snooze_alarm"
-                        android:background="@drawable/snooze" />
+                        android:padding="15px"
+                        android:background="@drawable/themeless"
+                        android:text="Snooze" />
 
                 </LinearLayout>
 
@@ -110,14 +114,12 @@
                     android:layout_height="70dp">
 
                     <Button
-                        android:layout_width="match_parent"
-                        android:textSize="20sp"
                         android:id="@+id/close_alarm"
-                        android:layout_margin="5dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/gradient"
-                        android:textColor="@color/colorWhite"
-                        android:text="Close" />
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/snooze"
+                        android:text="Close"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 
@@ -125,10 +127,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/puzzle_box"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/puzzle_box"
             android:visibility="gone">
 
             <TextView
@@ -146,31 +148,31 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/success_counter"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".3"
-                    android:textSize="15dp"
                     android:gravity="center"
                     android:textColor="@color/black_overlay"
-                    android:id="@+id/success_counter"/>
+                    android:textSize="15dp" />
 
                 <TextView
+                    android:id="@+id/box_message"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:textSize="15dp"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:id="@+id/box_message"/>
+                    android:layout_weight=".4"
+                    android:gravity="center"
+                    android:textSize="15dp" />
 
                 <TextView
+                    android:id="@+id/box_timer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".3"
-                    android:textSize="15dp"
                     android:gravity="center"
                     android:textColor="@color/black_overlay"
-                    android:id="@+id/box_timer"/>
+                    android:textSize="15dp" />
 
             </LinearLayout>
 
@@ -303,10 +305,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/puzzle_retype"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/puzzle_retype"
             android:visibility="gone">
 
             <TextView
@@ -318,43 +320,43 @@
                 android:textSize="25dp" />
 
             <TextView
+                android:id="@+id/failed_retype"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Failed!"
-                android:id="@+id/failed_retype"
-                android:visibility="gone"
                 android:background="@color/colorWhite"
+                android:text="Failed!"
                 android:textColor="@color/red"
-                android:textSize="25dp" />
+                android:textSize="25dp"
+                android:visibility="gone" />
 
             <TextView
+                android:id="@+id/text_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="5dp"
-                android:id="@+id/text_test"
                 android:background="@drawable/default_input_text"
+                android:padding="5dp"
                 android:text="hahahahahahahah ahahah ahaha ahaa a ahaha"
                 android:textSize="18dp" />
 
             <EditText
+                android:id="@+id/text_response"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:gravity="top"
-                android:padding="5dp"
-                android:textColor="@color/colorWhite"
                 android:background="@drawable/themeless"
-                android:id="@+id/text_response"
-                android:lines="5" />
+                android:gravity="top"
+                android:lines="5"
+                android:padding="5dp"
+                android:textColor="@color/colorWhite" />
 
             <Button
+                android:id="@+id/retype_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
-                android:id="@+id/retype_button"
                 android:background="@drawable/themeless"
                 android:text="Validate"
                 android:textColor="@color/colorWhite" />
@@ -377,20 +379,20 @@
                 android:textSize="25dp" />
 
             <TextView
+                android:id="@+id/s_c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:id="@+id/s_c"
                 android:textColor="@color/colorWhite"
                 android:textSize="25dp" />
 
             <LinearLayout
+                android:id="@+id/sequence_quiz"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:id="@+id/sequence_quiz"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -398,18 +400,18 @@
                     android:layout_weight=".2" />
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="0dp"
                     android:id="@+id/card_sequence"
-                    app:cardBackgroundColor="@android:color/transparent"
+                    android:layout_width="0dp"
                     android:layout_height="200dp"
-                    android:layout_weight=".6">
+                    android:layout_weight=".6"
+                    app:cardBackgroundColor="@android:color/transparent">
 
                     <ImageView
-                        android:layout_width="200dp"
                         android:id="@+id/image_sequence"
+                        android:layout_width="200dp"
                         android:layout_height="200dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/one"/>
+                        android:src="@drawable/one" />
 
                 </android.support.v7.widget.CardView>
 
@@ -422,12 +424,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/sequence_ans"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:id="@+id/sequence_ans"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -436,31 +438,30 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/sequence_counterr"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
-                        android:textSize="15dp"
                         android:gravity="center"
                         android:textColor="@color/black_overlay"
-                        android:id="@+id/sequence_counterr"/>
+                        android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/sequence_message"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".4"
-                        android:textSize="15dp"
-                        android:gravity="center"
                         android:layout_gravity="center"
-                        android:id="@+id/sequence_message"/>
+                        android:layout_weight=".4"
+                        android:gravity="center"
+                        android:textSize="15dp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
-                        android:textSize="15dp"
                         android:gravity="center"
                         android:textColor="@color/black_overlay"
-                       />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
@@ -475,13 +476,13 @@
                         android:layout_height="100dp"
                         android:layout_margin="8dp"
                         android:layout_weight=".3"
-                        app:cardBackgroundColor="@android:color/transparent" >
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <ImageView
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/one"/>
+                            android:src="@drawable/one" />
 
                     </android.support.v7.widget.CardView>
 
@@ -491,17 +492,18 @@
                         android:layout_height="100dp"
                         android:layout_margin="8dp"
                         android:layout_weight=".3"
-                        app:cardBackgroundColor="@android:color/transparent" >
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <ImageView
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/two"/>
+                            android:src="@drawable/two" />
 
                     </android.support.v7.widget.CardView>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -513,13 +515,13 @@
                         android:layout_height="100dp"
                         android:layout_margin="8dp"
                         android:layout_weight=".3"
-                        app:cardBackgroundColor="@android:color/transparent" >
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <ImageView
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/three"/>
+                            android:src="@drawable/three" />
 
                     </android.support.v7.widget.CardView>
 
@@ -529,13 +531,13 @@
                         android:layout_height="100dp"
                         android:layout_margin="8dp"
                         android:layout_weight=".3"
-                        app:cardBackgroundColor="@android:color/transparent" >
+                        app:cardBackgroundColor="@android:color/transparent">
 
                         <ImageView
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/four"/>
+                            android:src="@drawable/four" />
 
                     </android.support.v7.widget.CardView>
 

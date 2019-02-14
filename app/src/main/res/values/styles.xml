@@ -12,7 +12,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="SplashTheme" parent="AppTheme">
+    <style name="SplashTheme" parent="AppTheme.NoActionBar.Primary">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/splash</item>
@@ -31,6 +31,29 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkTangarine</item>
         <item name="colorAccent">@color/colorAccentTangarine</item>
     </style>
+
+    <style name="AppTheme.PrimarySettings" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryBluish</item>
+        <item name="colorPrimaryDark">@color/primaryAccentBlue</item>
+        <item name="colorAccent">@color/primaryAccentBlue</item>
+    </style>
+
+
+    <style name="AppTheme.Primary" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/allerta</item>
+        <item name="colorPrimary">@color/primaryBlue</item>
+        <item name="colorPrimaryDark">@color/primaryDarkBlue</item>
+        <item name="colorAccent">@color/primaryAccentBlue</item>
+        <item name="colorControlNormal">@color/primaryAccentBlue</item>
+    </style>
+    <style name="AppTheme.NoActionBar.Primary" parent="AppTheme.Primary">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
     <style name="AppTheme.NoActionBar.Tangarine" parent="AppTheme.Tangarine">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -38,7 +61,7 @@
     <style name="SplashTheme.Tangarine" parent="AppTheme.Tangarine">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
+        <item name="android:windowBackground">@drawable/my_check_splash</item>
     </style>
 
     <style name="AppTheme.Banana" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -54,7 +77,6 @@
     <style name="SplashTheme.Banana" parent="AppTheme.Banana">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.Basil" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -70,7 +92,6 @@
     <style name="SplashTheme.Basil" parent="AppTheme.Basil">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.Sage" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -86,7 +107,6 @@
     <style name="SplashTheme.Sage" parent="AppTheme.Sage">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.Peacock" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -102,7 +122,6 @@
     <style name="SplashTheme.Peacock" parent="AppTheme.Peacock">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.BlueBerry" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -118,7 +137,6 @@
     <style name="SplashTheme.BlueBerry" parent="AppTheme.BlueBerry">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.Lavender" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -134,7 +152,6 @@
     <style name="SplashTheme.Lavender" parent="AppTheme.Lavender">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.Grape" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -150,7 +167,6 @@
     <style name="SplashTheme.Grape" parent="AppTheme.Grape">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.Flamingo" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -166,7 +182,6 @@
     <style name="SplashTheme.Flamingo" parent="AppTheme.Flamingo">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppTheme.Graphite" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -181,7 +196,6 @@
     </style>
     <style name="SplashTheme.Graphite" parent="AppTheme.Graphite">
         <item name="windowActionBar">false</item>
-        <item name="android:windowBackground">@drawable/splash_logo</item>
     </style>
 
     <style name="AppThemeDialog" parent="Theme.AppCompat.Dialog">

@@ -2,6 +2,8 @@ package com.elm.mycheck.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.emilsjolander.components.StickyScrollViewItems.StickyScrollView;
 
@@ -25,7 +26,7 @@ public class PuzzleDetails extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
+        /*if (theme == "tomato")
             setTheme(R.style.AppTheme_NoActionBar);
         if (theme == "tangarine")
             setTheme(R.style.AppTheme_NoActionBar_Tangarine);
@@ -46,7 +47,8 @@ public class PuzzleDetails extends AppCompatActivity {
         if (theme.equalsIgnoreCase("flamingo"))
             setTheme(R.style.AppTheme_NoActionBar_Flamingo);
         if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+            setTheme(R.style.AppTheme_NoActionBar_Graphite);*/
+        setTheme(R.style.AppTheme_NoActionBar_Primary);
 
         setContentView(R.layout.activity_puzzle_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -199,6 +201,7 @@ public class PuzzleDetails extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void demo_Puzzle(View view){
         Intent intent = new Intent(PuzzleDetails.this, NotificationBase.class);
         intent.putExtra("demoPuzzle", "puzzle");

@@ -4,6 +4,7 @@
 
     <item
         android:title="Advanced"
+        app:iconTint="?attr/colorAccent"
         app:showAsAction="always"
         android:icon="@mipmap/ic_action_alarm_white"
         android:id="@+id/todo_timer"/>

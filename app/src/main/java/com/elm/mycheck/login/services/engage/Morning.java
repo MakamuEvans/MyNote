@@ -81,7 +81,7 @@ public class Morning extends Service {
 
         //prepare notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
-        builder.setSmallIcon(R.mipmap.logo)
+        builder.setSmallIcon(R.mipmap.my_check)
                 .setContentTitle("myCheck: Morning Buddy!")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)

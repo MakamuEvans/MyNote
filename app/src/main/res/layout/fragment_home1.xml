@@ -31,569 +31,614 @@
                 </com.google.android.gms.ads.AdView>
             </RelativeLayout>
 
-            <RelativeLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:background="?attr/colorPrimary"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@color/colorWhite"
-                android:tag="sticky">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="myNote(s)"
-                    android:typeface="monospace" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="20dp"
-                    android:id="@+id/expand_notes"
-                    android:src="@mipmap/ic_expand" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/colorPrimary">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/flat_notepad"/>
-
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="90dp">
-
-                            <android.support.v7.widget.CardView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin = "5dp"
-                                android:minHeight="100dp"
-                                android:layout_weight=".4"
-                                android:background="@color/colorError"
-                                app:cardElevation="10dp">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="5dp"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/total_notes"
-                                        android:text="10"
-                                        android:textSize="40dp"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Total No. of Notes" />
-
-
-                                </LinearLayout>
-
-                            </android.support.v7.widget.CardView>
-
-                            <android.support.v7.widget.CardView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".3"
-                                android:layout_margin="5dp"
-                                android:minHeight="100dp"
-                                android:padding="3dp"
-                                android:background="@color/colorError"
-                                app:cardElevation="10dp">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="5dp"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/week_notes"
-                                        android:text="3"
-                                        android:textSize="30dp"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Added this week" />
-
-
-                                </LinearLayout>
-
-                            </android.support.v7.widget.CardView>
-
-                            <android.support.v7.widget.CardView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".3"
-                                android:layout_margin="5dp"
-                                android:minHeight="100dp"
-                                android:padding="3dp"
-                                android:background="@color/colorError"
-                                app:cardElevation="10dp">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="5dp"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="4"
-                                        android:id="@+id/favourite_notes"
-                                        android:textSize="30dp"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Favourited Notes" />
-
-
-                                </LinearLayout>
-                            </android.support.v7.widget.CardView>
-
-                        </LinearLayout>
-
-                    </HorizontalScrollView>
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:padding="10dp"
-                android:tag="sticky">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="myReminder(s)" />
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="20dp"
-                    android:id="@+id/expand_reminders"
-                    android:src="@mipmap/ic_expand" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:background="?attr/colorPrimary"
-                    android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/alarm" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="90dp"
-                        android:orientation="horizontal">
-                        <android.support.v7.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight=".4"
-                            android:minHeight="100dp"
-                            android:background="@color/colorError"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="18"
-                                    android:id="@+id/total_alarms"
-                                    android:textSize="40dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Total No. of Alarm" />
-
-
-                            </LinearLayout>
-
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".3"
-                            android:layout_margin="5dp"
-                            android:minHeight="100dp"
-                            android:padding="3dp"
-                            android:background="@color/colorError"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="10"
-                                    android:id="@+id/week_alarms"
-                                    android:textSize="30dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Added this Week" />
-
-
-                            </LinearLayout>
-
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".3"
-                            android:layout_margin="5dp"
-                            android:minHeight="100dp"
-                            android:padding="3dp"
-                            android:background="@color/colorError"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="4"
-                                    android:id="@+id/active_alarms"
-                                    android:textSize="30dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Active Alarms" />
-
-
-                            </LinearLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".6"
-                            android:layout_margin="5dp"
-                            android:minHeight="100dp"
-                            android:padding="3dp"
-                            android:background="@color/colorError"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="(4 , 2)"
-                                    android:id="@+id/type_alarms"
-                                    android:textSize="30dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="(Repeating , One-time) Total Alarms" />
-                            </LinearLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".3"
-                            android:layout_margin="5dp"
-                            android:minHeight="100dp"
-                            android:padding="3dp"
-                            android:background="@color/colorError"
-                            app:cardElevation="10dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="#"
-                                    android:id="@+id/missed_alarms"
-                                    android:textSize="30dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Total Missed Alarms" />
-
-
-                            </LinearLayout>
-                        </android.support.v7.widget.CardView>
-
-                    </LinearLayout>
-                </HorizontalScrollView>
-                </FrameLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.gms.ads.AdView
-                        android:id="@+id/adView2"
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_alignParentBottom="true"
-                        app:adSize="FLUID"
-                        app:adUnitId="@string/banner_ad_unit_id">
-                    </com.google.android.gms.ads.AdView>
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:tag="sticky">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="myToDo(s)" />
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="20dp"
-                    android:id="@+id/expand_todo"
-                    android:src="@mipmap/ic_expand" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:background="?attr/colorPrimary"
-                    android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/todo_image" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="vertical">
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_margin="5dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="90dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <android.support.v7.widget.CardView
-                        android:layout_width="0dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight=".4"
-                        android:minHeight="100dp"
-                        android:background="@color/colorError"
-                        app:cardElevation="10dp">
+                        android:padding="10dp"
+                        android:background="@color/colorWhite"
+                        android:tag="sticky">
 
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:orientation="vertical">
+                            android:text="myNote(s)"
+                            android:typeface="monospace" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/total_todo"
-                                android:text="6"
-                                android:textSize="40dp"/>
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="20dp"
+                            android:id="@+id/expand_notes"
+                            android:visibility="gone"
+                            android:src="@mipmap/ic_expand" />
+                    </RelativeLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Total No. of ToDo(s)" />
-
-
-                        </LinearLayout>
-
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".3"
-                        android:layout_margin="5dp"
-                        android:minHeight="100dp"
-                        android:padding="3dp"
-                        android:background="@color/colorError"
-                        app:cardElevation="10dp">
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:orientation="vertical">
+                            android:background="@drawable/gradient">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/flat_notepad"/>
+
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="4"
-                                android:id="@+id/week_todo"
-                                android:textSize="30dp"/>
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Added this week" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="90dp">
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin = "5dp"
+                                        android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:layout_weight=".4"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/total_notes"
+                                                android:text="10"
+                                                android:textSize="40dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Total No. of Notes" />
 
 
-                        </LinearLayout>
+                                        </LinearLayout>
 
-                    </android.support.v7.widget.CardView>
+                                    </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".3"
+                                        android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:minHeight="100dp"
+                                        android:padding="3dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/week_notes"
+                                                android:text="3"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Added this week" />
 
 
+                                        </LinearLayout>
 
-                    <android.support.v7.widget.CardView
-                        android:layout_width="0dp"
+                                    </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".3"
+                                        android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:minHeight="100dp"
+                                        android:padding="3dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="4"
+                                                android:id="@+id/favourite_notes"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Favourited Notes" />
+
+
+                                        </LinearLayout>
+                                    </android.support.v7.widget.CardView>
+
+                                </LinearLayout>
+
+                            </HorizontalScrollView>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:background="?attr/colorPrimaryDark"
+                        android:layout_height="1dp"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:minHeight="100dp"
-                        android:layout_weight=".4"
-                        android:background="@color/colorError"
-                        app:cardElevation="10dp">
+                        android:background="@color/colorWhite"
+                        android:padding="10dp"
+                        android:tag="sticky">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:orientation="vertical">
+                            android:text="myReminder(s)" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="20dp"
+                            android:visibility="gone"
+                            android:id="@+id/expand_reminders"
+                            android:src="@mipmap/ic_expand" />
+                    </RelativeLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="#"
-                                android:id="@+id/completed_todo"
-                                android:textSize="40dp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Total Completed Tasks" />
-
-
-                        </LinearLayout>
-
-                    </android.support.v7.widget.CardView>
-
-
-                    <android.support.v7.widget.CardView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".3"
-                        android:layout_margin="5dp"
-                        android:padding="3dp"
-                        android:minHeight="100dp"
-                        android:background="@color/colorError"
-                        app:cardElevation="10dp">
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:background="@drawable/gradient"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/alarm" />
+
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="90dp"
+                                    android:orientation="horizontal">
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:layout_weight=".4"
+                                        android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="18"
+                                                android:id="@+id/total_alarms"
+                                                android:textSize="40dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Total No. of Alarm" />
+
+
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".3"
+                                        android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:minHeight="100dp"
+                                        android:padding="3dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="10"
+                                                android:id="@+id/week_alarms"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Added this Week" />
+
+
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".3"
+                                        android:layout_margin="5dp"
+                                        android:minHeight="100dp"
+                                        android:padding="3dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="4"
+                                                android:id="@+id/active_alarms"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Active Alarms" />
+
+
+                                        </LinearLayout>
+                                    </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".6"
+                                        android:layout_margin="5dp"
+                                        android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:padding="3dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="(4 , 2)"
+                                                android:id="@+id/type_alarms"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="(Repeating , One-time) Total Alarms" />
+                                        </LinearLayout>
+                                    </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".3"
+                                        android:layout_margin="5dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:minHeight="100dp"
+                                        android:padding="3dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="#"
+                                                android:id="@+id/missed_alarms"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Total Missed Alarms" />
+
+
+                                        </LinearLayout>
+                                    </android.support.v7.widget.CardView>
+
+                                </LinearLayout>
+                            </HorizontalScrollView>
+                        </FrameLayout>
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.gms.ads.AdView
+                                android:id="@+id/adView2"
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_alignParentBottom="true"
+                                app:adSize="FLUID"
+                                app:adUnitId="@string/banner_ad_unit_id">
+                            </com.google.android.gms.ads.AdView>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:background="?attr/colorPrimaryDark"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="1dp"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:tag="sticky">
+
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:orientation="vertical">
+                            android:text="myToDo(s)" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_height="20dp"
+                            android:id="@+id/expand_todo"
+                            android:visibility="gone"
+                            android:src="@mipmap/ic_expand" />
+                    </RelativeLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:background="@drawable/gradient"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/todo_image" />
+
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="#"
-                                android:id="@+id/incomplete_todo"
-                                android:textSize="30dp"/>
+                                android:layout_margin="5dp"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Pending Tasks" />
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="90dp"
+                                    android:orientation="horizontal">
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:layout_weight=".4"
+                                        app:cardCornerRadius="10dp"
+                                        android:minHeight="100dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/total_todo"
+                                                android:text="6"
+                                                android:textSize="40dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Total No. of ToDo(s)" />
 
 
-                        </LinearLayout>
+                                        </LinearLayout>
 
-                    </android.support.v7.widget.CardView>
+                                    </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".3"
+                                        android:layout_margin="5dp"
+                                        android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:padding="3dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="4"
+                                                android:id="@+id/week_todo"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Added this week" />
+
+
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+
+
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="5dp"
+                                        android:minHeight="100dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:layout_weight=".4"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="#"
+                                                android:id="@+id/completed_todo"
+                                                android:textSize="40dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Total Completed Tasks" />
+
+
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+
+
+                                    <android.support.v7.widget.CardView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".3"
+                                        android:layout_margin="5dp"
+                                        android:padding="3dp"
+                                        app:cardCornerRadius="10dp"
+                                        android:minHeight="100dp"
+                                        android:background="@color/colorError"
+                                        app:cardElevation="10dp">
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="5dp"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="#"
+                                                android:id="@+id/incomplete_todo"
+                                                android:textSize="30dp"/>
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Pending Tasks" />
+
+
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+                                </LinearLayout>
+
+                            </HorizontalScrollView>
+                        </FrameLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                </HorizontalScrollView>
-                </FrameLayout>
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
 
     </com.emilsjolander.components.StickyScrollViewItems.StickyScrollView>

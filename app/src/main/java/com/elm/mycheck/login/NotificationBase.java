@@ -1,6 +1,12 @@
 package com.elm.mycheck.login;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -9,8 +15,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.Vibrator;
@@ -31,13 +39,16 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.elm.mycheck.login.adapter.NotificationsAdapter;
 import com.elm.mycheck.login.model.AlarmReminder;
 import com.elm.mycheck.login.model.Reminder;
+import com.elm.mycheck.login.services.alarm.AlarmCrud;
 import com.elm.mycheck.login.services.alarm.PlaySound;
 import com.elm.mycheck.login.services.alarm.SoundService;
 import com.elm.mycheck.login.utils.Constants;
@@ -49,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class NotificationBase extends AppCompatActivity {
+public class NotificationBase extends Activity {
     private static final String TAG = NotificationBase.class.getSimpleName();
     public static boolean activityOpen = false;
     public List<Reminder> activeReminders = new ArrayList<>();
@@ -73,6 +84,8 @@ public class NotificationBase extends AppCompatActivity {
     int snooze_count;
     private int puzzle_level = 0, count_fail = 0;
     private NotificationManager mNotificationManager;
+    private RelativeLayout relativeLayout;
+    private boolean missed = false;
 
     MediaPlayer mMediaPlayer;
     Boolean snoozeActive = false;
@@ -83,9 +96,11 @@ public class NotificationBase extends AppCompatActivity {
     private int random;
     private int box_counter = 0;
     private String count_string = null;
-    private Boolean isPuzzle = false;
+    private Boolean isPuzzle = false, auto_snooze = false;
     private String puzzleType = null;
 
+    private FrameLayout layout;
+    private AnimationDrawable animationDrawable;
 
     @Override
     protected void onStart() {
@@ -102,28 +117,7 @@ public class NotificationBase extends AppCompatActivity {
         //Boolean fk = getSharedPreferences("myPref", 0).getBoolean("loggedIn", false);
         String theme = getSharedPreferences("myPref", 0).getString("theme", "Default");
         Log.e("Theme", theme);
-        if (theme == "tomato")
-            setTheme(R.style.AppTheme_NoActionBar);
-        if (theme == "tangarine")
-            setTheme(R.style.AppTheme_NoActionBar_Tangarine);
-        if (theme.equalsIgnoreCase("banana"))
-            setTheme(R.style.AppTheme_NoActionBar_Banana);
-        if (theme.equalsIgnoreCase("basil"))
-            setTheme(R.style.AppTheme_NoActionBar_Basil);
-        if (theme.equalsIgnoreCase("sage"))
-            setTheme(R.style.AppTheme_NoActionBar_Sage);
-        if (theme.equalsIgnoreCase("peacock"))
-            setTheme(R.style.AppTheme_NoActionBar_Peacock);
-        if (theme.equalsIgnoreCase("blueberry"))
-            setTheme(R.style.AppTheme_NoActionBar_BlueBerry);
-        if (theme.equalsIgnoreCase("lavender"))
-            setTheme(R.style.AppTheme_NoActionBar_Lavender);
-        if (theme.equalsIgnoreCase("grape"))
-            setTheme(R.style.AppTheme_NoActionBar_Grape);
-        if (theme.equalsIgnoreCase("flamingo"))
-            setTheme(R.style.AppTheme_NoActionBar_Flamingo);
-        if (theme.equalsIgnoreCase("graphite"))
-            setTheme(R.style.AppTheme_NoActionBar_Graphite);
+        //setTheme(R.style.AppTheme_NoActionBar_Primary);
 
         SharedPreferences preferences1 = getSharedPreferences("myPref", 0);
         SharedPreferences.Editor editor1 = preferences1.edit();
@@ -146,11 +140,16 @@ public class NotificationBase extends AppCompatActivity {
 
         setContentView(R.layout.activity_notification_base);
 
+        layout = findViewById(R.id.base_notif);
+        animationDrawable = (AnimationDrawable) layout.getBackground();
+        animationDrawable.setEnterFadeDuration(4000);
+        animationDrawable.setExitFadeDuration(2000);
+
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(500);
         init();
-        close_button = (ImageView) findViewById(R.id.reminders_close);
+        close_button = findViewById(R.id.reminders_close);
         demo = false;
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -192,6 +191,14 @@ public class NotificationBase extends AppCompatActivity {
                     snooze = true;
 
             }
+
+            if (bundle.containsKey("auto_snooze")) {
+                auto_snooze = intent.getExtras().getBoolean("auto_snooze");
+            }
+
+            if (bundle.containsKey("missed")) {
+                missed = intent.getExtras().getBoolean("missed");
+            }
         }
         if (demo) {
             close_button.setVisibility(View.VISIBLE);
@@ -214,8 +221,6 @@ public class NotificationBase extends AppCompatActivity {
             editor2.commit();
             snooze_count = 0;
         }
-
-
         reminder_action = (LinearLayout) findViewById(R.id.reminder_action);
 
 
@@ -229,8 +234,8 @@ public class NotificationBase extends AppCompatActivity {
             if (activeReminders.size() == 0) {
                 //return;
                 //onDestroy();
-               /* quit = true;
-                finish();*/
+                /* quit = true;*/
+                finish();
             }
 
             for (Reminder reminder : activeReminders) {
@@ -239,7 +244,7 @@ public class NotificationBase extends AppCompatActivity {
                 if (!a_reminder.getPuzzle().equals("None")) {
                     isPuzzle = true;
                     puzzleType = a_reminder.getPuzzle();
-                    puzzle_level = decodePuzzle(a_reminder.getPuzzletype(),a_reminder.getPuzzlelevel());
+                    puzzle_level = decodePuzzle(a_reminder.getPuzzletype(), a_reminder.getPuzzlelevel());
                 }
             }
         } else {
@@ -248,12 +253,10 @@ public class NotificationBase extends AppCompatActivity {
                     .list();
 
             for (AlarmReminder reminder : activeNotifications
-                    ) {
+            ) {
                 activeReminders.add(Reminder.findById(Reminder.class, reminder.getReminderid()));
             }
         }
-
-
         //stopService(new Intent(NotificationBase.this, PlaySound.class));
 
         //register receiver
@@ -262,17 +265,16 @@ public class NotificationBase extends AppCompatActivity {
         registerReceiver(newNotificationn, intentFilter);
 
 
-        final HorizontalInfiniteCycleViewPager horizontalInfiniteCycleViewPager =
-                (HorizontalInfiniteCycleViewPager) findViewById(R.id.hicvp);
+        final HorizontalInfiniteCycleViewPager horizontalInfiniteCycleViewPager = findViewById(R.id.hicvp);
         horizontalInfiniteCycleViewPager.setAdapter(new NotificationsAdapter(getBaseContext(), false, activeReminders));
 
-        notificationsCount = (TextView) findViewById(R.id.notifications_count);
+        notificationsCount = findViewById(R.id.notifications_count);
         notificationsCount.setText("You have " + activeReminders.size() + " Reminder(s)");
         if (notification)
             notificationsCount.setText(activeReminders.size() + " Upcoming Reminder(s)");
 
-        pause_media = (Button) findViewById(R.id.snooze_alarm);
-        close_b = (Button) findViewById(R.id.close_alarm);
+        pause_media = findViewById(R.id.snooze_alarm);
+        close_b = findViewById(R.id.close_alarm);
 
         close_b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,22 +295,22 @@ public class NotificationBase extends AppCompatActivity {
                     stopAlarm();
                     clearActives();
                     quit = "no";
-                    finish();
+                    finishAffinity();
+                    //finish();
                 }
             }
         });
-        if (isPuzzle)
+        if (isPuzzle || missed)
             pause_media.setVisibility(View.GONE);
 
         pause_media.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mNotificationManager.cancel(500);
-                snoozeAlarm();
+                snoozeAlarm(false);
                 quit = "no";
+                //onDestroy();
                 finish();
-
-
                 //mMediaPlayer.stop();
             }
         });
@@ -326,13 +328,15 @@ public class NotificationBase extends AppCompatActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         alartTime = Integer.parseInt(sp.getString("ring_duration", "1"));
         snoozeTime = Integer.parseInt(sp.getString("snooze_duration", "5"));
+        //Log.e("hahahahahahahah", String.valueOf(snoozeTime));
         vibrate = sp.getBoolean("notifications_new_message_vibrate", true);
 
         Uri ringtone = Uri.parse(sp.getString("notifications_new_message_ringtone", "content://settings/system/ringtone"));
         System.out.println(ringtone);
         if (!notification) {
             Log.e("playSound", "Playing...");
-            playSound(this, ringtone);
+            if (!missed)
+                playSound(this, ringtone);
         } else {
             close_b.setVisibility(View.GONE);
             pause_media.setVisibility(View.GONE);
@@ -356,7 +360,7 @@ public class NotificationBase extends AppCompatActivity {
                     .where(Condition.prop("active").eq("1"))
                     .list();
             for (AlarmReminder reminder : activeNotifications
-                    ) {
+            ) {
                 reminder.setActive(false);
                 reminder.save();
             }
@@ -370,15 +374,22 @@ public class NotificationBase extends AppCompatActivity {
         startService(intent);
     }
 
-    private void snoozeAlarm() {
+    private void snoozeAlarm(boolean auto) {
+        Log.e("hee", "Snooze Called");
         cancelCountDown();
         if (wakeLock.isHeld())
             wakeLock.release();
         stopAlarm();
         //createNotification("Reminder in Snooze Mode");
-        if (!snooze) {
-            Intent intent = new Intent(NotificationBase.this, SoundService.class);
+        if (!snooze && !auto_snooze) {
+            /*Intent intent = new Intent(NotificationBase.this, SoundService.class);
             intent.putExtra("snoozeAlarm", true);
+            startService(intent);*/
+
+            Intent intent = new Intent(NotificationBase.this, AlarmCrud.class);
+            intent.putExtra("is_snooze", true);
+            intent.putExtra("auto_snooze", auto);
+            intent.putExtra("snooze_time", snoozeTime);
             startService(intent);
         } else {
             createNotification("You Missed an Alarm. Click to View");
@@ -389,29 +400,29 @@ public class NotificationBase extends AppCompatActivity {
         stopService(new Intent(NotificationBase.this, SoundService.class));
     }
 
-    private int decodePuzzle(String type, String level){
-        if (type.equalsIgnoreCase("Active touch")){
-            if (level.equalsIgnoreCase("1")){
+    private int decodePuzzle(String type, String level) {
+        if (type.equalsIgnoreCase("Active touch")) {
+            if (level.equalsIgnoreCase("1")) {
                 return 20;
-            }else if (level.equalsIgnoreCase("2")){
+            } else if (level.equalsIgnoreCase("2")) {
                 return 30;
-            }else {
+            } else {
                 return 50;
             }
-        }else if (type.equalsIgnoreCase("Retype")){
-            if (level.equalsIgnoreCase("1")){
+        } else if (type.equalsIgnoreCase("Retype")) {
+            if (level.equalsIgnoreCase("1")) {
                 return 20;
-            }else if (level.equalsIgnoreCase("2")){
+            } else if (level.equalsIgnoreCase("2")) {
                 return 30;
-            }else {
+            } else {
                 return 50;
             }
-        }else {
-            if (level.equalsIgnoreCase("1")){
+        } else {
+            if (level.equalsIgnoreCase("1")) {
                 return 3;
-            }else if (level.equalsIgnoreCase("2")){
+            } else if (level.equalsIgnoreCase("2")) {
                 return 4;
-            }else {
+            } else {
                 return 6;
             }
         }
@@ -419,18 +430,18 @@ public class NotificationBase extends AppCompatActivity {
 
     private void init() {
         //initialize layout
-        info_layout = (LinearLayout) findViewById(R.id.alarm_info);
-        box_puzzle = (LinearLayout) findViewById(R.id.puzzle_box);
-        sequence_puzzle = (LinearLayout) findViewById(R.id.puzzle_sequence);
-        retype_puzzle = (LinearLayout) findViewById(R.id.puzzle_retype);
-        sequence_quiz = (LinearLayout) findViewById(R.id.sequence_quiz);
-        sequence_ans = (LinearLayout) findViewById(R.id.sequence_ans);
+        info_layout = findViewById(R.id.alarm_info);
+        box_puzzle = findViewById(R.id.puzzle_box);
+        sequence_puzzle = findViewById(R.id.puzzle_sequence);
+        retype_puzzle = findViewById(R.id.puzzle_retype);
+        sequence_quiz = findViewById(R.id.sequence_quiz);
+        sequence_ans = findViewById(R.id.sequence_ans);
 
-        box_counter_t = (TextView) findViewById(R.id.success_counter);
-        box_message = (TextView) findViewById(R.id.box_message);
-        box_timer = (TextView) findViewById(R.id.box_timer);
-        sequence_message = (TextView) findViewById(R.id.sequence_message);
-        sequence_counterr = (TextView) findViewById(R.id.sequence_counterr);
+        box_counter_t = findViewById(R.id.success_counter);
+        box_message = findViewById(R.id.box_message);
+        box_timer = findViewById(R.id.box_timer);
+        sequence_message = findViewById(R.id.sequence_message);
+        sequence_counterr = findViewById(R.id.sequence_counterr);
 
         sequence_message.setText("Touch on a Shape");
 
@@ -439,110 +450,123 @@ public class NotificationBase extends AppCompatActivity {
         box_counter_t.setText(count_string);
         box_message.setText("Touch White Box");
 
-        c_1 = (CardView) findViewById(R.id.p_1);
-        c_2 = (CardView) findViewById(R.id.p_2);
-        c_3 = (CardView) findViewById(R.id.p_3);
-        c_4 = (CardView) findViewById(R.id.p_4);
-        c_5 = (CardView) findViewById(R.id.p_5);
-        c_6 = (CardView) findViewById(R.id.p_6);
-        c_7 = (CardView) findViewById(R.id.p_7);
-        c_8 = (CardView) findViewById(R.id.p_8);
-        c_9 = (CardView) findViewById(R.id.p_9);
+        c_1 = findViewById(R.id.p_1);
+        c_2 = findViewById(R.id.p_2);
+        c_3 = findViewById(R.id.p_3);
+        c_4 = findViewById(R.id.p_4);
+        c_5 = findViewById(R.id.p_5);
+        c_6 = findViewById(R.id.p_6);
+        c_7 = findViewById(R.id.p_7);
+        c_8 = findViewById(R.id.p_8);
+        c_9 = findViewById(R.id.p_9);
 
-        s_1 = (CardView) findViewById(R.id.s_1);
-        s_2 = (CardView) findViewById(R.id.s_2);
-        s_3 = (CardView) findViewById(R.id.s_3);
-        s_4 = (CardView) findViewById(R.id.s_4);
+        s_1 = findViewById(R.id.s_1);
+        s_2 = findViewById(R.id.s_2);
+        s_3 = findViewById(R.id.s_3);
+        s_4 = findViewById(R.id.s_4);
 
-        text_test = (TextView) findViewById(R.id.text_test);
-        failed_retype = (TextView) findViewById(R.id.failed_retype);
-        text_response = (EditText) findViewById(R.id.text_response);
-        retype = (Button) findViewById(R.id.retype_button);
-        s_c = (TextView) findViewById(R.id.s_c);
+        text_test = findViewById(R.id.text_test);
+        failed_retype = findViewById(R.id.failed_retype);
+        text_response = findViewById(R.id.text_response);
+        retype = findViewById(R.id.retype_button);
+        s_c = findViewById(R.id.s_c);
         quit = "ok";
     }
 
     @Override
     protected void onPause() {
-        Log.e("aisee", "pause");
+        Log.e("aisee", "quit");
         if (quit.equals("ok") && !notification) {
-            createNotification("You have an Active Reminder.");
+            createNotification("You have an Active Alarm.");
         }
-        if (notification)
+        if (notification || demo) {
+            close_button.callOnClick();
             finish();
-
+        }
+        if (animationDrawable != null && animationDrawable.isRunning())
+            animationDrawable.stop();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         Log.e("aisee", "onResume");
-        if (demo){
+        if (demo) {
 
-        }else if (demo){
+        } else if (demo) {
             if (demo_type.equalsIgnoreCase("puzzle"))
                 boxPuzzle();
             if (demo_type.equalsIgnoreCase("sequence"))
                 sequencePuzzle();
-        }else if (isPuzzle) {
+        } else if (isPuzzle) {
            /* close_button.setVisibility(View.GONE);
             if (puzzleType.equals("puzzle"))
                 boxPuzzle();
             if (puzzleType.equals("sequence"))
                 sequencePuzzle();*/
         }
+
+        if (animationDrawable != null && !animationDrawable.isRunning())
+            animationDrawable.run();
         super.onResume();
-         //h
+        //h
     }
 
     private void createNotification(String message) {
-        Intent resultIntent = new Intent(this, NotificationBase.class);
-        resultIntent.putExtra("fromSnooze", true);
-        Intent openReminder = new Intent(this, NotificationBase.class);
-        resultIntent.putExtra("fromSnooze", true);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
+        //set action responses
+        Intent resultIntent = new Intent(NotificationBase.this, NotificationBase.class);
+        resultIntent.putExtra("missed", true);
+        Intent openReminder = new Intent(NotificationBase.this, NotificationBase.class);
+        openReminder.putExtra("missed", true);
+        PendingIntent pendingIntent = PendingIntent.getActivity(NotificationBase.this, 0, openReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //prepare notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.my_checkv2)
-                .setContentTitle("Alarm")
+        NotificationManager mNotificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("missed_alarms",
+                    "Missed Alarms", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Alarms Missed");
+            mNotificationManager.createNotificationChannel(channel);
+        }
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "missed_alarms");
+        builder.setSmallIcon(R.mipmap.my_check)
+                .setContentTitle("myCheck")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-
+        System.out.println(count);
+        //handle notification putting in mind other active similar notifications
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(ToDoDetails.class);
+        stackBuilder.addParentStack(NotificationBase.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
                         0,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
-        builder.addAction(R.mipmap.ic_action_check_free, "Open!", pendingIntent);
+        builder.addAction(R.mipmap.ic_action_check_free, "View!", pendingIntent);
         // builder.addAction(R.mipmap.ic_action_close, "Got it!", null);
         builder.setContentText(message);
         builder.setContentIntent(resultPendingIntent);
-        mNotificationManager.notify(500, builder.build());
+        mNotificationManager.notify(101, builder.build());
     }
 
     //public PowerManager.WakeLock wakeLock;
 
+    PowerManager powerManager;
+
     private void playSound(Context context, Uri alert) {
-        Log.e(TAG, "sn " + snooze_count);
-
-
+        //Log.e(TAG, "sn " + snooze_count);
         startAlarm();
-
-        wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
-                PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "elm"
-        );
+        powerManager = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "mycheck:elm");
 
         if (alartTime == 30) {
             alartTime = 30000;
@@ -551,8 +575,8 @@ public class NotificationBase extends AppCompatActivity {
         }
 
         if (isPuzzle) {
-            alartTime = 60 * 60000;
-            snooze=true;
+            alartTime = 5 * 60000;
+            snooze = true;
         }
 
         wakeLock.acquire(alartTime);
@@ -583,8 +607,9 @@ public class NotificationBase extends AppCompatActivity {
                 startService(intent);*/
 
                 //stopService(new Intent(NotificationBase.this, PlaySound.class));
-
-                snoozeAlarm();
+                quit = "no";
+                snoozeAlarm(true);
+                finish();
 
 
             }
@@ -676,7 +701,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -700,7 +725,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
 
             }
@@ -725,7 +750,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -749,7 +774,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -773,7 +798,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of " +puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -797,7 +822,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -821,7 +846,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -845,7 +870,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -869,7 +894,7 @@ public class NotificationBase extends AppCompatActivity {
                     //warn
                 }
 
-                count_string = box_counter + " of "+ puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         });
@@ -888,7 +913,7 @@ public class NotificationBase extends AppCompatActivity {
             stopAlarm();
             if (!demo)
                 clearActives();
-            finish();
+            finishAffinity();
         } else {
             if (random == 1) {
                 c_1.setCardBackgroundColor(getResources().getColor(R.color.colorWhite));
@@ -958,7 +983,7 @@ public class NotificationBase extends AppCompatActivity {
                 box_message.setTextColor(getResources().getColor(R.color.red));
                 box_message.setBackgroundColor(getResources().getColor(R.color.colorWhite));
 
-                count_string = box_counter + " of "+ puzzle_level;
+                count_string = box_counter + " of " + puzzle_level;
                 box_counter_t.setText(count_string);
             }
         }.start();
@@ -982,6 +1007,18 @@ public class NotificationBase extends AppCompatActivity {
             text_test.setText(Constants.text1);
         if (random == 2)
             text_test.setText(Constants.text2);
+        if (random == 3)
+            text_test.setText(Constants.text3);
+        if (random == 4)
+            text_test.setText(Constants.text4);
+        if (random == 5)
+            text_test.setText(Constants.text5);
+        if (random == 6)
+            text_test.setText(Constants.text6);
+        if (random == 7)
+            text_test.setText(Constants.text7);
+        if (random == 8)
+            text_test.setText(Constants.text8);
         //set text
 
         //get response
@@ -996,7 +1033,7 @@ public class NotificationBase extends AppCompatActivity {
                     stopAlarm();
                     if (!demo)
                         clearActives();
-                    finish();
+                    finishAffinity();
                 } else {
                     //warn
                     failed_retype.setVisibility(View.VISIBLE);
@@ -1016,7 +1053,7 @@ public class NotificationBase extends AppCompatActivity {
         stopAlarm();
         if (!demo)
             clearActives();
-        finish();
+        finishAffinity();
     }
 
     private void sequencePuzzle() {
@@ -1039,7 +1076,7 @@ public class NotificationBase extends AppCompatActivity {
                 if (active[ansCount] == 1) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1066,7 +1103,7 @@ public class NotificationBase extends AppCompatActivity {
                 setCardAnimation(s_2);
                 if (active[ansCount] == 2) {
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1095,7 +1132,7 @@ public class NotificationBase extends AppCompatActivity {
                 if (active[ansCount] == 3) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1123,7 +1160,7 @@ public class NotificationBase extends AppCompatActivity {
                 if (active[ansCount] == 4) {
                     //success
                     ansCount++;
-                    String ans_message = ansCount + " of "+ puzzle_level;
+                    String ans_message = ansCount + " of " + puzzle_level;
                     sequence_counterr.setText(ans_message);
                     sequence_message.setText("Success!");
                     sequence_message.setTextColor(getResources().getColor(R.color.basil));
@@ -1166,7 +1203,7 @@ public class NotificationBase extends AppCompatActivity {
             s_c.setVisibility(View.VISIBLE);
         }
 
-        s_c.setText(imageCount + " of "+ puzzle_level);
+        s_c.setText(imageCount + " of " + puzzle_level);
 
 
         //active.
