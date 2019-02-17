@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+
 import layout.ToDo1;
 
 public class NewToDo extends AppCompatActivity{
@@ -30,6 +33,10 @@ public class NewToDo extends AppCompatActivity{
         android.support.v4.app.FragmentManager fragmentManager = this.getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container_frame, ToDo1.newInstance("param1", "param2")).commit();
 
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("New ToDo opened")
+                .putContentType("views")
+                .putContentId("003"));
     }
 
 

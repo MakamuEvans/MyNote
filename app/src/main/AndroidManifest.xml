@@ -42,7 +42,7 @@
             android:value="myCheckv1.db" />
         <meta-data
             android:name="VERSION"
-            android:value="4" />
+            android:value="5" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -203,6 +203,9 @@
             android:exported="true" />
 
         <activity android:name=".PuzzleDetails" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="181cc374eec432e63b258f21dd8e1df50a6e06df" />
     </application>
 
 </manifest>
