@@ -86,7 +86,6 @@
                             android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:textStyle="italic"
                             android:text="Simply touch the active box amongst the randomly presented boxes "/>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -111,7 +110,7 @@
                                 android:gravity="center"
                                 android:onClick="demoPuzzle"
                                 android:layout_marginLeft="5dp"
-                                android:text="Click to Proceed"
+                                android:text="Select Active Touch"
                                 android:textSize="16dp"
                                 android:background="@drawable/default_input_text"/>
                         </LinearLayout>
@@ -215,7 +214,6 @@
                             android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:textStyle="italic"
                             android:text="Re-type the presented text exactly as it is and matching formats used"/>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -240,7 +238,7 @@
                                 android:gravity="center"
                                 android:onClick="demoRetype"
                                 android:layout_marginLeft="5dp"
-                                android:text="Click to Proceed"
+                                android:text="Select Re-type text"
                                 android:textSize="16dp"
                                 android:background="@drawable/default_input_text"/>
                         </LinearLayout>
@@ -342,7 +340,6 @@
                             android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:textStyle="italic"
                             android:text="Simply repeat the sequence of drawables presented to you"/>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -367,7 +364,7 @@
                                 android:gravity="center"
                                 android:onClick="demoSequence"
                                 android:layout_marginLeft="5dp"
-                                android:text="Click to Proceed"
+                                android:text="Select Match Sequence"
                                 android:textSize="16dp"
                                 android:background="@drawable/default_input_text"/>
                         </LinearLayout>
