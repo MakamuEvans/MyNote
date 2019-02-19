@@ -45,6 +45,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.elm.mycheck.login.adapter.NotificationsAdapter;
 import com.elm.mycheck.login.model.AlarmReminder;
 import com.elm.mycheck.login.model.Reminder;
@@ -341,6 +343,11 @@ public class NotificationBase extends Activity {
             close_b.setVisibility(View.GONE);
             pause_media.setVisibility(View.GONE);
         }
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Alarm ... opened")
+                .putContentType("views")
+                .putContentId("005"));
 
     }
 

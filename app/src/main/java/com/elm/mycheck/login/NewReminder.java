@@ -30,6 +30,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.elm.mycheck.login.model.AlarmReminder;
 import com.elm.mycheck.login.model.Note;
 import com.elm.mycheck.login.model.Reminder;
@@ -67,7 +69,7 @@ public class NewReminder extends AppCompatActivity {
     private AlternateReceiver alternateReceiver;
     private Boolean repeating = false;
     private String puzzle = "None";
-    private String puzzle_level = "[#]";
+    private String puzzle_level = "(#)";
     private String poke = "No", alternate = "No";
     private View view;
     private AdView adView;
@@ -253,6 +255,11 @@ public class NewReminder extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("New Reminder opened")
+                .putContentType("views")
+                .putContentId("004"));
     }
 
     private Long alarm_id;

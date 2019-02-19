@@ -33,6 +33,7 @@
                             android:layout_width="wrap_content"
                             android:minWidth="35dp"
                             android:id="@+id/app_menu"
+                            android:contentDescription="Menu drawer opener"
                             android:layout_height="match_parent"
                             android:tint="@color/primaryAccentBlue"
                             app:srcCompat="@drawable/ic_menu"/>
@@ -61,6 +62,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="10dp"
                             android:tint="@color/primaryAccentBlue"
+                            android:contentDescription="Click to open settings"
                             android:onClick="oS"
                             android:layout_height="match_parent"
                             app:srcCompat="@drawable/settings"/>
@@ -71,6 +73,7 @@
                             android:layout_marginLeft="10dp"
                             android:tint="@color/primaryAccentBlue"
                             android:layout_marginRight="5dp"
+                            android:contentDescription="Click to add new"
                             android:layout_height="match_parent"
                             app:srcCompat="@mipmap/ic_add"/>
 

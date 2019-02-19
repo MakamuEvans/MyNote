@@ -23,6 +23,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.elm.mycheck.login.model.Note;
 import com.elm.mycheck.login.model.Reminder;
 import com.elm.mycheck.login.model.Todo;
@@ -92,6 +94,10 @@ public class Homev2 extends AppCompatActivity implements NavigationView.OnNaviga
 
         }
 
+        Answers.getInstance().logContentView(new ContentViewEvent()
+        .putContentName("Home Page opened")
+        .putContentType("views")
+        .putContentId("001"));
         this.init();
     }
 

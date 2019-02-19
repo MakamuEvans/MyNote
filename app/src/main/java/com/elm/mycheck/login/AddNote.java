@@ -38,6 +38,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.elm.mycheck.login.model.Category;
 import com.elm.mycheck.login.model.Note;
 import com.elm.mycheck.login.model.User;
@@ -191,6 +193,11 @@ public class AddNote extends AppCompatActivity {
 
             }
         });
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Add Note opened")
+                .putContentType("views")
+                .putContentId("002"));
     }
 
     private void setUpEditor() {
@@ -425,6 +432,11 @@ public class AddNote extends AppCompatActivity {
         int b = Color.blue(color);
         return String.format(Locale.getDefault(), "#%02X%02X%02X", r, g, b);
     }
+
+    /*public void forceCrash(View view) {
+        throw new RuntimeException("This is a crash");
+    }*/
+
 
     public static void setGhost(Button button) {
         int radius = 4;

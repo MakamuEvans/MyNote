@@ -152,7 +152,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="Active Boxes to be touched before alarm stops" />
+                                                    android:text="Twenty Boxes to be touched before alarm stops" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -207,7 +207,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="Active Boxes to be touched before alarm stops" />
+                                                    android:text="Thirty Boxes to be touched before alarm stops" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -264,7 +264,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="Active Boxes to be touched before alarm stops" />
+                                                    android:text="Fifty Boxes to be touched before alarm stops" />
 
 
                                                 <TextView
@@ -515,7 +515,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The approximate Number of characters to be typed" />
+                                                    android:text="Twenty characters(approximate) to be typed" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -568,7 +568,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The approximate Number of characters to be typed" />
+                                                    android:text="Fifty characters(approximate) to be typed" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -623,7 +623,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The approximate Number of characters to be typed" />
+                                                    android:text="One hundred characters(approximate) to be typed" />
 
 
                                                 <TextView
@@ -868,7 +868,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The total number of Sequence to match" />
+                                                    android:text="Three Sequence(s) to match" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -921,7 +921,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The total number of Sequence to match" />
+                                                    android:text="Four Sequence(s) to match" />
 
                                                 <TextView
                                                     android:layout_width="match_parent"
@@ -976,7 +976,7 @@
                                                 <TextView
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text="The total number of Sequence to match" />
+                                                    android:text="Six Sequence(s) to match" />
 
 
                                                 <TextView
